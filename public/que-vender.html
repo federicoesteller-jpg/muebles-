@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qué se puede vender — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:  #1a0d07;
+      --terra:  #c96a38;
+      --cream:  #fdf6ee;
+      --sand:   #ede3d5;
+      --sand-l: #f7f0e6;
+      --gray:   #7a726b;
+      --gray-l: #a09890;
+      --white:  #ffffff;
+      --green:  #2d7a4f;
+      --green-l:#e8f5ee;
+      --green-m:#c3e0cf;
+      --red-l:  #fdeaea;
+      --red-m:  #f5c5c5;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); }
+
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      height: 58px; padding: 0 24px;
+      display: flex; align-items: center; gap: 16px;
+      background: var(--white); border-bottom: 1px solid #ebebeb;
+    }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+    .nav-btn { font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    .nav-btn-ghost { color: var(--gray); background: transparent; }
+    .nav-btn-ghost:hover { color: var(--brown); background: #f5f5f5; }
+    .nav-btn-sell { color: var(--white); background: var(--terra); }
+    .nav-btn-sell:hover { background: #b85e30; }
+
+    /* HERO */
+    .hero {
+      background: var(--brown);
+      padding: 60px 24px 68px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 110%, rgba(201,106,56,0.2) 0%, transparent 70%);
+    }
+    .hero-inner { max-width: 600px; margin: 0 auto; position: relative; }
+    .hero-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--terra); background: rgba(201,106,56,0.15); padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero h1 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -0.8px; line-height: 1.12; margin-bottom: 14px; }
+    .hero h1 em { font-style: normal; color: #e07a44; }
+    .hero p { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.65; }
+
+    /* TOC STICKY */
+    .page-toc {
+      background: var(--white); border-bottom: 1px solid var(--sand);
+      padding: 0 24px; position: sticky; top: 58px; z-index: 100;
+      display: flex; gap: 0; overflow-x: auto; scrollbar-width: none;
+    }
+    .page-toc::-webkit-scrollbar { display: none; }
+    .toc-link { padding: 13px 18px; white-space: nowrap; font-size: 13px; font-weight: 600; color: var(--gray); text-decoration: none; border-bottom: 2.5px solid transparent; transition: all 0.2s; }
+    .toc-link:hover { color: var(--terra); }
+    .toc-link.active { color: var(--terra); border-bottom-color: var(--terra); }
+
+    /* BODY */
+    .page-body { max-width: 860px; margin: 0 auto; padding: 52px 24px 80px; }
+
+    /* SECCIÓN */
+    .sec { margin-bottom: 60px; scroll-margin-top: 95px; }
+    .sec-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--terra); margin-bottom: 6px; }
+    .sec-title { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+    .sec-intro { font-size: 15px; color: var(--gray); line-height: 1.7; margin-bottom: 24px; }
+
+    /* CATEGORÍAS PERMITIDAS */
+    .cats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .cat-card { background: var(--white); border: 1.5px solid var(--sand); border-radius: 14px; padding: 18px 16px; transition: border-color 0.15s; }
+    .cat-card:hover { border-color: var(--terra); }
+    .cat-icon { font-size: 26px; margin-bottom: 8px; }
+    .cat-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .cat-examples { font-size: 12px; color: var(--gray); line-height: 1.55; }
+
+    /* PROHIBIDO */
+    .banned-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .banned-item { display: flex; gap: 12px; align-items: flex-start; background: var(--red-l); border: 1px solid var(--red-m); border-radius: 12px; padding: 14px 16px; }
+    .banned-icon { font-size: 20px; flex-shrink: 0; }
+    .banned-name { font-size: 14px; font-weight: 700; color: #8a2020; margin-bottom: 3px; }
+    .banned-desc { font-size: 12px; color: #6b3333; line-height: 1.5; }
+
+    /* CONDICIONES ESPECIALES */
+    .special-list { display: flex; flex-direction: column; gap: 12px; }
+    .special-item { display: flex; gap: 14px; align-items: flex-start; background: var(--white); border: 1.5px solid var(--sand); border-radius: 13px; padding: 18px 20px; }
+    .special-icon { font-size: 22px; flex-shrink: 0; }
+    .special-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .special-desc { font-size: 13px; color: var(--gray); line-height: 1.6; }
+
+    /* ESTADO MÍNIMO */
+    .estado-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .estado-card { border-radius: 13px; padding: 16px 14px; text-align: center; }
+    .estado-card.ok { background: var(--green-l); border: 1.5px solid var(--green-m); }
+    .estado-card.warn { background: #fff7e0; border: 1.5px solid #f0d080; }
+    .estado-card.no { background: var(--red-l); border: 1.5px solid var(--red-m); }
+    .estado-emoji { font-size: 24px; margin-bottom: 6px; }
+    .estado-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .estado-card.ok   .estado-name { color: var(--green); }
+    .estado-card.warn .estado-name { color: #8a6000; }
+    .estado-card.no   .estado-name { color: #8a2020; }
+    .estado-desc { font-size: 11px; color: var(--gray); line-height: 1.5; }
+
+    /* INFO BOX */
+    .info-box { border-radius: 12px; padding: 15px 18px; font-size: 13px; line-height: 1.7; margin-bottom: 16px; display: flex; gap: 12px; align-items: flex-start; }
+    .info-box.green  { background: var(--green-l); border: 1px solid var(--green-m); color: #1f5c38; }
+    .info-box.yellow { background: #fff7e0; border: 1px solid #f0d080; color: #8a6000; }
+    .info-box.red    { background: var(--red-l); border: 1px solid var(--red-m); color: #8a2020; }
+
+    /* CONSECUENCIAS */
+    .cons-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .cons-card { background: var(--red-l); border: 1px solid var(--red-m); border-radius: 13px; padding: 16px 16px; text-align: center; }
+    .cons-num { font-size: 28px; font-weight: 800; color: #c0392b; margin-bottom: 4px; }
+    .cons-label { font-size: 13px; font-weight: 700; color: #8a2020; margin-bottom: 4px; }
+    .cons-desc { font-size: 12px; color: #6b3333; line-height: 1.5; }
+
+    /* CTA */
+    .cta-box { background: var(--brown); border-radius: 18px; padding: 40px 32px; text-align: center; margin-top: 16px; }
+    .cta-box h3 { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .cta-box p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+    .cta-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .btn-terra { padding: 12px 24px; background: var(--terra); color: #fff; border-radius: 9px; font-size: 14px; font-weight: 700; text-decoration: none; transition: background 0.15s; }
+    .btn-terra:hover { background: #b85e30; }
+    .btn-ghost-w { padding: 12px 24px; border: 1.5px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); border-radius: 9px; font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.15s; }
+    .btn-ghost-w:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    footer {
+      background: var(--white); border-top: 1px solid #ebebeb;
+      padding: 24px; display: flex;
+      justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-logo { font-size: 16px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .footer-logo em { font-style: normal; color: var(--terra); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: var(--gray); text-decoration: none; }
+    .footer-links a:hover { color: var(--brown); }
+    .footer-copy { font-size: 12px; color: #ccc; }
+
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 28px; }
+      .cats-grid { grid-template-columns: repeat(2, 1fr); }
+      .banned-grid { grid-template-columns: 1fr; }
+      .estado-grid { grid-template-columns: repeat(2, 1fr); }
+      .cons-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <div class="nav-right">
+    <a href="ayuda.html" class="nav-btn nav-btn-ghost">Ayuda</a>
+    <a href="publicar.html" class="nav-btn nav-btn-sell">Vender ahora</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">📋 Guía de vendedor</div>
+    <h1>Qué se puede<br/><em>vender en Mueblista</em></h1>
+    <p>Mueblista es un marketplace especializado en muebles y decoración. Esta guía explica qué está permitido, qué no, y en qué condiciones.</p>
+  </div>
+</div>
+
+<div class="page-toc">
+  <a class="toc-link active" href="#permitido">Permitido</a>
+  <a class="toc-link" href="#prohibido">Prohibido</a>
+  <a class="toc-link" href="#estado">Estado mínimo</a>
+  <a class="toc-link" href="#especial">Casos especiales</a>
+  <a class="toc-link" href="#consecuencias">Consecuencias</a>
+</div>
+
+<div class="page-body">
+
+  <!-- PERMITIDO -->
+  <div class="sec reveal" id="permitido">
+    <div class="sec-label">Lo que sí puedes vender</div>
+    <div class="sec-title">Categorías permitidas</div>
+    <div class="sec-intro">Mueblista está especializado en muebles, decoración y artículos para el hogar. Todo lo que encaje en estas categorías es bienvenido, nuevo o de segunda mano.</div>
+
+    <div class="cats-grid">
+      <div class="cat-card">
+        <div class="cat-icon">🛋️</div>
+        <div class="cat-name">Sofás y sillones</div>
+        <div class="cat-examples">Sofás, sillones, chaises longues, pufs, bancos tapizados, butacas</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🍽️</div>
+        <div class="cat-name">Mesas y sillas</div>
+        <div class="cat-examples">Mesas de comedor, escritorio, centro, auxiliares. Sillas, taburetes, bancos</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🛏️</div>
+        <div class="cat-name">Dormitorio</div>
+        <div class="cat-examples">Camas, cabeceros, mesitas, armarios, cómodas, tocadores, espejos</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">📚</div>
+        <div class="cat-name">Almacenaje</div>
+        <div class="cat-examples">Estanterías, librerías, vitrinas, aparadores, cajoneras, zapateros, percheros</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">💡</div>
+        <div class="cat-name">Iluminación</div>
+        <div class="cat-examples">Lámparas de pie, de techo, de mesa, apliques, tiras LED decorativas</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🪴</div>
+        <div class="cat-name">Decoración</div>
+        <div class="cat-examples">Cuadros, espejos decorativos, jarrones, cojines, mantas, alfombras, plantas artificiales</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🍳</div>
+        <div class="cat-name">Cocina y comedor</div>
+        <div class="cat-examples">Muebles de cocina, islas, barras americanas, vajillas, utensilios decorativos</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🛁</div>
+        <div class="cat-name">Baño</div>
+        <div class="cat-examples">Muebles de baño, espejos con luz, accesorios, toalleros, estanterías de baño</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🌿</div>
+        <div class="cat-name">Exterior y jardín</div>
+        <div class="cat-examples">Muebles de terraza, jardín, piscina. Hamacas, sombrillas, maceteros grandes</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🏢</div>
+        <div class="cat-name">Oficina y estudio</div>
+        <div class="cat-examples">Escritorios, sillas de oficina, archivadores, estanterías de oficina, mesas de reuniones</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🧸</div>
+        <div class="cat-name">Infantil</div>
+        <div class="cat-examples">Cunas, camas infantiles, tronas, escritorios infantiles, armarios para niños</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">📦</div>
+        <div class="cat-name">Lotes y conjuntos</div>
+        <div class="cat-examples">Conjunto mesa + sillas, dormitorio completo, salón completo, lote de decoración</div>
+      </div>
+    </div>
+
+    <div class="info-box green" style="margin-top:20px;">
+      ✅ <span><strong>¿Tienes dudas sobre una categoría?</strong> Si el artículo es para el hogar y encaja en el espíritu de Mueblista, probablemente está permitido. Ante la duda, escríbenos desde el <a href="ayuda.html" style="color:var(--green); font-weight:600;">centro de ayuda</a> antes de publicar.</span>
+    </div>
+  </div>
+
+  <!-- PROHIBIDO -->
+  <div class="sec reveal" id="prohibido">
+    <div class="sec-label">Lo que no puedes vender</div>
+    <div class="sec-title">Artículos prohibidos</div>
+    <div class="sec-intro">Estos artículos no están permitidos en Mueblista, independientemente de su estado o precio. Los anuncios que los incumplan serán eliminados.</div>
+
+    <div class="banned-grid">
+      <div class="banned-item">
+        <div class="banned-icon">📺</div>
+        <div>
+          <div class="banned-name">Electrónica y electrodomésticos</div>
+          <div class="banned-desc">Televisores, ordenadores, lavadoras, frigoríficos, microondas. No es nuestra especialidad y requieren normativas específicas de residuos.</div>
+        </div>
+      </div>
+      <div class="banned-item">
+        <div class="banned-icon">👗</div>
+        <div>
+          <div class="banned-name">Ropa y moda</div>
+          <div class="banned-desc">Prendas de vestir, calzado, bolsos o accesorios personales. Existen plataformas especializadas para esto.</div>
+        </div>
+      </div>
+      <div class="banned-item">
+        <div class="banned-icon">🍎</div>
+        <div>
+          <div class="banned-name">Alimentos y bebidas</div>
+          <div class="banned-desc">Cualquier producto alimentario, bebidas, suplementos o productos de consumo perecedero.</div>
+        </div>
+      </div>
+      <div class="banned-item">
+        <div class="banned-icon">💊</div>
+        <div>
+          <div class="banned-name">Medicamentos y productos sanitarios</div>
+          <div class="banned-desc">Medicamentos, suplementos dietéticos, productos de farmacia o equipos médicos sin homologación.</div>
+        </div>
+      </div>
+      <div class="banned-item">
+        <div class="banned-icon">🔫</div>
+        <div>
+          <div class="banned-name">Armas y artículos peligrosos</div>
+          <div class="banned-desc">Armas, munición, explosivos, sustancias peligrosas o cualquier artículo cuya venta requiera licencia especial.</div>
+        </div>
+      </div>
+      <div class="banned-item">
+        <div class="banned-icon">🎭</div>
+        <div>
+          <div class="banned-name">Artículos falsificados</div>
+          <div class="banned-desc">Réplicas de marcas o artículos presentados como originales cuando no lo son. Infracción grave con responsabilidad legal.</div>
+        </div>
+      </div>
+      <div class="banned-item">
+        <div class="banned-icon">🚗</div>
+        <div>
+          <div class="banned-name">Vehículos</div>
+          <div class="banned-desc">Coches, motos, bicicletas, patinetes o cualquier medio de transporte.</div>
+        </div>
+      </div>
+      <div class="banned-item">
+        <div class="banned-icon">🐾</div>
+        <div>
+          <div class="banned-name">Animales</div>
+          <div class="banned-desc">La venta de animales vivos no está permitida en ningún caso en la plataforma.</div>
+        </div>
+      </div>
+      <div class="banned-item">
+        <div class="banned-icon">🔞</div>
+        <div>
+          <div class="banned-name">Contenido para adultos</div>
+          <div class="banned-desc">Material de contenido sexual explícito o artículos destinados exclusivamente a uso adulto.</div>
+        </div>
+      </div>
+      <div class="banned-item">
+        <div class="banned-icon">🗝️</div>
+        <div>
+          <div class="banned-name">Artículos robados o de origen dudoso</div>
+          <div class="banned-desc">Mueblista colabora con las autoridades ante cualquier indicio de artículos de procedencia ilícita.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESTADO MÍNIMO -->
+  <div class="sec reveal" id="estado">
+    <div class="sec-label">Condición del artículo</div>
+    <div class="sec-title">Estado mínimo para publicar</div>
+    <div class="sec-intro">No todo lo que ya no sirve se puede vender. El artículo tiene que poder usarse para su función principal, aunque tenga imperfecciones.</div>
+
+    <div class="estado-grid">
+      <div class="estado-card ok">
+        <div class="estado-emoji">✨</div>
+        <div class="estado-name">Nuevo / Como nuevo</div>
+        <div class="estado-desc">Sin usar o con uso mínimo. Sin defectos visibles. Puede tener embalaje original o no.</div>
+      </div>
+      <div class="estado-card ok">
+        <div class="estado-emoji">👍</div>
+        <div class="estado-name">Poco uso</div>
+        <div class="estado-desc">Ligeras marcas de uso. Funciona perfectamente. Defectos menores bien documentados en fotos.</div>
+      </div>
+      <div class="estado-card ok">
+        <div class="estado-emoji">🔄</div>
+        <div class="estado-name">Buen estado</div>
+        <div class="estado-desc">Uso normal. Puede tener arañazos o rozaduras visibles, declarados con fotos claras.</div>
+      </div>
+      <div class="estado-card warn">
+        <div class="estado-emoji">⚠️</div>
+        <div class="estado-name">Para restaurar</div>
+        <div class="estado-desc">Daños importantes pero el mueble es funcional o restaurable. Descripción exhaustiva obligatoria.</div>
+      </div>
+    </div>
+
+    <div class="info-box red" style="margin-top:16px;">
+      🚫 <span><strong>No se puede publicar:</strong> artículos completamente rotos, inservibles o peligrosos para el uso. Si el mueble no puede usarse para su función principal sin reparación significativa, no debe publicarse a menos que se indique claramente como "para piezas" o "para restauración" y el precio lo refleje.</span>
+    </div>
+
+    <div class="info-box yellow" style="margin-top:12px;">
+      ⚠️ <span><strong>Estado "Para restaurar":</strong> si publicas un artículo en mal estado, la descripción y las fotos deben reflejar fielmente todos los daños. El comprador debe saber exactamente lo que compra. Los anuncios que describen mal el estado pueden ser retirados.</span>
+    </div>
+  </div>
+
+  <!-- CASOS ESPECIALES -->
+  <div class="sec reveal" id="especial">
+    <div class="sec-label">Casos especiales</div>
+    <div class="sec-title">Artículos que requieren atención extra</div>
+    <div class="sec-intro">Algunos artículos están permitidos pero tienen condiciones o requisitos adicionales al publicar.</div>
+
+    <div class="special-list">
+      <div class="special-item">
+        <div class="special-icon">🛏️</div>
+        <div>
+          <div class="special-title">Colchones y ropa de cama</div>
+          <div class="special-desc">Los colchones deben estar en perfecto estado de higiene. No se permite la venta de colchones con manchas, hongos u olores. La descripción debe indicar si han tenido funda protectora. Sábanas, almohadas y edredones solo si están en perfectas condiciones higiénicas y así se acredita en la descripción.</div>
+        </div>
+      </div>
+      <div class="special-item">
+        <div class="special-icon">🪟</div>
+        <div>
+          <div class="special-title">Cortinas, estores y textiles de ventana</div>
+          <div class="special-desc">Permitidos si están limpios. Indica el material, dimensiones exactas y si han sido lavados recientemente. Las cortinas con manchas o decoloración deben documentarse en las fotos.</div>
+        </div>
+      </div>
+      <div class="special-item">
+        <div class="special-icon">🏺</div>
+        <div>
+          <div class="special-title">Artículos de alto valor o antigüedades</div>
+          <div class="special-desc">Piezas de colección, antigüedades o artículos con valor especial pueden publicarse normalmente. Si el precio supera cierto umbral, Mueblista puede solicitar documentación adicional (facturas, certificados de autenticidad) antes de activar el anuncio.</div>
+        </div>
+      </div>
+      <div class="special-item">
+        <div class="special-icon">🏗️</div>
+        <div>
+          <div class="special-title">Muebles de cocina empotrados o a medida</div>
+          <div class="special-desc">Se pueden vender pero debes indicar claramente si el precio incluye el desmontaje y si el comprador debe recogerlo en persona. Los muebles a medida tienen menor mercado; asegúrate de indicar las dimensiones exactas.</div>
+        </div>
+      </div>
+      <div class="special-item">
+        <div class="special-icon">💡</div>
+        <div>
+          <div class="special-title">Lámparas y luminarias</div>
+          <div class="special-desc">Deben estar en buen estado eléctrico. No se pueden vender lámparas con cables pelados, interruptores rotos o cualquier riesgo eléctrico. Si la lámpara necesita una revisión eléctrica, indícalo expresamente en la descripción.</div>
+        </div>
+      </div>
+      <div class="special-item">
+        <div class="special-icon">🌿</div>
+        <div>
+          <div class="special-title">Plantas naturales</div>
+          <div class="special-desc">Las plantas naturales en macetas decorativas están permitidas si van acompañadas de un mueble o elemento decorativo. La venta de plantas solas no es la finalidad principal de Mueblista, aunque puede tolerarse en la categoría de decoración.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONSECUENCIAS -->
+  <div class="sec reveal" id="consecuencias">
+    <div class="sec-label">Si no se respetan las normas</div>
+    <div class="sec-title">Qué ocurre con los anuncios que incumplen</div>
+    <div class="sec-intro">Mueblista revisa los anuncios publicados. Los que no cumplan las normas pasan por un proceso escalonado según la gravedad.</div>
+
+    <div class="cons-grid">
+      <div class="cons-card">
+        <div class="cons-num">1</div>
+        <div class="cons-label">Aviso y corrección</div>
+        <div class="cons-desc">Para incumplimientos menores (descripción incompleta, fotos insuficientes). El vendedor tiene 48 h para corregir antes de que se retire el anuncio.</div>
+      </div>
+      <div class="cons-card">
+        <div class="cons-num">2</div>
+        <div class="cons-label">Retirada del anuncio</div>
+        <div class="cons-desc">El anuncio se elimina de forma inmediata. Se notifica al vendedor con el motivo. Puede volver a publicarse si se corrige.</div>
+      </div>
+      <div class="cons-card">
+        <div class="cons-num">3</div>
+        <div class="cons-label">Suspensión de cuenta</div>
+        <div class="cons-desc">Para incumplimientos graves o reiterados: artículos prohibidos, fraude o engaño deliberado. La cuenta queda suspendida temporal o permanentemente.</div>
+      </div>
+    </div>
+
+    <div class="info-box yellow" style="margin-top:20px;">
+      🔍 <span>Cualquier usuario puede <strong>reportar un anuncio</strong> que crea que incumple las normas. Revisa cada reporte en un plazo máximo de 24 horas laborables.</span>
+    </div>
+
+    <div class="cta-box">
+      <h3>¿Tu artículo cumple los requisitos?</h3>
+      <p>Si tienes dudas sobre un artículo concreto, escríbenos antes de publicar. Si está todo en orden, adelante.</p>
+      <div class="cta-row">
+        <a href="publicar.html" class="btn-terra">Publicar artículo</a>
+        <a href="ayuda.html" class="btn-ghost-w">Contactar con soporte</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+    <div class="footer-links">
+    <a href="terminos.html">Términos</a>
+    <a href="privacidad.html">Privacidad</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="devoluciones.html">Devoluciones</a>
+    <a href="sostenibilidad.html">Sostenibilidad</a>
+    <a href="quienes-somos.html">Quiénes somos</a>
+    <a href="ayuda.html">Ayuda</a>
+    <a href="guia-envios.html">Envíos</a>
+    <a href="niveles.html">Niveles</a>
+    <a href="lotes.html">Venta en conjunto</a>
+    <a href="recordatorios.html">Recordatorios</a>
+  </div>
+  <div class="footer-copy">© 2026 Mueblista</div>
+</footer>
+
+<script>
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+  const sections = document.querySelectorAll('.sec[id]');
+  const links    = document.querySelectorAll('.toc-link');
+  const tocObs   = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.toc-link[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-25% 0px -65% 0px' });
+  sections.forEach(s => tocObs.observe(s));
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

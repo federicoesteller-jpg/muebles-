@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guía de envíos — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:  #1a0d07;
+      --terra:  #c96a38;
+      --cream:  #fdf6ee;
+      --sand:   #ede3d5;
+      --sand-l: #f7f0e6;
+      --gray:   #7a726b;
+      --gray-l: #a09890;
+      --white:  #ffffff;
+      --green:  #2d7a4f;
+      --green-l:#e8f5ee;
+      --green-m:#c3e0cf;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); }
+
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      height: 58px; padding: 0 24px;
+      display: flex; align-items: center; gap: 16px;
+      background: var(--white); border-bottom: 1px solid #ebebeb;
+    }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+    .nav-btn { font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    .nav-btn-ghost { color: var(--gray); background: transparent; }
+    .nav-btn-ghost:hover { color: var(--brown); background: #f5f5f5; }
+    .nav-btn-sell { color: var(--white); background: var(--terra); }
+    .nav-btn-sell:hover { background: #b85e30; }
+
+    .hero {
+      background: var(--brown); padding: 60px 24px 68px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 110%, rgba(201,106,56,0.2) 0%, transparent 70%);
+    }
+    .hero-inner { max-width: 620px; margin: 0 auto; position: relative; }
+    .hero-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--terra); background: rgba(201,106,56,0.15); padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero h1 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -0.8px; line-height: 1.12; margin-bottom: 14px; }
+    .hero h1 em { font-style: normal; color: #e07a44; }
+    .hero p { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.65; }
+
+    .page-toc {
+      background: var(--white); border-bottom: 1px solid var(--sand);
+      padding: 0 24px; position: sticky; top: 58px; z-index: 100;
+      display: flex; gap: 0; overflow-x: auto; scrollbar-width: none;
+    }
+    .page-toc::-webkit-scrollbar { display: none; }
+    .toc-link { padding: 13px 16px; white-space: nowrap; font-size: 13px; font-weight: 600; color: var(--gray); text-decoration: none; border-bottom: 2.5px solid transparent; transition: all 0.2s; }
+    .toc-link:hover { color: var(--terra); }
+    .toc-link.active { color: var(--terra); border-bottom-color: var(--terra); }
+
+    .page-body { max-width: 860px; margin: 0 auto; padding: 52px 24px 80px; }
+
+    .sec { margin-bottom: 60px; scroll-margin-top: 95px; }
+    .sec-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--terra); margin-bottom: 6px; }
+    .sec-title { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+    .sec-intro { font-size: 15px; color: var(--gray); line-height: 1.7; margin-bottom: 24px; }
+
+    /* PASOS */
+    .steps-list { display: flex; flex-direction: column; gap: 14px; }
+    .step-row { display: flex; gap: 16px; align-items: flex-start; background: var(--white); border: 1.5px solid var(--sand); border-radius: 14px; padding: 18px 20px; }
+    .step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--terra); color: #fff; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-body h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .step-body p { font-size: 13px; color: var(--gray); line-height: 1.65; }
+    .step-tip { font-size: 12px; background: var(--sand-l); border-radius: 7px; padding: 7px 11px; margin-top: 8px; color: var(--brown); line-height: 1.5; }
+
+    /* MATERIALES */
+    .materials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .mat-card { background: var(--white); border: 1.5px solid var(--sand); border-radius: 13px; padding: 16px; }
+    .mat-icon { font-size: 24px; margin-bottom: 8px; }
+    .mat-name { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+    .mat-use { font-size: 12px; color: var(--terra); font-weight: 600; margin-bottom: 4px; }
+    .mat-desc { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+    /* TABLA TRANSPORTISTAS */
+    .carriers-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+    .carriers-table th { background: var(--brown); color: #fff; padding: 11px 14px; text-align: left; font-size: 12px; font-weight: 700; }
+    .carriers-table th:first-child { border-radius: 8px 0 0 0; }
+    .carriers-table th:last-child  { border-radius: 0 8px 0 0; }
+    .carriers-table td { padding: 12px 14px; border-bottom: 1px solid var(--sand); vertical-align: top; font-size: 13px; }
+    .carriers-table tr:last-child td { border-bottom: none; }
+    .carriers-table tr:nth-child(even) td { background: var(--sand-l); }
+    .tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 100px; margin: 2px 2px 0 0; }
+    .tag-g { background: var(--green-l); color: var(--green); }
+    .tag-y { background: #fff7e0; color: #8a6000; }
+    .tag-r { background: #fdeaea; color: #8a2020; }
+
+    /* TARJETAS 2 COL */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .info-card { background: var(--white); border: 1.5px solid var(--sand); border-radius: 14px; padding: 20px 18px; }
+    .info-card-icon { font-size: 24px; margin-bottom: 8px; }
+    .info-card-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .info-card-body { font-size: 13px; color: var(--gray); line-height: 1.65; }
+    .info-card-body ul { margin: 6px 0 0 16px; }
+    .info-card-body li { margin-bottom: 3px; }
+
+    /* RECOGIDA EN MANO */
+    .pickup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .pickup-card { border-radius: 14px; padding: 20px 18px; }
+    .pickup-card.do   { background: var(--green-l); border: 1.5px solid var(--green-m); }
+    .pickup-card.dont { background: #fdeaea; border: 1.5px solid #f5c5c5; }
+    .pickup-card-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+    .pickup-card.do   .pickup-card-title { color: var(--green); }
+    .pickup-card.dont .pickup-card-title { color: #8a2020; }
+    .pickup-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .pickup-list li { font-size: 13px; line-height: 1.5; padding-left: 18px; position: relative; }
+    .pickup-card.do   .pickup-list li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+    .pickup-card.dont .pickup-list li::before { content: '✗'; position: absolute; left: 0; color: #c0392b; font-weight: 700; }
+
+    /* SEGURO */
+    .seguro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .seguro-card { border-radius: 14px; padding: 18px 16px; text-align: center; }
+    .seguro-card.basic    { background: var(--sand-l); border: 1.5px solid var(--sand); }
+    .seguro-card.standard { background: #fff7e0; border: 1.5px solid #f0d080; }
+    .seguro-card.premium  { background: var(--green-l); border: 1.5px solid var(--green-m); }
+    .seguro-tier { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; color: var(--gray); }
+    .seguro-name { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+    .seguro-card.basic    .seguro-name { color: var(--brown); }
+    .seguro-card.standard .seguro-name { color: #8a6000; }
+    .seguro-card.premium  .seguro-name { color: var(--green); }
+    .seguro-cover { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .seguro-desc { font-size: 12px; color: var(--gray); line-height: 1.5; }
+    .seguro-price { font-size: 12px; font-weight: 700; margin-top: 6px; color: var(--terra); }
+
+    /* INFO BOX */
+    .info-box { border-radius: 12px; padding: 15px 18px; font-size: 13px; line-height: 1.7; margin-bottom: 14px; display: flex; gap: 12px; align-items: flex-start; }
+    .info-box.green  { background: var(--green-l); border: 1px solid var(--green-m); color: #1f5c38; }
+    .info-box.yellow { background: #fff7e0; border: 1px solid #f0d080; color: #8a6000; }
+    .info-box.red    { background: #fdeaea; border: 1px solid #f5c5c5; color: #8a2020; }
+
+    /* CTA */
+    .cta-box { background: var(--brown); border-radius: 18px; padding: 40px 32px; text-align: center; }
+    .cta-box h3 { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .cta-box p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+    .cta-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .btn-terra { padding: 12px 24px; background: var(--terra); color: #fff; border-radius: 9px; font-size: 14px; font-weight: 700; text-decoration: none; transition: background 0.15s; }
+    .btn-terra:hover { background: #b85e30; }
+    .btn-ghost-w { padding: 12px 24px; border: 1.5px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); border-radius: 9px; font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.15s; }
+    .btn-ghost-w:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    footer {
+      background: var(--white); border-top: 1px solid #ebebeb;
+      padding: 24px; display: flex;
+      justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-logo { font-size: 16px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .footer-logo em { font-style: normal; color: var(--terra); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: var(--gray); text-decoration: none; }
+    .footer-links a:hover { color: var(--brown); }
+    .footer-copy { font-size: 12px; color: #ccc; }
+
+    @media (max-width: 680px) {
+      .hero h1 { font-size: 28px; }
+      .materials-grid { grid-template-columns: 1fr 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+      .pickup-grid { grid-template-columns: 1fr; }
+      .seguro-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <div class="nav-right">
+    <a href="ayuda.html" class="nav-btn nav-btn-ghost">Ayuda</a>
+    <a href="publicar.html" class="nav-btn nav-btn-sell">Vender ahora</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">📦 Guía de envíos</div>
+    <h1>Todo lo que necesitas<br/>saber sobre los <em>envíos</em></h1>
+    <p>Cómo empaquetar, qué transportista elegir, cómo funciona el seguro y cómo hacer una entrega en mano sin riesgos.</p>
+  </div>
+</div>
+
+<div class="page-toc">
+  <a class="toc-link active" href="#empaquetar">Empaquetar</a>
+  <a class="toc-link" href="#etiqueta">Etiqueta</a>
+  <a class="toc-link" href="#transportistas">Transportistas</a>
+  <a class="toc-link" href="#seguro">Seguro</a>
+  <a class="toc-link" href="#seguimiento">Seguimiento</a>
+  <a class="toc-link" href="#recogida">Recogida en mano</a>
+  <a class="toc-link" href="#incidencias">Incidencias</a>
+</div>
+
+<div class="page-body">
+
+  <!-- EMPAQUETAR -->
+  <div class="sec reveal" id="empaquetar">
+    <div class="sec-label">Paso 1 — Antes de enviar</div>
+    <div class="sec-title">Cómo empaquetar un mueble correctamente</div>
+    <div class="sec-intro">El 80% de los daños en el transporte se evitan con un buen embalaje. Invertir 15 minutos en proteger bien el mueble puede ahorrarte una reclamación y una devolución.</div>
+
+    <div class="sec-title" style="font-size:16px; margin-bottom:12px;">Materiales que necesitas</div>
+    <div class="materials-grid" style="margin-bottom:28px;">
+      <div class="mat-card">
+        <div class="mat-icon">📦</div>
+        <div class="mat-name">Cartón doble capa</div>
+        <div class="mat-use">Para esquinas y caras planas</div>
+        <div class="mat-desc">El estándar mínimo para envíos. Para muebles pesados usa triple capa. Consíguelo en ferreterías o en el punto limpio.</div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon">🌀</div>
+        <div class="mat-name">Film stretch (transparente)</div>
+        <div class="mat-use">Primera capa sobre el mueble</div>
+        <div class="mat-desc">Cubre el mueble antes del cartón para protegerlo de la humedad y mantener piezas sueltas en su sitio.</div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon">🫧</div>
+        <div class="mat-name">Plástico de burbujas</div>
+        <div class="mat-use">Para superficies frágiles</div>
+        <div class="mat-desc">Cristales, espejos, patas finas, adornos. Dos capas mínimo. Asegura con cinta de embalaje.</div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon">🧽</div>
+        <div class="mat-name">Espuma o mantas de mudanza</div>
+        <div class="mat-use">Para muebles grandes y pesados</div>
+        <div class="mat-desc">Esquinas y aristas son los puntos más vulnerables. Las mantas de mudanza protegen y amortiguan los golpes.</div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon">🖊️</div>
+        <div class="mat-name">Cinta de embalaje ancha</div>
+        <div class="mat-use">Para cerrar y reforzar</div>
+        <div class="mat-desc">Nunca uses cinta de pintor o celo. La cinta de embalaje marrón o transparente de 5 cm es la mínima. Precinta todos los bordes.</div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon">🔩</div>
+        <div class="mat-name">Bolsa zip + etiqueta</div>
+        <div class="mat-use">Para tornillos y piezas pequeñas</div>
+        <div class="mat-desc">Mete todos los tornillos, tacos e instrucciones en una bolsa zip etiquetada y pégala al interior del embalaje.</div>
+      </div>
+    </div>
+
+    <div class="sec-title" style="font-size:16px; margin-bottom:12px;">Proceso paso a paso</div>
+    <div class="steps-list">
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Desmonta lo que puedas</h4>
+          <p>Patas, cajones, puertas, estantes extraíbles. Los muebles desmontados ocupan menos, se dañan menos y son más fáciles de transportar. Envuelve cada pieza por separado.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Film stretch como primera capa</h4>
+          <p>Envuelve el mueble (o cada pieza) con film stretch antes de cualquier otra cosa. Mantiene cajones cerrados, piezas unidas y protege de la humedad.</p>
+          <div class="step-tip">En superficies brillantes (lacados, espejos) pon primero una capa de papel de seda o tela para que el plástico no deje marca.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Protege esquinas y aristas con cartón</h4>
+          <p>Las esquinas son el 70% de los golpes. Corta cartón en forma de "L" y fíjalo con cinta de embalaje. Para muebles muy grandes, los cantoneros de cartón prefabricados son ideales.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Envuelve con cartón la pieza entera</h4>
+          <p>Una vez protegidas las esquinas, envuelve toda la pieza con cartón. Solapas mínimo 10 cm. Precinta todos los bordes y uniones con cinta de embalaje ancha.</p>
+          <div class="step-tip">Escribe "FRÁGIL" y "ESTE LADO ARRIBA" en el exterior si el mueble tiene partes delicadas o una orientación correcta de transporte.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>Guarda tornillos y piezas pequeñas</h4>
+          <p>Bolsa zip etiquetada con el nombre del mueble, dentro del embalaje. Si hay instrucciones de montaje, inclúyelas también.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <h4>Fotografía el embalaje terminado</h4>
+          <p>Antes de entregarlo al transportista, fotografía el paquete desde varios ángulos. Si hay una incidencia en el transporte, estas fotos son la prueba de que el embalaje era correcto.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box red" style="margin-top:16px;">
+      🚫 <span><strong>Errores que invalidan el seguro:</strong> embalaje insuficiente, piezas sueltas sin protección individual, cinta de pintor en lugar de cinta de embalaje, o cartón de una sola capa para objetos pesados. Si el seguro detecta embalaje inadecuado, puede denegar la cobertura.</span>
+    </div>
+  </div>
+
+  <!-- ETIQUETA -->
+  <div class="sec reveal" id="etiqueta">
+    <div class="sec-label">Paso 2 — Enviar</div>
+    <div class="sec-title">Cómo obtener y usar la etiqueta de envío</div>
+    <div class="sec-intro">La etiqueta de envío se genera automáticamente en Mueblista cuando vendes un artículo. Incluye la dirección del comprador, el número de seguimiento y el código de barras del transportista.</div>
+
+    <div class="steps-list">
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Ve a tu panel → Envíos</h4>
+          <p>Una vez que el comprador haya pagado, aparece el pedido en tu sección de envíos pendientes. Pulsa "Generar etiqueta".</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Selecciona el transportista y el tamaño</h4>
+          <p>Elige el transportista según el tamaño y peso del paquete. Mueblista te muestra las opciones disponibles con sus precios y plazos de entrega.</p>
+          <div class="step-tip">Para paquetes pequeños (menos de 30 kg, menos de 150 cm de lado mayor) tendrás más opciones. Para muebles grandes, los servicios de carga son la única opción.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Descarga e imprime la etiqueta</h4>
+          <p>Descarga el PDF e imprímelo en tamaño A6 o A4 (el transportista lo lee igual). Colócala en una funda plástica autoadhesiva o en la parte más visible del paquete.</p>
+          <div class="step-tip">Sin impresora: algunos puntos de entrega (Correos, Kiala, Packseven) aceptan mostrar el código QR en el móvil y ellos imprimen la etiqueta.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Entrega el paquete</h4>
+          <p>Llévalo al punto de entrega del transportista elegido o solicita recogida a domicilio (disponible con algunos transportistas). Guarda el justificante de entrega.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box yellow">
+      ⏰ <span><strong>Plazo de envío:</strong> tienes <strong>5 días hábiles</strong> desde que el comprador paga para entregar el paquete al transportista. Si no lo entregas en ese plazo, el pedido puede cancelarse automáticamente y el comprador recibe el reembolso.</span>
+    </div>
+  </div>
+
+  <!-- TRANSPORTISTAS -->
+  <div class="sec reveal" id="transportistas">
+    <div class="sec-label">Comparativa</div>
+    <div class="sec-title">Transportistas disponibles</div>
+    <div class="sec-intro">Mueblista integra varios transportistas según el tamaño del envío. Aquí tienes una comparativa orientativa para que sepas qué esperar de cada uno.</div>
+
+    <table class="carriers-table">
+      <thead>
+        <tr>
+          <th>Transportista</th>
+          <th>Ideal para</th>
+          <th>Plazo</th>
+          <th>Puntos destacados</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Correos Express</strong></td>
+          <td>Paquetes hasta 30 kg</td>
+          <td>24–48 h</td>
+          <td>
+            <span class="tag tag-g">Red amplia</span>
+            <span class="tag tag-g">Puntos de entrega</span>
+            <span class="tag tag-y">Sin cita previa</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>SEUR</strong></td>
+          <td>Paquetes medianos, empresa</td>
+          <td>24 h</td>
+          <td>
+            <span class="tag tag-g">Puntual</span>
+            <span class="tag tag-g">Seguimiento detallado</span>
+            <span class="tag tag-y">Precio medio</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>GLS / MRW</strong></td>
+          <td>Paquetes pequeños y medianos</td>
+          <td>24–72 h</td>
+          <td>
+            <span class="tag tag-g">Económico</span>
+            <span class="tag tag-g">Buena cobertura rural</span>
+            <span class="tag tag-y">Seguimiento básico</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Palibex / Nacex</strong></td>
+          <td>Envíos de bultos grandes y palets</td>
+          <td>24–48 h</td>
+          <td>
+            <span class="tag tag-g">Especializado en carga</span>
+            <span class="tag tag-g">Piezas de gran volumen</span>
+            <span class="tag tag-r">Precio más alto</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Empresa de mudanzas</strong></td>
+          <td>Muebles muy grandes o frágiles</td>
+          <td>2–5 días</td>
+          <td>
+            <span class="tag tag-g">Manipulación cuidadosa</span>
+            <span class="tag tag-g">Subida a piso incluida</span>
+            <span class="tag tag-r">Precio más elevado</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box yellow">
+      ℹ️ <span>Los transportistas y precios disponibles en tu pedido dependen del tamaño y peso del paquete, y del código postal de origen y destino. Mueblista te mostrará las opciones reales en el momento de generar la etiqueta.</span>
+    </div>
+
+    <div class="two-col" style="margin-top:16px;">
+      <div class="info-card">
+        <div class="info-card-icon">📏</div>
+        <div class="info-card-title">Cómo medir el paquete</div>
+        <div class="info-card-body">
+          Mide siempre el paquete ya embalado, no el mueble sin embalaje. El embalaje añade entre 5 y 15 cm por lado.
+          <ul>
+            <li>Largo × Ancho × Alto en cm</li>
+            <li>Peso real en kg (con embalaje)</li>
+            <li>Peso volumétrico = (L×A×H) / 5000</li>
+            <li>El transportista cobra el mayor de los dos</li>
+          </ul>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">⚖️</div>
+        <div class="info-card-title">Límites habituales</div>
+        <div class="info-card-body">
+          <ul>
+            <li><strong>Paquetería estándar:</strong> hasta 30 kg, lado mayor ≤ 150 cm</li>
+            <li><strong>Paquetería reforzada:</strong> hasta 70 kg, suma lados ≤ 360 cm</li>
+            <li><strong>Carga / palet:</strong> sin límite práctico de peso o volumen</li>
+          </ul>
+          Si tu mueble supera los límites de paquetería, el sistema te ofrecerá automáticamente las opciones de carga.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEGURO -->
+  <div class="sec reveal" id="seguro">
+    <div class="sec-label">Protección</div>
+    <div class="sec-title">Seguro de envío</div>
+    <div class="sec-intro">Todos los envíos realizados a través de Mueblista incluyen cobertura básica. Para artículos de mayor valor, puedes ampliarla al generar la etiqueta.</div>
+
+    <div class="seguro-grid" style="margin-bottom:20px;">
+      <div class="seguro-card basic">
+        <div class="seguro-tier">Cobertura básica</div>
+        <div class="seguro-name">Incluida</div>
+        <div class="seguro-cover">hasta 150 €</div>
+        <div class="seguro-desc">En todos los envíos sin coste adicional. Cubre pérdida total y daños graves durante el transporte.</div>
+        <div class="seguro-price">0 € adicionales</div>
+      </div>
+      <div class="seguro-card standard">
+        <div class="seguro-tier">Cobertura estándar</div>
+        <div class="seguro-name">Ampliada</div>
+        <div class="seguro-cover">hasta 500 €</div>
+        <div class="seguro-desc">Para muebles de valor medio. Cubre pérdida, daños en transporte y retrasos significativos.</div>
+        <div class="seguro-price">Pequeño suplemento al generar la etiqueta</div>
+      </div>
+      <div class="seguro-card premium">
+        <div class="seguro-tier">Cobertura premium</div>
+        <div class="seguro-name">Total</div>
+        <div class="seguro-cover">hasta 2.000 €</div>
+        <div class="seguro-desc">Para artículos de alto valor, antigüedades o piezas de diseño. Cobertura completa contra cualquier incidencia.</div>
+        <div class="seguro-price">Suplemento proporcional al valor declarado</div>
+      </div>
+    </div>
+
+    <div class="info-box green">
+      🛡️ <span><strong>Requisito para activar el seguro:</strong> el embalaje debe ser adecuado al artículo enviado. Si el transportista detecta embalaje insuficiente en la recogida, puede rechazar el paquete o la cobertura quedará anulada en caso de daño.</span>
+    </div>
+    <div class="info-box yellow">
+      ⚠️ <span>El valor declarado en el seguro debe coincidir con el precio de venta del artículo en Mueblista. No se puede asegurar por encima del valor de la transacción.</span>
+    </div>
+  </div>
+
+  <!-- SEGUIMIENTO -->
+  <div class="sec reveal" id="seguimiento">
+    <div class="sec-label">Una vez enviado</div>
+    <div class="sec-title">Seguimiento del envío</div>
+    <div class="sec-intro">Tanto el vendedor como el comprador pueden ver el estado del envío en tiempo real desde sus perfiles.</div>
+
+    <div class="two-col">
+      <div class="info-card">
+        <div class="info-card-icon">📍</div>
+        <div class="info-card-title">Para el comprador</div>
+        <div class="info-card-body">
+          El número de seguimiento aparece automáticamente en "Mis compras" una vez que el vendedor entrega el paquete. Recibirás una notificación cuando:
+          <ul>
+            <li>El paquete es recogido por el transportista</li>
+            <li>Está en tránsito y se acerca a tu zona</li>
+            <li>Está listo para la entrega</li>
+            <li>Ha sido entregado</li>
+          </ul>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🏪</div>
+        <div class="info-card-title">Para el vendedor</div>
+        <div class="info-card-body">
+          Desde tu panel → Envíos puedes ver el estado de todos tus pedidos en curso. El pago queda retenido hasta que el comprador confirma la recepción o pasan 48 horas sin reclamación.
+          <ul>
+            <li>Pendiente de envío</li>
+            <li>En tránsito</li>
+            <li>Entregado — esperando confirmación</li>
+            <li>Completado — pago liberado</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box yellow" style="margin-top:14px;">
+      📞 <span>Si el seguimiento no se actualiza en más de <strong>3 días hábiles</strong> desde la entrega al transportista, contacta con nuestro soporte desde el pedido. No esperes a que caduque el plazo.</span>
+    </div>
+  </div>
+
+  <!-- RECOGIDA EN MANO -->
+  <div class="sec reveal" id="recogida">
+    <div class="sec-label">Alternativa al envío</div>
+    <div class="sec-title">Recogida en mano</div>
+    <div class="sec-intro">La entrega en persona es una buena opción para muebles grandes, frágiles o cuando comprador y vendedor están en la misma ciudad. Pero tiene sus propias reglas.</div>
+
+    <div class="info-box green" style="margin-bottom:20px;">
+      💳 <span><strong>El pago siempre a través de Mueblista, incluso en recogida en mano.</strong> El sistema retiene el importe hasta que el comprador confirma la entrega. Nunca aceptes efectivo ni transferencia directa: perderías la protección de la plataforma.</span>
+    </div>
+
+    <div class="pickup-grid" style="margin-bottom:20px;">
+      <div class="pickup-card do">
+        <div class="pickup-card-title">✓ Buenas prácticas</div>
+        <ul class="pickup-list">
+          <li>Queda en un lugar público y accesible</li>
+          <li>Comunica el punto de encuentro por el chat de Mueblista</li>
+          <li>Lleva el artículo limpio y listo para ser revisado</li>
+          <li>Permite al comprador revisarlo antes de confirmar</li>
+          <li>Confirma en la app cuando la entrega se realiza</li>
+          <li>Guarda el chat como registro de lo acordado</li>
+        </ul>
+      </div>
+      <div class="pickup-card dont">
+        <div class="pickup-card-title">✗ Qué evitar</div>
+        <ul class="pickup-list">
+          <li>No aceptes pagos en efectivo ni Bizum directo</li>
+          <li>No des tu dirección de casa a compradores desconocidos</li>
+          <li>No acuerdes la entrega fuera del chat de Mueblista</li>
+          <li>No entregues el artículo antes de que el pago esté confirmado en la app</li>
+          <li>No cedas ante presión para saltarte los pasos de la plataforma</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="steps-list">
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Activa la opción al publicar</h4>
+          <p>En el formulario de publicación, en la sección de envío, marca "Recogida en mano disponible" e indica la ciudad o zona. Puedes ofrecer solo recogida, solo envío, o ambas.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>El comprador elige recogida al pagar</h4>
+          <p>Durante el proceso de pago, el comprador selecciona "Recogida en mano". El importe queda retenido en Mueblista igual que en un envío normal.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Coordina por el chat</h4>
+          <p>Usa el chat de Mueblista para acordar día, hora y punto de encuentro. Toda la comunicación queda registrada.</p>
+          <div class="step-tip">Lugares recomendados: aparcamiento de un centro comercial, entrada de un edificio público, gasolinera. Evita tu domicilio particular salvo que lo conozcas.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Entrega y confirmación</h4>
+          <p>El comprador revisa el artículo en el momento. Si está conforme, confirma la recepción en la app. El pago se libera al vendedor inmediatamente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INCIDENCIAS -->
+  <div class="sec reveal" id="incidencias">
+    <div class="sec-label">Cuando algo va mal</div>
+    <div class="sec-title">Qué hacer si hay una incidencia</div>
+
+    <div class="steps-list">
+      <div class="step-row">
+        <div class="step-num">🔴</div>
+        <div class="step-body">
+          <h4>El paquete llega dañado</h4>
+          <p>Fotografía el embalaje y el artículo antes de firmar el albarán. Indica los daños en el albarán o no lo firmes si los daños son graves. Abre la reclamación desde "Mis compras" en menos de 48 horas.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">🟡</div>
+        <div class="step-body">
+          <h4>El seguimiento no se actualiza</h4>
+          <p>Espera 24 horas: a veces los sistemas tardan en actualizarse. Si tras 3 días hábiles no hay movimiento, contacta con soporte desde el pedido. No esperes a que caduque el plazo de reclamación.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">🟠</div>
+        <div class="step-body">
+          <h4>El paquete consta como entregado pero no ha llegado</h4>
+          <p>Comprueba si lo dejaron en un vecino o en conserjería. Si no aparece, abre incidencia desde "Mis compras" con el número de seguimiento. Mueblista gestiona la reclamación al transportista.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">🔵</div>
+        <div class="step-body">
+          <h4>El vendedor no envía en el plazo</h4>
+          <p>Si el vendedor no genera la etiqueta o no entrega el paquete en 5 días hábiles, como comprador puedes solicitar la cancelación y el reembolso completo desde el pedido.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;">
+      <div class="cta-box">
+        <h3>¿Listo para enviar?</h3>
+        <p>Genera tu etiqueta desde el panel, empaqueta bien y entrega en el punto más cercano.</p>
+        <div class="cta-row">
+          <a href="panel.html" class="btn-terra">Ir al panel de vendedor</a>
+          <a href="devoluciones.html" class="btn-ghost-w">Política de devoluciones →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+    <div class="footer-links">
+    <a href="terminos.html">Términos</a>
+    <a href="privacidad.html">Privacidad</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="devoluciones.html">Devoluciones</a>
+    <a href="sostenibilidad.html">Sostenibilidad</a>
+    <a href="quienes-somos.html">Quiénes somos</a>
+    <a href="ayuda.html">Ayuda</a>
+    <a href="guia-envios.html">Envíos</a>
+    <a href="niveles.html">Niveles</a>
+    <a href="lotes.html">Venta en conjunto</a>
+    <a href="recordatorios.html">Recordatorios</a>
+  </div>
+  <div class="footer-copy">© 2026 Mueblista</div>
+</footer>
+
+<script>
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+  const sections = document.querySelectorAll('.sec[id]');
+  const links    = document.querySelectorAll('.toc-link');
+  const tocObs   = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.toc-link[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-25% 0px -65% 0px' });
+  sections.forEach(s => tocObs.observe(s));
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

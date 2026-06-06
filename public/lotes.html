@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Venta en conjunto — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:   #1a0d07;
+      --terra:   #c96a38;
+      --cream:   #fdf6ee;
+      --sand:    #ede3d5;
+      --sand-l:  #f7f0e6;
+      --gray:    #7a726b;
+      --gray-l:  #a09890;
+      --white:   #ffffff;
+      --green:   #2d7a4f;
+      --green-l: #e8f5ee;
+      --green-m: #c3e0cf;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); }
+
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      height: 58px; padding: 0 24px;
+      display: flex; align-items: center; gap: 16px;
+      background: var(--white); border-bottom: 1px solid #ebebeb;
+    }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+    .nav-btn { font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    .nav-btn-ghost { color: var(--gray); background: transparent; }
+    .nav-btn-ghost:hover { color: var(--brown); background: #f5f5f5; }
+    .nav-btn-sell { color: var(--white); background: var(--terra); }
+    .nav-btn-sell:hover { background: #b85e30; }
+
+    /* HERO */
+    .hero {
+      background: var(--brown); padding: 64px 24px 72px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(201,106,56,0.18) 0%, transparent 70%);
+    }
+    .hero-inner { max-width: 860px; margin: 0 auto; position: relative; display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; }
+    .hero-text {}
+    .hero-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--terra); background: rgba(201,106,56,0.15); padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero h1 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -0.8px; line-height: 1.12; margin-bottom: 14px; }
+    .hero h1 em { font-style: normal; color: #e07a44; }
+    .hero p { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.65; margin-bottom: 24px; }
+    .hero-cta { display: inline-block; padding: 12px 22px; background: var(--terra); color: #fff; font-size: 14px; font-weight: 700; border-radius: 9px; text-decoration: none; transition: background 0.15s; }
+    .hero-cta:hover { background: #b85e30; }
+
+    .hero-visual {
+      background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 18px; padding: 20px; min-width: 220px; text-align: center;
+    }
+    .hero-visual-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.35); margin-bottom: 14px; }
+    .hero-items { display: flex; flex-direction: column; gap: 8px; }
+    .hero-item { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+    .hero-item-icon { font-size: 20px; }
+    .hero-item-name { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.85); }
+    .hero-item-price { font-size: 12px; color: rgba(255,255,255,0.4); margin-left: auto; }
+    .hero-total { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; }
+    .hero-total-label { font-size: 12px; color: rgba(255,255,255,0.4); }
+    .hero-total-price { font-size: 16px; font-weight: 800; color: #e07a44; }
+
+    /* BODY */
+    .page-body { max-width: 860px; margin: 0 auto; padding: 56px 24px 80px; }
+    .sec { margin-bottom: 60px; }
+    .sec-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--terra); margin-bottom: 6px; }
+    .sec-title { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+    .sec-intro { font-size: 15px; color: var(--gray); line-height: 1.7; margin-bottom: 24px; }
+
+    /* POR QUÉ */
+    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .why-card { background: var(--white); border: 1.5px solid var(--sand); border-radius: 14px; padding: 22px 18px; }
+    .why-icon { font-size: 28px; margin-bottom: 10px; }
+    .why-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .why-body { font-size: 13px; color: var(--gray); line-height: 1.6; }
+
+    /* EJEMPLOS DE CONJUNTOS */
+    .examples-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .example-card { background: var(--white); border: 1.5px solid var(--sand); border-radius: 16px; padding: 20px; }
+    .example-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .example-icon { font-size: 28px; }
+    .example-name { font-size: 15px; font-weight: 700; }
+    .example-sub  { font-size: 12px; color: var(--gray); margin-top: 1px; }
+    .example-items { display: flex; flex-direction: column; gap: 6px; }
+    .ei { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .ei-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--terra); flex-shrink: 0; }
+    .ei-name { flex: 1; color: var(--brown); }
+    .ei-qty  { font-size: 12px; color: var(--gray); }
+    .example-footer { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--sand); display: flex; justify-content: space-between; align-items: center; }
+    .example-tip { font-size: 12px; color: var(--gray); font-style: italic; }
+    .example-badge { font-size: 11px; font-weight: 700; color: var(--green); background: var(--green-l); padding: 3px 10px; border-radius: 100px; }
+
+    /* PASOS */
+    .steps-list { display: flex; flex-direction: column; gap: 14px; }
+    .step-row { display: flex; gap: 16px; align-items: flex-start; background: var(--white); border: 1.5px solid var(--sand); border-radius: 14px; padding: 18px 20px; }
+    .step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--terra); color: #fff; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-body h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .step-body p  { font-size: 13px; color: var(--gray); line-height: 1.65; }
+    .step-tip { font-size: 12px; background: var(--sand-l); border-radius: 7px; padding: 7px 11px; margin-top: 8px; color: var(--brown); line-height: 1.5; }
+
+    /* PRECIO */
+    .precio-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .precio-box { border-radius: 14px; padding: 20px; }
+    .precio-box.individual { background: var(--sand-l); border: 1.5px solid var(--sand); }
+    .precio-box.conjunto   { background: var(--green-l); border: 1.5px solid var(--green-m); }
+    .precio-box-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+    .precio-box.individual .precio-box-title { color: var(--gray); }
+    .precio-box.conjunto   .precio-box-title { color: var(--green); }
+    .precio-line { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .precio-line:last-of-type { border: none; }
+    .precio-line .name { color: var(--brown); }
+    .precio-line .val  { font-weight: 600; }
+    .precio-total { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; margin-top: 4px; border-top: 2px solid rgba(0,0,0,0.08); }
+    .precio-total .label { font-size: 13px; font-weight: 700; }
+    .precio-total .amount { font-size: 20px; font-weight: 800; }
+    .precio-box.individual .precio-total .amount { color: var(--gray); }
+    .precio-box.conjunto   .precio-total .amount { color: var(--green); }
+    .precio-saving { text-align: center; font-size: 13px; color: var(--green); font-weight: 700; margin-top: 12px; }
+
+    /* TIPS */
+    .tips-list { display: flex; flex-direction: column; gap: 10px; }
+    .tip-row { background: var(--white); border: 1.5px solid var(--sand); border-radius: 12px; padding: 14px 18px; display: flex; gap: 12px; align-items: flex-start; font-size: 13px; color: var(--brown); line-height: 1.6; }
+    .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+    /* INFO BOX */
+    .info-box { border-radius: 12px; padding: 15px 18px; font-size: 13px; line-height: 1.7; display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+    .info-box.green  { background: var(--green-l); border: 1px solid var(--green-m); color: #1f5c38; }
+    .info-box.yellow { background: #fff7e0; border: 1px solid #f0d080; color: #8a6000; }
+
+    /* CTA */
+    .cta-box { background: var(--brown); border-radius: 18px; padding: 40px 32px; text-align: center; }
+    .cta-box h3 { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .cta-box p  { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+    .btn-terra { padding: 12px 24px; background: var(--terra); color: #fff; border-radius: 9px; font-size: 14px; font-weight: 700; text-decoration: none; display: inline-block; transition: background 0.15s; }
+    .btn-terra:hover { background: #b85e30; }
+
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    footer {
+      background: var(--white); border-top: 1px solid #ebebeb;
+      padding: 24px; display: flex;
+      justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-logo { font-size: 16px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .footer-logo em { font-style: normal; color: var(--terra); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: var(--gray); text-decoration: none; }
+    .footer-links a:hover { color: var(--brown); }
+    .footer-copy { font-size: 12px; color: #ccc; }
+
+    @media (max-width: 700px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .hero h1 { font-size: 28px; }
+      .why-grid { grid-template-columns: 1fr 1fr; }
+      .examples-grid { grid-template-columns: 1fr; }
+      .precio-compare { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <div class="nav-right">
+    <a href="ayuda.html" class="nav-btn nav-btn-ghost">Ayuda</a>
+    <a href="publicar.html" class="nav-btn nav-btn-sell">Vender ahora</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-tag">📦 Venta en conjunto</div>
+      <h1>Vende un juego<br/>completo de una vez</h1>
+      <p>Mesa con sillas, dormitorio, jardín, salón… Agrupa los muebles que van juntos y véndelos como conjunto. Se vende antes y tú decides el precio total.</p>
+      <a href="publicar.html" class="hero-cta">Publicar conjunto</a>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-visual-title">Ejemplo de conjunto</div>
+      <div class="hero-items">
+        <div class="hero-item">
+          <div class="hero-item-icon">🪑</div>
+          <div class="hero-item-name">Mesa extensible</div>
+          <div class="hero-item-price">180 €</div>
+        </div>
+        <div class="hero-item">
+          <div class="hero-item-icon">🪑</div>
+          <div class="hero-item-name">Sillas × 4</div>
+          <div class="hero-item-price">120 €</div>
+        </div>
+        <div class="hero-item">
+          <div class="hero-item-icon">💡</div>
+          <div class="hero-item-name">Lámpara techo</div>
+          <div class="hero-item-price">45 €</div>
+        </div>
+      </div>
+      <div class="hero-total">
+        <div class="hero-total-label">Precio conjunto</div>
+        <div class="hero-total-price">295 €</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <!-- POR QUÉ -->
+  <div class="sec reveal">
+    <div class="sec-label">¿Por qué vender en conjunto?</div>
+    <div class="sec-title">Más fácil para el comprador, mejor para ti</div>
+    <div class="sec-intro">Vender muebles sueltos funciona, pero cuando forman un conjunto muchos compradores prefieren llevárselo todo. Así se ahorran buscar el resto.</div>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">⚡</div>
+        <div class="why-title">Se vende más rápido</div>
+        <div class="why-body">Un conjunto completo atrae a compradores que están decorando o amueblando una habitación entera. Deciden antes porque no tienen que seguir buscando.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💰</div>
+        <div class="why-title">Precio total más alto</div>
+        <div class="why-body">Aunque apliques un pequeño descuento por vender junto, el importe total suele ser mayor que si hubieras vendido las piezas sueltas una a una.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📦</div>
+        <div class="why-title">Un solo envío o recogida</div>
+        <div class="why-body">Gestionas una única transacción en lugar de varias. Un solo comprador, un solo pago, una sola entrega. Menos gestiones, menos tiempo.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EJEMPLOS -->
+  <div class="sec reveal">
+    <div class="sec-label">Inspiración</div>
+    <div class="sec-title">Tipos de conjuntos habituales</div>
+    <div class="sec-intro">Cualquier grupo de muebles que tenga sentido juntos puede venderse como conjunto. Aquí tienes los más comunes en Mueblista.</div>
+
+    <div class="examples-grid">
+      <div class="example-card">
+        <div class="example-header">
+          <div class="example-icon">🍽️</div>
+          <div>
+            <div class="example-name">Comedor</div>
+            <div class="example-sub">El conjunto más buscado</div>
+          </div>
+        </div>
+        <div class="example-items">
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Mesa de comedor</span><span class="ei-qty">× 1</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Sillas</span><span class="ei-qty">× 4 o × 6</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Aparador o vitrina</span><span class="ei-qty">× 1 (opcional)</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Lámpara de techo</span><span class="ei-qty">× 1 (opcional)</span></div>
+        </div>
+        <div class="example-footer">
+          <div class="example-tip">Indica si las sillas son extensibles o apilables</div>
+          <div class="example-badge">Muy demandado</div>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-header">
+          <div class="example-icon">🛏️</div>
+          <div>
+            <div class="example-name">Dormitorio</div>
+            <div class="example-sub">Habitación completa</div>
+          </div>
+        </div>
+        <div class="example-items">
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Cama con cabecero</span><span class="ei-qty">× 1</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Mesitas de noche</span><span class="ei-qty">× 2</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Armario</span><span class="ei-qty">× 1</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Cómoda o tocador</span><span class="ei-qty">× 1 (opcional)</span></div>
+        </div>
+        <div class="example-footer">
+          <div class="example-tip">Especifica el tamaño de la cama (90, 135, 150, 180)</div>
+          <div class="example-badge">Alta rotación</div>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-header">
+          <div class="example-icon">🛋️</div>
+          <div>
+            <div class="example-name">Salón</div>
+            <div class="example-sub">Zona de estar</div>
+          </div>
+        </div>
+        <div class="example-items">
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Sofá</span><span class="ei-qty">× 1</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Mesa de centro</span><span class="ei-qty">× 1</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Sillón o chaise longue</span><span class="ei-qty">× 1 (opcional)</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Mueble de TV</span><span class="ei-qty">× 1 (opcional)</span></div>
+        </div>
+        <div class="example-footer">
+          <div class="example-tip">Indica el tejido del sofá y si se puede lavar</div>
+          <div class="example-badge">Popular</div>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-header">
+          <div class="example-icon">🌿</div>
+          <div>
+            <div class="example-name">Jardín o terraza</div>
+            <div class="example-sub">Muebles de exterior</div>
+          </div>
+        </div>
+        <div class="example-items">
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Mesa de exterior</span><span class="ei-qty">× 1</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Sillas o sillones</span><span class="ei-qty">× 4</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Sombrilla o pérgola</span><span class="ei-qty">× 1 (opcional)</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Tumbonas</span><span class="ei-qty">× 2 (opcional)</span></div>
+        </div>
+        <div class="example-footer">
+          <div class="example-tip">Indica el material (ratán, teca, aluminio, etc.)</div>
+          <div class="example-badge">Temporada alta</div>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-header">
+          <div class="example-icon">📚</div>
+          <div>
+            <div class="example-name">Despacho u oficina</div>
+            <div class="example-sub">Zona de trabajo</div>
+          </div>
+        </div>
+        <div class="example-items">
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Escritorio</span><span class="ei-qty">× 1</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Silla de oficina</span><span class="ei-qty">× 1</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Estantería o librería</span><span class="ei-qty">× 1</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Archivador o cajonera</span><span class="ei-qty">× 1 (opcional)</span></div>
+        </div>
+        <div class="example-footer">
+          <div class="example-tip">Ideal si alguien monta una oficina en casa</div>
+          <div class="example-badge">En auge</div>
+        </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-header">
+          <div class="example-icon">🧒</div>
+          <div>
+            <div class="example-name">Habitación infantil</div>
+            <div class="example-sub">Completa para niños</div>
+          </div>
+        </div>
+        <div class="example-items">
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Cama individual o litera</span><span class="ei-qty">× 1</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Escritorio infantil</span><span class="ei-qty">× 1</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Silla de escritorio</span><span class="ei-qty">× 1</span></div>
+          <div class="ei"><div class="ei-dot"></div><span class="ei-name">Armario o estantería</span><span class="ei-qty">× 1</span></div>
+        </div>
+        <div class="example-footer">
+          <div class="example-tip">Indica la edad para la que está pensado</div>
+          <div class="example-badge">Muy buscado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CÓMO PUBLICAR -->
+  <div class="sec reveal">
+    <div class="sec-label">Paso a paso</div>
+    <div class="sec-title">Cómo publicar un conjunto en Mueblista</div>
+    <div class="sec-intro">Al publicar un artículo puedes activar la opción "Vender en conjunto" para añadir varias piezas al mismo anuncio.</div>
+
+    <div class="steps-list">
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Activa "Vender en conjunto" al publicar</h4>
+          <p>En el formulario de publicación, en la sección de detalles del artículo, encontrarás el interruptor "¿Es un conjunto?". Actívalo para desplegar los campos adicionales.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Lista todas las piezas incluidas</h4>
+          <p>Añade cada pieza con su nombre y cantidad. Por ejemplo: "Mesa extensible × 1", "Sillas × 4". Sé específico para evitar malentendidos.</p>
+          <div class="step-tip">Si hay piezas opcionales (que puedes separar si el comprador quiere solo una parte), indícalo en la descripción.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Fija el precio del conjunto</h4>
+          <p>El precio debe reflejar el valor total de todas las piezas. Aplica un pequeño descuento respecto a la suma de los precios individuales para incentivar la venta conjunta.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Sube fotos de cada pieza y del conjunto montado</h4>
+          <p>La foto principal debe mostrar el conjunto completo. Añade fotos individuales de cada pieza. Si el conjunto está montado en su lugar habitual, muéstralo así: ayuda mucho a la venta.</p>
+          <div class="step-tip">Lee la <a href="guia-fotos.html" style="color:var(--terra); font-weight:600;">guía de fotos</a> para sacar el máximo partido a las imágenes del conjunto.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>Indica si aceptas vender piezas sueltas</h4>
+          <p>Puedes marcar si estás dispuesto a separar el conjunto. Si lo haces, el comprador puede hacer una oferta por parte de las piezas y negociarlo contigo por chat.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRECIO -->
+  <div class="sec reveal">
+    <div class="sec-label">Estrategia de precio</div>
+    <div class="sec-title">¿Cuánto cobrar por el conjunto?</div>
+    <div class="sec-intro">La clave es que el precio conjunto sea atractivo, pero no tanto que pierdas dinero innecesariamente. Un descuento del 10–20% respecto a la suma individual suele funcionar bien.</div>
+
+    <div class="precio-compare" style="margin-bottom:16px;">
+      <div class="precio-box individual">
+        <div class="precio-box-title">Venta por separado</div>
+        <div class="precio-line"><span class="name">Mesa extensible</span><span class="val">180 €</span></div>
+        <div class="precio-line"><span class="name">Sillas × 4</span><span class="val">120 €</span></div>
+        <div class="precio-line"><span class="name">Aparador</span><span class="val">95 €</span></div>
+        <div class="precio-total">
+          <span class="label">Total estimado</span>
+          <span class="amount">395 €</span>
+        </div>
+      </div>
+      <div class="precio-box conjunto">
+        <div class="precio-box-title">Venta en conjunto</div>
+        <div class="precio-line"><span class="name">Mesa extensible</span><span class="val">180 €</span></div>
+        <div class="precio-line"><span class="name">Sillas × 4</span><span class="val">120 €</span></div>
+        <div class="precio-line"><span class="name">Aparador</span><span class="val">95 €</span></div>
+        <div class="precio-total">
+          <span class="label">Precio conjunto (−15%)</span>
+          <span class="amount">336 €</span>
+        </div>
+      </div>
+    </div>
+    <div class="precio-saving">Al vender en conjunto recaudas 336 € de golpe, sin gestionar 3 ventas ni 3 envíos por separado.</div>
+
+    <div class="info-box yellow" style="margin-top:20px;">
+      ⚠️ <span>Si decides vender en conjunto, no publiques las piezas también por separado. Dos anuncios para el mismo mueble están prohibidos y pueden resultar en la retirada de ambos.</span>
+    </div>
+  </div>
+
+  <!-- CONSEJOS -->
+  <div class="sec reveal">
+    <div class="sec-label">Consejos</div>
+    <div class="sec-title">Para que el conjunto se venda rápido</div>
+
+    <div class="tips-list">
+      <div class="tip-row">
+        <div class="tip-icon">📝</div>
+        <span><strong>Título descriptivo:</strong> incluye el tipo de conjunto y el número de piezas. Ejemplo: "Comedor roble 6 piezas: mesa + 4 sillas + aparador".</span>
+      </div>
+      <div class="tip-row">
+        <div class="tip-icon">📐</div>
+        <span><strong>Dimensiones de cada pieza:</strong> especifica el largo, ancho y alto de cada mueble principal. Los compradores necesitan saber si cabe en su espacio antes de contactarte.</span>
+      </div>
+      <div class="tip-row">
+        <div class="tip-icon">🎨</div>
+        <span><strong>Estilo y material:</strong> menciona el estilo (nórdico, industrial, clásico, rústico) y el material (madera maciza, MDF, ratán, tapizado…). Ayuda a que te encuentren los compradores correctos.</span>
+      </div>
+      <div class="tip-row">
+        <div class="tip-icon">📦</div>
+        <span><strong>Estado del conjunto:</strong> si alguna pieza tiene un defecto aunque sea menor, menciónalo. La transparencia genera confianza y evita reclamaciones.</span>
+      </div>
+      <div class="tip-row">
+        <div class="tip-icon">🤝</div>
+        <span><strong>Flexibilidad con piezas:</strong> indica si puedes separar partes del conjunto bajo petición. Muchos compradores querrán el 80% pero no el 100%, y eso puede acelerar la venta.</span>
+      </div>
+      <div class="tip-row">
+        <div class="tip-icon">🚚</div>
+        <span><strong>Envío de grandes volúmenes:</strong> para conjuntos grandes, la recogida en mano o un servicio de mudanzas suele ser la única opción realista. Indícalo claramente en el anuncio para que el comprador lo sepa desde el principio.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="reveal">
+    <div class="cta-box">
+      <h3>¿Tienes un conjunto para vender?</h3>
+      <p>Publica tu anuncio en menos de 5 minutos y llega a compradores de toda España.</p>
+      <a href="publicar.html" class="btn-terra">Publicar conjunto ahora</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+    <div class="footer-links">
+    <a href="terminos.html">Términos</a>
+    <a href="privacidad.html">Privacidad</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="devoluciones.html">Devoluciones</a>
+    <a href="sostenibilidad.html">Sostenibilidad</a>
+    <a href="quienes-somos.html">Quiénes somos</a>
+    <a href="ayuda.html">Ayuda</a>
+    <a href="guia-envios.html">Envíos</a>
+    <a href="niveles.html">Niveles</a>
+    <a href="lotes.html">Venta en conjunto</a>
+    <a href="recordatorios.html">Recordatorios</a>
+  </div>
+  <div class="footer-copy">© 2026 Mueblista</div>
+</footer>
+
+<script>
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Segunda vida — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:  #1a0d07;
+      --terra:  #c96a38;
+      --cream:  #fdf6ee;
+      --sand:   #ede3d5;
+      --sand-l: #f7f0e6;
+      --gray:   #7a726b;
+      --gray-l: #a09890;
+      --white:  #ffffff;
+      --green:  #2d7a4f;
+      --green-d:#1e5436;
+      --green-l:#e8f5ee;
+      --green-m:#c3e0cf;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      height: 58px; padding: 0 24px;
+      display: flex; align-items: center; gap: 16px;
+      background: var(--white); border-bottom: 1px solid #ebebeb;
+    }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+    .nav-btn { font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    .nav-btn-ghost { color: var(--gray); background: transparent; }
+    .nav-btn-ghost:hover { color: var(--brown); background: #f5f5f5; }
+    .nav-btn-sell { color: var(--white); background: var(--terra); }
+    .nav-btn-sell:hover { background: #b85e30; }
+
+    /* HERO */
+    .hero {
+      background: var(--green-d);
+      padding: 80px 24px 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 120%, rgba(201,106,56,0.18) 0%, transparent 70%);
+    }
+    .hero-inner { max-width: 660px; margin: 0 auto; position: relative; }
+    .hero-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #7ed4a0; background: rgba(126,212,160,0.15); padding: 5px 14px; border-radius: 100px; margin-bottom: 20px; }
+    .hero h1 { font-size: 42px; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1.1; margin-bottom: 18px; }
+    .hero h1 em { font-style: normal; color: #7ed4a0; }
+    .hero p { font-size: 17px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .cta-green { padding: 13px 28px; border-radius: 10px; background: #7ed4a0; color: var(--green-d); font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.15s; }
+    .cta-green:hover { background: #6ac490; }
+    .cta-ghost { padding: 13px 28px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.15s; }
+    .cta-ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+    /* CONTADOR DE IMPACTO */
+    .impact-band {
+      background: var(--green);
+      padding: 40px 24px;
+    }
+    .impact-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center; }
+    .impact-item {}
+    .impact-num { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1; }
+    .impact-unit { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+    .impact-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 6px; line-height: 1.4; }
+
+    /* SECCIONES */
+    section { padding: 72px 24px; }
+    section.alt { background: var(--white); }
+    .section-inner { max-width: 900px; margin: 0 auto; }
+    .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green); margin-bottom: 8px; }
+    .section-title { font-size: 28px; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 14px; }
+    .section-sub { font-size: 15px; color: var(--gray); line-height: 1.7; max-width: 560px; margin-bottom: 36px; }
+
+    /* PROBLEMA: DATOS DE RESIDUOS */
+    .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+    .problem-text p { font-size: 15px; color: #4a3d35; line-height: 1.8; margin-bottom: 16px; }
+    .problem-text p strong { color: var(--brown); }
+    .stat-cards { display: flex; flex-direction: column; gap: 14px; }
+    .stat-card { background: var(--cream); border: 1.5px solid var(--sand); border-radius: 14px; padding: 20px; }
+    .stat-card.green-card { background: var(--green-l); border-color: var(--green-m); }
+    .stat-big { font-size: 32px; font-weight: 800; color: var(--brown); letter-spacing: -1px; }
+    .stat-card.green-card .stat-big { color: var(--green-d); }
+    .stat-desc { font-size: 13px; color: var(--gray); line-height: 1.5; margin-top: 4px; }
+    .stat-source { font-size: 11px; color: var(--gray-l); margin-top: 6px; }
+
+    /* SEGUNDA VIDA: CÓMO FUNCIONA */
+    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .step-card { padding: 28px 22px; border-radius: 16px; background: var(--green-l); border: 1.5px solid var(--green-m); }
+    .step-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--green); margin-bottom: 12px; }
+    .step-icon { font-size: 28px; margin-bottom: 10px; }
+    .step-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--green-d); }
+    .step-desc { font-size: 13px; color: #3a5a46; line-height: 1.6; }
+
+    /* COMPARATIVA: NUEVO VS SEGUNDA MANO */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .compare-card { border-radius: 16px; padding: 28px 24px; }
+    .compare-card.new { background: #fff3ee; border: 1.5px solid #f5d0be; }
+    .compare-card.second { background: var(--green-l); border: 1.5px solid var(--green-m); }
+    .compare-badge { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 10px; border-radius: 100px; margin-bottom: 14px; }
+    .compare-card.new .compare-badge { background: #f5d0be; color: #8a3010; }
+    .compare-card.second .compare-badge { background: var(--green-m); color: var(--green-d); }
+    .compare-title { font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+    .compare-card.new .compare-title { color: #8a3010; }
+    .compare-card.second .compare-title { color: var(--green-d); }
+    .compare-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .compare-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.5; }
+    .compare-list li::before { flex-shrink: 0; font-size: 13px; margin-top: 1px; }
+    .compare-card.new .compare-list li::before { content: '✗'; color: #c96a38; font-weight: 700; }
+    .compare-card.second .compare-list li::before { content: '✓'; color: var(--green); font-weight: 700; }
+
+    /* MATERIALES */
+    .materials-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .material-card { background: var(--white); border: 1.5px solid var(--sand); border-radius: 14px; padding: 20px 16px; text-align: center; }
+    .material-icon { font-size: 28px; margin-bottom: 8px; }
+    .material-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .material-co2 { font-size: 12px; color: var(--green); font-weight: 600; }
+    .material-desc { font-size: 11px; color: var(--gray-l); margin-top: 3px; line-height: 1.4; }
+
+    /* COMPROMISO MUEBLISTA */
+    .commitment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .commitment-item { display: flex; gap: 14px; align-items: flex-start; padding: 20px; background: var(--sand-l); border-radius: 14px; }
+    .commitment-icon { font-size: 22px; flex-shrink: 0; }
+    .commitment-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .commitment-desc { font-size: 13px; color: var(--gray); line-height: 1.55; }
+
+    /* CTA FINAL */
+    .cta-section {
+      background: var(--green-d);
+      padding: 72px 24px;
+      text-align: center;
+    }
+    .cta-inner { max-width: 560px; margin: 0 auto; }
+    .cta-section h2 { font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -0.7px; margin-bottom: 12px; }
+    .cta-section h2 em { font-style: normal; color: #7ed4a0; }
+    .cta-section p { font-size: 15px; color: rgba(255,255,255,0.55); margin-bottom: 28px; line-height: 1.65; }
+    .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    footer {
+      background: var(--white); border-top: 1px solid #ebebeb;
+      padding: 24px; display: flex;
+      justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-logo { font-size: 16px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .footer-logo em { font-style: normal; color: var(--terra); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: var(--gray); text-decoration: none; }
+    .footer-links a:hover { color: var(--brown); }
+    .footer-copy { font-size: 12px; color: #ccc; }
+
+    @media (max-width: 750px) {
+      .hero h1 { font-size: 30px; }
+      .impact-inner { grid-template-columns: repeat(2, 1fr); }
+      .problem-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .materials-grid { grid-template-columns: repeat(2, 1fr); }
+      .commitment-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-btn nav-btn-ghost">Explorar</a>
+    <a href="publicar.html" class="nav-btn nav-btn-sell">Vender</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">🌱 Segunda vida</div>
+    <h1>Los muebles no<br/>deberían ser <em>desechables</em></h1>
+    <p>Cada año se tiran millones de muebles que aún tienen mucho que ofrecer. Mueblista existe para cambiar eso.</p>
+    <div class="hero-ctas">
+      <a href="index.html" class="cta-green">Explorar muebles</a>
+      <a href="publicar.html" class="cta-ghost">Vender lo que no usas</a>
+    </div>
+  </div>
+</div>
+
+<!-- CONTADOR DE IMPACTO -->
+<div class="impact-band">
+  <div class="impact-inner">
+    <div class="impact-item">
+      <div class="impact-num" id="cnt-muebles">0</div>
+      <div class="impact-unit">muebles</div>
+      <div class="impact-label">con segunda vida en Mueblista</div>
+    </div>
+    <div class="impact-item">
+      <div class="impact-num" id="cnt-co2">0</div>
+      <div class="impact-unit">toneladas de CO₂</div>
+      <div class="impact-label">evitadas gracias a la reutilización</div>
+    </div>
+    <div class="impact-item">
+      <div class="impact-num" id="cnt-residuos">0</div>
+      <div class="impact-unit">toneladas de residuos</div>
+      <div class="impact-label">que no fueron al vertedero</div>
+    </div>
+    <div class="impact-item">
+      <div class="impact-num" id="cnt-euros">0</div>
+      <div class="impact-unit">millones de €</div>
+      <div class="impact-label">ahorrados por compradores</div>
+    </div>
+  </div>
+</div>
+
+<!-- EL PROBLEMA -->
+<section>
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">El problema</div>
+      <div class="section-title">España tira 2 millones de muebles al año</div>
+      <div class="section-sub">Y la mayoría acaban en vertederos, aunque todavía podrían usarse durante décadas.</div>
+    </div>
+    <div class="problem-grid reveal">
+      <div class="problem-text">
+        <p>La industria del mueble es una de las más contaminantes del planeta. Fabricar un sofá nuevo puede emitir hasta <strong>200 kg de CO₂</strong>. Una cama de madera maciza, más de <strong>150 kg</strong>. Y en España, la vida útil media de un mueble ha pasado de 15 años en los 90 a menos de 7 hoy.</p>
+        <p>El modelo de "compra, usa y tira" ha convertido los muebles en artículos casi desechables. Las tendencias cambian, los pisos se reforman, la gente se muda, y el destino habitual de lo que ya no cabe es el punto limpio o la acera.</p>
+        <p>Sin embargo, la mayor parte de esos muebles están en perfectas condiciones. El problema no es el mueble: es que no existe una forma fácil, segura y de confianza de darles una segunda oportunidad.</p>
+        <p><strong>Mueblista es esa forma.</strong></p>
+      </div>
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="stat-big">2M</div>
+          <div class="stat-desc">muebles desechados en España cada año, según datos del sector del reciclaje.</div>
+          <div class="stat-source">Fuente: Ecoembes / informes sectoriales</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-big">~70%</div>
+          <div class="stat-desc">de los muebles tirados aún están en condiciones de uso o reparación.</div>
+          <div class="stat-source">Fuente: estudios de economía circular UE</div>
+        </div>
+        <div class="stat-card green-card">
+          <div class="stat-big">×5</div>
+          <div class="stat-desc">Reutilizar un mueble puede suponer hasta 5 veces menos emisiones que fabricar uno nuevo equivalente.</div>
+          <div class="stat-source">Fuente: Ellen MacArthur Foundation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA LA SEGUNDA VIDA -->
+<section class="alt">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Cómo funciona</div>
+      <div class="section-title">El ciclo de la segunda vida</div>
+      <div class="section-sub">Un proceso simple que mantiene los muebles en circulación y fuera del vertedero.</div>
+    </div>
+    <div class="steps-grid reveal">
+      <div class="step-card">
+        <div class="step-num">Paso 1</div>
+        <div class="step-icon">📸</div>
+        <div class="step-title">Alguien publica lo que no usa</div>
+        <div class="step-desc">En lugar de tirar, fotografía el mueble, describe su estado y fija un precio. En minutos está disponible para miles de personas.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">Paso 2</div>
+        <div class="step-icon">🔍</div>
+        <div class="step-title">Alguien lo encuentra</div>
+        <div class="step-desc">Un comprador que necesita exactamente ese mueble lo localiza, lo valora gracias a las fotos y la descripción honesta del estado, y lo compra de forma segura.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">Paso 3</div>
+        <div class="step-icon">🏠</div>
+        <div class="step-title">El mueble vive en otro hogar</div>
+        <div class="step-desc">El mueble llega a su nuevo hogar. La fábrica no ha producido nada nuevo. No ha habido extracción de materiales. No ha habido vertedero.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARATIVA NUEVO VS SEGUNDA MANO -->
+<section>
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">El impacto real</div>
+      <div class="section-title">Nuevo vs. segunda mano</div>
+      <div class="section-sub">No es solo una cuestión de precio. Es una cuestión de impacto.</div>
+    </div>
+    <div class="compare-grid reveal">
+      <div class="compare-card new">
+        <span class="compare-badge">Mueble nuevo</span>
+        <div class="compare-title">El coste oculto</div>
+        <ul class="compare-list">
+          <li>Extracción de madera, metales y petroquímicos</li>
+          <li>Fabricación industrial con alto consumo energético</li>
+          <li>Transporte internacional (Asia → Europa en la mayoría de casos)</li>
+          <li>Embalaje de plástico y cartón de un solo uso</li>
+          <li>Precio inflado por cadena de distribución</li>
+          <li>Si no gusta o no cabe, acaba en el vertedero</li>
+        </ul>
+      </div>
+      <div class="compare-card second">
+        <span class="compare-badge">Mueble de segunda mano</span>
+        <div class="compare-title">Lo que cambia</div>
+        <ul class="compare-list">
+          <li>Cero extracción de nuevos materiales</li>
+          <li>Sin fabricación: las emisiones ya fueron amortizadas</li>
+          <li>Transporte local o nacional, mucho más corto</li>
+          <li>Sin embalaje industrial de fábrica</li>
+          <li>Precio entre un 40% y un 80% más bajo</li>
+          <li>Si no encaja, puede volver a venderse en Mueblista</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MATERIALES Y SU HUELLA -->
+<section class="alt">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Materiales</div>
+      <div class="section-title">Cada material que reutilizas tiene su impacto</div>
+      <div class="section-sub">Estos son los kg de CO₂ que se evitan por cada artículo reutilizado según su material principal.</div>
+    </div>
+    <div class="materials-grid reveal">
+      <div class="material-card">
+        <div class="material-icon">🪵</div>
+        <div class="material-name">Madera maciza</div>
+        <div class="material-co2">~80–200 kg CO₂ evitados</div>
+        <div class="material-desc">Según tamaño y especie. La madera almacena carbono que se liberaría al quemarla o en vertedero.</div>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">🛋️</div>
+        <div class="material-name">Tapizado / espuma</div>
+        <div class="material-co2">~120–250 kg CO₂ evitados</div>
+        <div class="material-desc">Los petroquímicos de la espuma y los tejidos sintéticos son los más intensivos en carbono.</div>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">🔩</div>
+        <div class="material-name">Metal / acero</div>
+        <div class="material-co2">~60–150 kg CO₂ evitados</div>
+        <div class="material-desc">La siderurgia es extremadamente intensiva en energía. Reutilizar acero ahorra casi toda esa energía.</div>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">🪞</div>
+        <div class="material-name">Vidrio / espejo</div>
+        <div class="material-co2">~20–60 kg CO₂ evitados</div>
+        <div class="material-desc">La fusión del vidrio requiere temperaturas muy altas. Cada espejo reutilizado es un horno que no enciende.</div>
+      </div>
+    </div>
+    <div class="reveal" style="margin-top:16px; font-size:12px; color:var(--gray-l); text-align:center;">
+      Estimaciones orientativas basadas en análisis de ciclo de vida (LCA) de estudios académicos y de la industria. Los valores reales varían según fabricante, origen y proceso productivo.
+    </div>
+  </div>
+</section>
+
+<!-- COMPROMISOS MUEBLISTA -->
+<section>
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Nuestros compromisos</div>
+      <div class="section-title">Lo que Mueblista hace por la circularidad</div>
+    </div>
+    <div class="commitment-grid reveal">
+      <div class="commitment-item">
+        <div class="commitment-icon">🛡️</div>
+        <div>
+          <div class="commitment-title">Descripción honesta obligatoria</div>
+          <div class="commitment-desc">Obligamos a declarar el estado real del artículo. Sin fotos reales y sin descripción honesta, no se publica.</div>
+        </div>
+      </div>
+      <div class="commitment-item">
+        <div class="commitment-icon">📦</div>
+        <div>
+          <div class="commitment-title">Envío optimizado</div>
+          <div class="commitment-desc">Trabajamos con transportistas especializados en muebles y voluminosos para minimizar embalaje y roturas.</div>
+        </div>
+      </div>
+      <div class="commitment-item">
+        <div class="commitment-icon">🔁</div>
+        <div>
+          <div class="commitment-title">Lo que no vende, vuelve a circular</div>
+          <div class="commitment-desc">Si un artículo no se vende, enviamos recordatorios para bajarlo de precio antes de que acabe tirado.</div>
+        </div>
+      </div>
+      <div class="commitment-item">
+        <div class="commitment-icon">🌱</div>
+        <div>
+          <div class="commitment-title">Huella de carbono por transacción</div>
+          <div class="commitment-desc">Calculamos el CO₂ evitado en cada compra y lo mostramos al comprador para reforzar el valor de su decisión.</div>
+        </div>
+      </div>
+      <div class="commitment-item">
+        <div class="commitment-icon">🏆</div>
+        <div>
+          <div class="commitment-title">Premiar la longevidad</div>
+          <div class="commitment-desc">Los vendedores que más muebles mantienen en circulación obtienen mejores posiciones y distintivos de confianza.</div>
+        </div>
+      </div>
+      <div class="commitment-item">
+        <div class="commitment-icon">🤝</div>
+        <div>
+          <div class="commitment-title">Transparencia radical</div>
+          <div class="commitment-desc">Publicamos nuestro impacto real cada año. Sin greenwashing: solo datos verificables de artículos realmente reutilizados.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<div class="cta-section">
+  <div class="cta-inner">
+    <h2>El mueble más sostenible<br/>es el que <em>ya existe</em></h2>
+    <p>Cada vez que compras o vendes en Mueblista, estás eligiendo no fabricar algo nuevo. Eso tiene un impacto real.</p>
+    <div class="cta-row">
+      <a href="index.html" class="cta-green">Explorar muebles</a>
+      <a href="publicar.html" class="cta-ghost">Vender lo que no usas</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+    <div class="footer-links">
+    <a href="terminos.html">Términos</a>
+    <a href="privacidad.html">Privacidad</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="devoluciones.html">Devoluciones</a>
+    <a href="sostenibilidad.html">Sostenibilidad</a>
+    <a href="quienes-somos.html">Quiénes somos</a>
+    <a href="ayuda.html">Ayuda</a>
+    <a href="guia-envios.html">Envíos</a>
+    <a href="niveles.html">Niveles</a>
+    <a href="lotes.html">Venta en conjunto</a>
+    <a href="recordatorios.html">Recordatorios</a>
+  </div>
+  <div class="footer-copy">© 2026 Mueblista</div>
+</footer>
+
+<script>
+  /* Scroll reveal */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* Contadores animados */
+  function animateCount(id, target, suffix, duration) {
+    const el = document.getElementById(id);
+    const start = performance.now();
+    function step(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(ease * target).toLocaleString('es-ES') + (suffix || '');
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* Lanzar contadores cuando el band entra en pantalla */
+  const band = document.querySelector('.impact-band');
+  let counted = false;
+  const bandObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !counted) {
+      counted = true;
+      animateCount('cnt-muebles', 12480, '', 1800);
+      animateCount('cnt-co2',     847,   '', 1800);
+      animateCount('cnt-residuos', 312,  '', 1800);
+      animateCount('cnt-euros',    2.4,  '', 1800);
+    }
+  }, { threshold: 0.4 });
+  bandObs.observe(band);
+
+  /* Euros counter fix (decimal) */
+  function animateDecimal(id, target, duration) {
+    const el = document.getElementById(id);
+    const start = performance.now();
+    function step(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = (ease * target).toFixed(1).replace('.', ',');
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  const bandObs2 = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      setTimeout(() => animateDecimal('cnt-euros', 2.4, 1800), 50);
+      bandObs2.disconnect();
+    }
+  }, { threshold: 0.4 });
+  bandObs2.observe(band);
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

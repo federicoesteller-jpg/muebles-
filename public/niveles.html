@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Niveles de comprador — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:   #1a0d07;
+      --terra:   #c96a38;
+      --cream:   #fdf6ee;
+      --sand:    #ede3d5;
+      --sand-l:  #f7f0e6;
+      --gray:    #7a726b;
+      --gray-l:  #a09890;
+      --white:   #ffffff;
+      --green:   #2d7a4f;
+      --green-l: #e8f5ee;
+      --green-m: #c3e0cf;
+
+      /* Nivel colors */
+      --c1: #6b7a99;   /* Nuevo — gris azulado */
+      --c1l: #eef0f7;
+      --c2: #c96a38;   /* Habitual — terra */
+      --c2l: #fdf0e8;
+      --c3: #8f6d14;   /* Experto — dorado */
+      --c3l: #fdf5dc;
+      --c4: #5c8ab0;   /* Élite — azul */
+      --c4l: #e8f2f9;
+      --c5: #7b4ca6;   /* Top — morado */
+      --c5l: #f3ecfb;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); }
+
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      height: 58px; padding: 0 24px;
+      display: flex; align-items: center; gap: 16px;
+      background: var(--white); border-bottom: 1px solid #ebebeb;
+    }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+    .nav-btn { font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    .nav-btn-ghost { color: var(--gray); background: transparent; }
+    .nav-btn-ghost:hover { color: var(--brown); background: #f5f5f5; }
+    .nav-btn-sell { color: var(--white); background: var(--terra); }
+    .nav-btn-sell:hover { background: #b85e30; }
+
+    /* HERO */
+    .hero {
+      background: var(--brown); padding: 64px 24px 72px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 110%, rgba(123,76,166,0.25) 0%, transparent 70%);
+    }
+    .hero-inner { max-width: 580px; margin: 0 auto; position: relative; }
+    .hero-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #b88de0; background: rgba(123,76,166,0.18); padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero h1 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -0.8px; line-height: 1.12; margin-bottom: 14px; }
+    .hero h1 em { font-style: normal; color: #b88de0; }
+    .hero p { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.65; }
+
+    /* PROGRESS BAR HERO */
+    .level-progress {
+      display: flex; align-items: center; gap: 0;
+      max-width: 480px; margin: 32px auto 0; position: relative;
+    }
+    .lp-step {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
+    }
+    .lp-dot {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 800; border: 2.5px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4);
+      position: relative; z-index: 2; transition: all 0.2s;
+    }
+    .lp-step.l1 .lp-dot { background: var(--c1); border-color: var(--c1); color: #fff; }
+    .lp-step.l2 .lp-dot { background: var(--c2); border-color: var(--c2); color: #fff; }
+    .lp-step.l3 .lp-dot { background: var(--c3); border-color: var(--c3); color: #fff; }
+    .lp-step.l4 .lp-dot { background: var(--c4); border-color: var(--c4); color: #fff; }
+    .lp-step.l5 .lp-dot { background: var(--c5); border-color: var(--c5); color: #fff; }
+    .lp-name { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.5px; }
+    .lp-step.l1 .lp-name { color: #aab3cc; }
+    .lp-step.l2 .lp-name { color: #e8a07a; }
+    .lp-step.l3 .lp-name { color: #e0c060; }
+    .lp-step.l4 .lp-name { color: #8ab8d8; }
+    .lp-step.l5 .lp-name { color: #c0a0e0; }
+    .lp-line {
+      position: absolute; top: 18px; left: 10%; width: 80%; height: 2px;
+      background: rgba(255,255,255,0.1); z-index: 1;
+    }
+
+    /* NIVEL CARDS */
+    .levels-section { padding: 64px 24px; }
+    .levels-inner { max-width: 860px; margin: 0 auto; }
+    .sec-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--terra); margin-bottom: 6px; }
+    .sec-title { font-size: 26px; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 10px; }
+    .sec-intro { font-size: 15px; color: var(--gray); line-height: 1.7; margin-bottom: 36px; }
+
+    .nivel-card {
+      border-radius: 18px; border: 2px solid; padding: 28px 28px 24px;
+      margin-bottom: 18px; display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 0 24px; align-items: start;
+      transition: box-shadow 0.2s;
+    }
+    .nivel-card:hover { box-shadow: 0 6px 28px rgba(0,0,0,0.07); }
+    .nivel-card.n1 { background: var(--c1l); border-color: #c8cfe0; }
+    .nivel-card.n2 { background: var(--c2l); border-color: #f0c5a8; }
+    .nivel-card.n3 { background: var(--c3l); border-color: #e8d080; }
+    .nivel-card.n4 { background: var(--c4l); border-color: #a8cce0; }
+    .nivel-card.n5 { background: var(--c5l); border-color: #d0b0f0; }
+
+    .nivel-badge {
+      width: 56px; height: 56px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; flex-shrink: 0;
+    }
+    .nivel-card.n1 .nivel-badge { background: var(--c1); }
+    .nivel-card.n2 .nivel-badge { background: var(--c2); }
+    .nivel-card.n3 .nivel-badge { background: var(--c3); }
+    .nivel-card.n4 .nivel-badge { background: var(--c4); }
+    .nivel-card.n5 .nivel-badge { background: var(--c5); }
+
+    .nivel-main {}
+    .nivel-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+    .nivel-name { font-size: 20px; font-weight: 800; }
+    .nivel-card.n1 .nivel-name { color: var(--c1); }
+    .nivel-card.n2 .nivel-name { color: var(--c2); }
+    .nivel-card.n3 .nivel-name { color: var(--c3); }
+    .nivel-card.n4 .nivel-name { color: var(--c4); }
+    .nivel-card.n5 .nivel-name { color: var(--c5); }
+    .nivel-req { font-size: 12px; font-weight: 700; color: var(--gray); background: rgba(255,255,255,0.7); border-radius: 100px; padding: 3px 10px; }
+    .nivel-desc { font-size: 13px; color: var(--gray); line-height: 1.65; margin-bottom: 14px; }
+
+    .perks-list { display: flex; flex-direction: column; gap: 5px; }
+    .perk { font-size: 13px; line-height: 1.45; padding-left: 20px; position: relative; color: var(--brown); }
+    .perk::before { content: '✓'; position: absolute; left: 0; font-weight: 700; }
+    .nivel-card.n1 .perk::before { color: var(--c1); }
+    .nivel-card.n2 .perk::before { color: var(--c2); }
+    .nivel-card.n3 .perk::before { color: var(--c3); }
+    .nivel-card.n4 .perk::before { color: var(--c4); }
+    .nivel-card.n5 .perk::before { color: var(--c5); }
+
+    .nivel-meta { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; min-width: 80px; }
+    .meta-num { font-size: 28px; font-weight: 800; line-height: 1; }
+    .nivel-card.n1 .meta-num { color: var(--c1); }
+    .nivel-card.n2 .meta-num { color: var(--c2); }
+    .nivel-card.n3 .meta-num { color: var(--c3); }
+    .nivel-card.n4 .meta-num { color: var(--c4); }
+    .nivel-card.n5 .meta-num { color: var(--c5); }
+    .meta-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray); text-align: right; }
+
+    /* CÓMO SE CALCULA */
+    .calc-section { padding: 0 24px 64px; }
+    .calc-inner { max-width: 860px; margin: 0 auto; }
+
+    .factors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+    .factor-card { background: var(--white); border: 1.5px solid var(--sand); border-radius: 14px; padding: 20px 18px; }
+    .factor-icon { font-size: 26px; margin-bottom: 10px; }
+    .factor-name { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+    .factor-desc { font-size: 13px; color: var(--gray); line-height: 1.6; }
+    .factor-weight { font-size: 12px; font-weight: 700; color: var(--terra); margin-top: 6px; }
+
+    /* TABLA RESUMEN */
+    .summary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .summary-table th { background: var(--brown); color: #fff; padding: 11px 16px; text-align: left; font-size: 12px; font-weight: 700; }
+    .summary-table th:first-child { border-radius: 8px 0 0 0; }
+    .summary-table th:last-child  { border-radius: 0 8px 0 0; }
+    .summary-table td { padding: 12px 16px; border-bottom: 1px solid var(--sand); vertical-align: middle; }
+    .summary-table tr:last-child td { border-bottom: none; }
+    .summary-table tr:nth-child(even) td { background: var(--sand-l); }
+    .badge-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 700; padding: 4px 10px;
+      border-radius: 100px;
+    }
+    .badge-chip.b1 { background: var(--c1l); color: var(--c1); }
+    .badge-chip.b2 { background: var(--c2l); color: var(--c2); }
+    .badge-chip.b3 { background: var(--c3l); color: var(--c3); }
+    .badge-chip.b4 { background: var(--c4l); color: var(--c4); }
+    .badge-chip.b5 { background: var(--c5l); color: var(--c5); }
+
+    /* VENDEDOR SECTION */
+    .seller-section { padding: 0 24px 64px; }
+    .seller-inner { max-width: 860px; margin: 0 auto; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .info-card { background: var(--white); border: 1.5px solid var(--sand); border-radius: 14px; padding: 22px 20px; }
+    .info-card-icon { font-size: 26px; margin-bottom: 10px; }
+    .info-card-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .info-card-body { font-size: 13px; color: var(--gray); line-height: 1.7; }
+    .info-card-body ul { margin: 8px 0 0 16px; }
+    .info-card-body li { margin-bottom: 4px; }
+
+    /* FAQ */
+    .faq-section { padding: 0 24px 64px; }
+    .faq-inner { max-width: 700px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--sand); }
+    .faq-q {
+      width: 100%; text-align: left; background: none; border: none;
+      padding: 18px 0; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      font-size: 15px; font-weight: 600; color: var(--brown);
+      font-family: inherit; transition: color 0.15s;
+    }
+    .faq-q:hover { color: var(--terra); }
+    .faq-q.open  { color: var(--terra); }
+    .faq-chevron { font-size: 12px; color: var(--gray-l); transition: transform 0.2s; flex-shrink: 0; }
+    .faq-q.open .faq-chevron { transform: rotate(180deg); }
+    .faq-a {
+      font-size: 14px; color: #4a3d35; line-height: 1.8;
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.2s;
+    }
+    .faq-a.open { max-height: 300px; padding-bottom: 18px; }
+
+    /* INFO BOX */
+    .info-box { border-radius: 12px; padding: 15px 18px; font-size: 13px; line-height: 1.7; display: flex; gap: 12px; align-items: flex-start; }
+    .info-box.green  { background: var(--green-l); border: 1px solid var(--green-m); color: #1f5c38; }
+    .info-box.yellow { background: #fff7e0; border: 1px solid #f0d080; color: #8a6000; }
+
+    /* CTA */
+    .cta-section { padding: 0 24px 80px; }
+    .cta-inner { max-width: 860px; margin: 0 auto; }
+    .cta-box { background: var(--brown); border-radius: 18px; padding: 40px 32px; text-align: center; }
+    .cta-box h3 { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .cta-box p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+    .btn-terra { padding: 12px 24px; background: var(--terra); color: #fff; border-radius: 9px; font-size: 14px; font-weight: 700; text-decoration: none; transition: background 0.15s; display: inline-block; }
+    .btn-terra:hover { background: #b85e30; }
+
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    footer {
+      background: var(--white); border-top: 1px solid #ebebeb;
+      padding: 24px; display: flex;
+      justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-logo { font-size: 16px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .footer-logo em { font-style: normal; color: var(--terra); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: var(--gray); text-decoration: none; }
+    .footer-links a:hover { color: var(--brown); }
+    .footer-copy { font-size: 12px; color: #ccc; }
+
+    @media (max-width: 680px) {
+      .hero h1 { font-size: 28px; }
+      .nivel-card { grid-template-columns: auto 1fr; }
+      .nivel-meta { display: none; }
+      .factors-grid { grid-template-columns: 1fr 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <div class="nav-right">
+    <a href="ayuda.html" class="nav-btn nav-btn-ghost">Ayuda</a>
+    <a href="publicar.html" class="nav-btn nav-btn-sell">Vender ahora</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">⭐ Sistema de niveles</div>
+    <h1>Cuanto más compras,<br/>más <em>beneficios</em> tienes</h1>
+    <p>Los niveles recompensan a los compradores habituales y dan confianza a los vendedores. Sube de nivel comprando y dejando buenas valoraciones.</p>
+
+    <div class="level-progress">
+      <div class="lp-line"></div>
+      <div class="lp-step l1">
+        <div class="lp-dot">🌱</div>
+        <div class="lp-name">Nuevo</div>
+      </div>
+      <div class="lp-step l2">
+        <div class="lp-dot">🪑</div>
+        <div class="lp-name">Habitual</div>
+      </div>
+      <div class="lp-step l3">
+        <div class="lp-dot">🏅</div>
+        <div class="lp-name">Experto</div>
+      </div>
+      <div class="lp-step l4">
+        <div class="lp-dot">💎</div>
+        <div class="lp-name">Élite</div>
+      </div>
+      <div class="lp-step l5">
+        <div class="lp-dot">👑</div>
+        <div class="lp-name">Top</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NIVELES -->
+<div class="levels-section">
+  <div class="levels-inner">
+    <div class="sec-label reveal">Cómo funciona</div>
+    <div class="sec-title reveal">Los 5 niveles de comprador</div>
+    <div class="sec-intro reveal">El nivel se actualiza automáticamente cada vez que completas una compra y recibes una valoración positiva. No caduca.</div>
+
+    <!-- N1 -->
+    <div class="nivel-card n1 reveal">
+      <div class="nivel-badge">🌱</div>
+      <div class="nivel-main">
+        <div class="nivel-header">
+          <span class="nivel-name">Nuevo</span>
+          <span class="nivel-req">0 – 1 compras</span>
+        </div>
+        <div class="nivel-desc">Acabas de unirte a Mueblista. Los vendedores pueden ver que eres nuevo, así que un mensaje presentándote siempre ayuda a generar confianza.</div>
+        <div class="perks-list">
+          <div class="perk">Acceso completo al catálogo</div>
+          <div class="perk">Garantía de compra Mueblista en todas las transacciones</div>
+          <div class="perk">Chat con vendedores</div>
+        </div>
+      </div>
+      <div class="nivel-meta">
+        <div class="meta-num">0–1</div>
+        <div class="meta-label">compras</div>
+      </div>
+    </div>
+
+    <!-- N2 -->
+    <div class="nivel-card n2 reveal">
+      <div class="nivel-badge">🪑</div>
+      <div class="nivel-main">
+        <div class="nivel-header">
+          <span class="nivel-name">Habitual</span>
+          <span class="nivel-req">2 – 5 compras completadas</span>
+        </div>
+        <div class="nivel-desc">Ya tienes historial. Los vendedores te ven como un comprador de confianza y es más probable que acepten tu oferta o reserven el artículo para ti.</div>
+        <div class="perks-list">
+          <div class="perk">Todo lo del nivel Nuevo</div>
+          <div class="perk">Insignia visible en tu perfil y en los chats</div>
+          <div class="perk">Los vendedores pueden ver tu historial de valoraciones</div>
+          <div class="perk">Acceso a ofertas de precio (si el vendedor las activa)</div>
+        </div>
+      </div>
+      <div class="nivel-meta">
+        <div class="meta-num">2–5</div>
+        <div class="meta-label">compras</div>
+      </div>
+    </div>
+
+    <!-- N3 -->
+    <div class="nivel-card n3 reveal">
+      <div class="nivel-badge">🏅</div>
+      <div class="nivel-main">
+        <div class="nivel-header">
+          <span class="nivel-name">Experto</span>
+          <span class="nivel-req">6 – 15 compras completadas</span>
+        </div>
+        <div class="nivel-desc">Un comprador experimentado que sabe cómo funciona la plataforma. Los vendedores te priorizan frente a compradores nuevos cuando hay varios interesados.</div>
+        <div class="perks-list">
+          <div class="perk">Todo lo del nivel Habitual</div>
+          <div class="perk">Prioridad si hay varios compradores interesados en el mismo artículo</div>
+          <div class="perk">Acceso anticipado a artículos recién publicados (24 h antes)</div>
+          <div class="perk">Soporte por chat con tiempo de respuesta preferente</div>
+        </div>
+      </div>
+      <div class="nivel-meta">
+        <div class="meta-num">6–15</div>
+        <div class="meta-label">compras</div>
+      </div>
+    </div>
+
+    <!-- N4 -->
+    <div class="nivel-card n4 reveal">
+      <div class="nivel-badge">💎</div>
+      <div class="nivel-main">
+        <div class="nivel-header">
+          <span class="nivel-name">Élite</span>
+          <span class="nivel-req">16 – 30 compras completadas</span>
+        </div>
+        <div class="nivel-desc">Eres parte del grupo de compradores más activos de Mueblista. Tu reputación habla por ti antes de que digas una palabra.</div>
+        <div class="perks-list">
+          <div class="perk">Todo lo del nivel Experto</div>
+          <div class="perk">Insignia Élite destacada en el perfil y los chats</div>
+          <div class="perk">Descuento en los gastos de gestión de Mueblista</div>
+          <div class="perk">Acceso a la lista de artículos reservados (si el vendedor lo permite)</div>
+          <div class="perk">Soporte prioritario con gestor asignado</div>
+        </div>
+      </div>
+      <div class="nivel-meta">
+        <div class="meta-num">16–30</div>
+        <div class="meta-label">compras</div>
+      </div>
+    </div>
+
+    <!-- N5 -->
+    <div class="nivel-card n5 reveal">
+      <div class="nivel-badge">👑</div>
+      <div class="nivel-main">
+        <div class="nivel-header">
+          <span class="nivel-name">Top Comprador</span>
+          <span class="nivel-req">+31 compras completadas</span>
+        </div>
+        <div class="nivel-desc">El nivel más alto de Mueblista. Un Top Comprador genera confianza inmediata en cualquier vendedor y accede a beneficios exclusivos de la plataforma.</div>
+        <div class="perks-list">
+          <div class="perk">Todo lo del nivel Élite</div>
+          <div class="perk">Corona dorada visible en perfil, chats y valoraciones</div>
+          <div class="perk">Descuento máximo en gastos de gestión</div>
+          <div class="perk">Invitación a preventas y artículos exclusivos antes de publicarse</div>
+          <div class="perk">Acceso al programa de referidos con recompensas extra</div>
+        </div>
+      </div>
+      <div class="nivel-meta">
+        <div class="meta-num">+31</div>
+        <div class="meta-label">compras</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CÓMO SE CALCULA -->
+<div class="calc-section">
+  <div class="calc-inner">
+    <div class="sec-label reveal">Criterios</div>
+    <div class="sec-title reveal">¿Cómo se calcula el nivel?</div>
+    <div class="sec-intro reveal">El nivel no depende solo del número de compras — también cuenta la calidad de las transacciones. Aquí están los tres factores que lo determinan.</div>
+
+    <div class="factors-grid reveal">
+      <div class="factor-card">
+        <div class="factor-icon">🛍️</div>
+        <div class="factor-name">Compras completadas</div>
+        <div class="factor-desc">Cada compra marcada como recibida y confirmada suma al contador. Las transacciones canceladas no cuentan.</div>
+        <div class="factor-weight">Factor principal</div>
+      </div>
+      <div class="factor-card">
+        <div class="factor-icon">⭐</div>
+        <div class="factor-name">Valoraciones recibidas</div>
+        <div class="factor-desc">El porcentaje de valoraciones positivas afecta al nivel. Con menos de un 80% de positivas, el avance de nivel se ralentiza.</div>
+        <div class="factor-weight">Factor secundario</div>
+      </div>
+      <div class="factor-card">
+        <div class="factor-icon">⏱️</div>
+        <div class="factor-name">Tiempo en la plataforma</div>
+        <div class="factor-desc">Antigüedad como miembro activo. Ayuda a distinguir compradores comprometidos de cuentas nuevas con actividad puntual.</div>
+        <div class="factor-weight">Factor de desempate</div>
+      </div>
+    </div>
+
+    <div class="info-box yellow reveal" style="margin-bottom:14px;">
+      ⚠️ <span><strong>¿Se puede bajar de nivel?</strong> Sí, en casos excepcionales. Si recibes varias incidencias graves (disputas abiertas en tu contra, cancelaciones repetidas) el nivel puede revisarse a la baja. El objetivo es que el nivel refleje tu reputación real.</span>
+    </div>
+    <div class="info-box green reveal">
+      🔄 <span><strong>Actualización automática:</strong> el nivel se recalcula cada vez que completas una transacción. No necesitas solicitarlo ni esperar a un período específico.</span>
+    </div>
+
+    <!-- TABLA RESUMEN -->
+    <div class="reveal" style="margin-top:32px;">
+      <div class="sec-title" style="font-size:18px; margin-bottom:16px;">Resumen de niveles</div>
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>Nivel</th>
+            <th>Compras mínimas</th>
+            <th>Insignia</th>
+            <th>Acceso anticipado</th>
+            <th>Descuento gestión</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge-chip b1">🌱 Nuevo</span></td>
+            <td>0 – 1</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><span class="badge-chip b2">🪑 Habitual</span></td>
+            <td>2 – 5</td>
+            <td>✓</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><span class="badge-chip b3">🏅 Experto</span></td>
+            <td>6 – 15</td>
+            <td>✓</td>
+            <td>24 h</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><span class="badge-chip b4">💎 Élite</span></td>
+            <td>16 – 30</td>
+            <td>✓ destacada</td>
+            <td>24 h</td>
+            <td>✓</td>
+          </tr>
+          <tr>
+            <td><span class="badge-chip b5">👑 Top</span></td>
+            <td>+31</td>
+            <td>👑 corona</td>
+            <td>Preventas</td>
+            <td>✓ máximo</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PARA VENDEDORES -->
+<div class="seller-section">
+  <div class="seller-inner">
+    <div class="sec-label reveal">Para vendedores</div>
+    <div class="sec-title reveal">Qué significa el nivel de un comprador</div>
+    <div class="sec-intro reveal">Cuando alguien muestra interés en tu artículo, puedes ver su nivel en el chat. Aquí te explicamos qué información real hay detrás.</div>
+
+    <div class="two-col reveal">
+      <div class="info-card">
+        <div class="info-card-icon">🔍</div>
+        <div class="info-card-title">Qué ves en el chat</div>
+        <div class="info-card-body">
+          Junto al nombre del comprador aparece su insignia de nivel, el número de compras completadas y su porcentaje de valoraciones positivas. Con un vistazo sabes si es un comprador de confianza.
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🤝</div>
+        <div class="info-card-title">Cómo usarlo a tu favor</div>
+        <div class="info-card-body">
+          Si tienes varios interesados, puedes priorizar al de mayor nivel. No estás obligado, pero los compradores Experto, Élite y Top tienen historial real y menos probabilidad de cancelar.
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🚫</div>
+        <div class="info-card-title">Lo que no puedes hacer</div>
+        <div class="info-card-body">
+          No puedes rechazar a un comprador Nuevo por su nivel. El nivel es un indicador de confianza, no un criterio de exclusión. Mueblista garantiza todas las transacciones independientemente del nivel.
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">⭐</div>
+        <div class="info-card-title">Cómo ayudas a los compradores a subir</div>
+        <div class="info-card-body">
+          Cuando marcas el pedido como enviado y el comprador lo confirma, puedes dejar una valoración. Esa valoración contribuye a su nivel. Un ecosistema de buenas valoraciones beneficia a toda la comunidad.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="faq-inner">
+    <div class="sec-label reveal">Preguntas frecuentes</div>
+    <div class="sec-title reveal">Dudas sobre los niveles</div>
+
+    <div class="reveal">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Las compras antiguas antes de que existieran los niveles cuentan?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          Sí. Todas las compras completadas en tu cuenta desde que te registraste se tienen en cuenta para calcular tu nivel inicial. Al lanzar el sistema, cada usuario verá directamente el nivel que le corresponde según su historial.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Puedo ver el nivel de otros compradores aunque no sean contactos?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          Sí. El nivel y el número de compras completadas son visibles en el perfil público de cualquier usuario. Las valoraciones individuales también son públicas. Solo los datos personales (dirección, teléfono) son privados.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Qué pasa si cancelo una compra tras pagarla?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          Las cancelaciones justificadas (artículo no corresponde a la descripción, vendedor no envía en el plazo) no penalizan tu nivel. Las cancelaciones injustificadas repetidas sí pueden afectarlo negativamente.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Los niveles se aplican también a los vendedores?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          Los niveles que ves en esta página son específicos para compradores. Los vendedores tienen su propio sistema de reputación basado en artículos vendidos, tiempo de respuesta y valoraciones de compradores. Próximamente publicaremos la guía de niveles de vendedor.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿El descuento en gestión se aplica automáticamente?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          Sí. En cuanto alcanzas el nivel Élite o Top, el descuento en los gastos de gestión se aplica automáticamente en tu siguiente compra. No necesitas usar ningún código ni solicitarlo.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-inner reveal">
+    <div class="cta-box">
+      <h3>Empieza a subir de nivel</h3>
+      <p>Encuentra muebles únicos, compra con seguridad y construye tu reputación en Mueblista.</p>
+      <a href="index.html" class="btn-terra">Explorar artículos</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+    <div class="footer-links">
+    <a href="terminos.html">Términos</a>
+    <a href="privacidad.html">Privacidad</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="devoluciones.html">Devoluciones</a>
+    <a href="sostenibilidad.html">Sostenibilidad</a>
+    <a href="quienes-somos.html">Quiénes somos</a>
+    <a href="ayuda.html">Ayuda</a>
+    <a href="guia-envios.html">Envíos</a>
+    <a href="niveles.html">Niveles</a>
+    <a href="lotes.html">Venta en conjunto</a>
+    <a href="recordatorios.html">Recordatorios</a>
+  </div>
+  <div class="footer-copy">© 2026 Mueblista</div>
+</footer>
+
+<script>
+  function toggleFaq(btn) {
+    const a = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+    document.querySelectorAll('.faq-q.open').forEach(b => { b.classList.remove('open'); b.nextElementSibling.classList.remove('open'); });
+    if (!isOpen) { btn.classList.add('open'); a.classList.add('open'); }
+  }
+
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>
