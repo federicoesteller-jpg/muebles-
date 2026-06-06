@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acceso para tiendas — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:   #1a0d07;
+      --terra:   #c96a38;
+      --terra-l: #e07a44;
+      --cream:   #fdf6ee;
+      --sand:    #ede3d5;
+      --gray:    #7a726b;
+      --white:   #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--brown);
+      min-height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ─── LADO IZQUIERDO ─── */
+    .left {
+      flex: 1;
+      background: var(--brown);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .left::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 30% 70%, rgba(201,106,56,0.2) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 80% 20%, rgba(201,106,56,0.08) 0%, transparent 60%);
+    }
+
+    .left-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    .left-content { position: relative; }
+
+    .logo { font-size: 20px; font-weight: 800; color: #fff; text-decoration: none; letter-spacing: -0.5px; }
+    .logo em { font-style: normal; color: var(--terra-l); }
+
+    .left-hero { margin-top: 80px; }
+
+    .left-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      color: #e8a87a;
+      background: rgba(201,106,56,0.15);
+      border: 1px solid rgba(201,106,56,0.25);
+      padding: 5px 12px; border-radius: 100px;
+      margin-bottom: 24px;
+    }
+
+    .left-badge::before {
+      content: '';
+      width: 5px; height: 5px;
+      background: var(--terra-l); border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .left-title {
+      font-size: 40px; font-weight: 800; color: #fff;
+      letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 16px;
+    }
+
+    .left-title em { font-style: normal; color: var(--terra-l); }
+
+    .left-desc {
+      font-size: 16px; color: rgba(255,255,255,0.4);
+      line-height: 1.7; max-width: 380px; margin-bottom: 40px;
+    }
+
+    .feature-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .feature-item {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 14px; color: rgba(255,255,255,0.6);
+    }
+
+    .feature-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(201,106,56,0.15);
+      border: 1px solid rgba(201,106,56,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+
+    .left-footer { position: relative; }
+
+    .testimonial {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; padding: 20px 24px;
+    }
+
+    .testimonial-text {
+      font-size: 14px; color: rgba(255,255,255,0.55);
+      line-height: 1.6; margin-bottom: 14px; font-style: italic;
+    }
+
+    .testimonial-author { display: flex; align-items: center; gap: 10px; }
+    .testimonial-avatar {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(140deg,#f5e0c0,#e2a870);
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .testimonial-name { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.7); }
+    .testimonial-store { font-size: 11px; color: rgba(255,255,255,0.3); }
+
+    /* ─── LADO DERECHO ─── */
+    .right {
+      width: 480px; flex-shrink: 0;
+      background: var(--cream);
+      display: flex; align-items: center; justify-content: center;
+      padding: 48px;
+    }
+
+    .login-box { width: 100%; max-width: 360px; }
+
+    .login-title { font-size: 26px; font-weight: 800; letter-spacing: -0.8px; margin-bottom: 6px; }
+    .login-sub { font-size: 14px; color: var(--gray); margin-bottom: 32px; }
+
+    .form-group { margin-bottom: 18px; }
+
+    label {
+      display: block; font-size: 13px; font-weight: 700;
+      color: var(--brown); margin-bottom: 7px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%; padding: 12px 16px;
+      border: 1.5px solid var(--sand); border-radius: 12px;
+      font-size: 14px; font-family: inherit; color: var(--brown);
+      background: var(--white); outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--terra);
+      box-shadow: 0 0 0 3px rgba(201,106,56,0.1);
+    }
+
+    .password-wrap { position: relative; }
+    .password-wrap input { padding-right: 44px; }
+    .toggle-pass {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; font-size: 16px; color: var(--gray);
+    }
+
+    .form-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .remember { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--gray); cursor: pointer; }
+    .remember input { width: 15px; height: 15px; accent-color: var(--terra); cursor: pointer; }
+
+    .forgot { font-size: 13px; color: var(--terra); text-decoration: none; font-weight: 600; }
+    .forgot:hover { text-decoration: underline; }
+
+    .btn-login {
+      width: 100%; padding: 14px;
+      background: var(--terra); color: #fff;
+      border: none; border-radius: 12px;
+      font-size: 15px; font-weight: 700; font-family: inherit;
+      cursor: pointer; transition: all 0.2s; margin-bottom: 16px;
+    }
+    .btn-login:hover { background: var(--terra-l); transform: scale(1.01); }
+
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 16px; color: var(--gray); font-size: 12px;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--sand);
+    }
+
+    .btn-demo {
+      width: 100%; padding: 13px;
+      background: transparent; color: var(--brown);
+      border: 1.5px solid var(--sand); border-radius: 12px;
+      font-size: 14px; font-weight: 700; font-family: inherit;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-demo:hover { border-color: var(--terra); color: var(--terra); background: rgba(201,106,56,0.04); }
+
+    .login-signup {
+      text-align: center; margin-top: 24px;
+      font-size: 13px; color: var(--gray);
+    }
+    .login-signup a { color: var(--terra); font-weight: 700; text-decoration: none; }
+    .login-signup a:hover { text-decoration: underline; }
+
+    .error-msg {
+      display: none; background: #fef2f2; border: 1px solid #fecaca;
+      border-radius: 10px; padding: 10px 14px;
+      font-size: 13px; color: #dc2626; margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- IZQUIERDA -->
+<div class="left">
+  <div class="left-grid"></div>
+  <div class="left-content">
+    <a href="index.html" class="logo">Mueble<em>ista</em></a>
+    <div class="left-hero">
+      <div class="left-badge">Panel de tiendas</div>
+      <h1 class="left-title">Gestiona tu<br/>catálogo <em>online</em></h1>
+      <p class="left-desc">Publica tus muebles, gestiona ventas y llega a miles de compradores en toda España. Todo desde un panel sencillo.</p>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon">📦</div>
+          Sube y edita tu stock en tiempo real
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">💰</div>
+          Controla tus ventas y comisiones al detalle
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">💬</div>
+          Gestiona mensajes de compradores
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📊</div>
+          Estadísticas de visitas y conversión
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="left-footer">
+    <div class="testimonial">
+      <p class="testimonial-text">"Desde que entramos en Mueblista, vendemos entre 8 y 12 piezas al mes sin esfuerzo extra. El panel es muy fácil de usar."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">🏡</div>
+        <div>
+          <div class="testimonial-name">Ana Ruiz</div>
+          <div class="testimonial-store">Vintage Home Madrid</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DERECHA -->
+<div class="right">
+  <div class="login-box">
+    <h2 class="login-title">Accede a tu panel</h2>
+    <p class="login-sub">Introduce los datos de tu tienda para continuar.</p>
+
+    <div class="error-msg" id="errorMsg">
+      Email o contraseña incorrectos. Inténtalo de nuevo.
+    </div>
+
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="email">Email de la tienda</label>
+        <input type="email" id="email" placeholder="hola@tutienda.es" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <div class="password-wrap">
+          <input type="password" id="password" placeholder="••••••••" required />
+          <button type="button" class="toggle-pass" onclick="togglePass()">👁</button>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <label class="remember">
+          <input type="checkbox" /> Recuérdame
+        </label>
+        <a href="#" class="forgot">¿Olvidaste la contraseña?</a>
+      </div>
+
+      <button type="submit" class="btn-login">Entrar al panel →</button>
+    </form>
+
+    <div class="divider">o</div>
+
+    <button class="btn-demo" onclick="window.location.href='panel.html'">
+      🎮 Entrar con cuenta demo
+    </button>
+
+    <p class="login-signup">
+      ¿Tu tienda aún no está en Mueblista?
+      <a href="#">Solicitar acceso</a>
+    </p>
+  </div>
+</div>
+
+<script>
+  function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const pass  = document.getElementById('password').value;
+    if (email && pass) {
+      window.location.href = 'panel.html';
+    } else {
+      document.getElementById('errorMsg').style.display = 'block';
+    }
+  }
+
+  function togglePass() {
+    const input = document.getElementById('password');
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mueblista — Compra y vende muebles cerca de ti</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:  #1a0d07;
+      --terra:  #c96a38;
+      --cream:  #fafafa;
+      --sand:   #e8e0d8;
+      --gray:   #717171;
+      --gray-l: #a0a0a0;
+      --white:  #ffffff;
+      --green:  #2d7a4f;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: var(--white);
+      border-bottom: 1px solid #ebebeb;
+      height: 58px;
+      padding: 0 24px;
+      display: flex; align-items: center; gap: 16px;
+    }
+
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+
+    .nav-search {
+      flex: 1; max-width: 560px;
+      display: flex; align-items: center;
+      background: #f5f5f5; border: 1.5px solid #ebebeb;
+      border-radius: 8px; overflow: hidden;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .nav-search:focus-within { border-color: var(--brown); background: var(--white); }
+    .nav-search span { padding: 0 12px; font-size: 15px; color: var(--gray-l); }
+    .nav-search input { flex: 1; border: none; outline: none; padding: 9px 0; font-size: 13px; font-family: inherit; background: transparent; color: var(--brown); }
+    .nav-search input::placeholder { color: #b0b0b0; }
+
+    .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+
+    .nav-btn {
+      font-size: 13px; font-weight: 600;
+      padding: 8px 16px; border-radius: 8px;
+      text-decoration: none; transition: all 0.15s;
+      border: none; cursor: pointer; font-family: inherit;
+    }
+    .nav-btn-ghost { color: var(--gray); background: transparent; }
+    .nav-btn-ghost:hover { color: var(--brown); background: #f5f5f5; }
+    .nav-btn-dark { color: var(--white); background: var(--brown); }
+    .nav-btn-dark:hover { background: #2d1a0e; }
+    .nav-btn-sell { color: var(--white); background: var(--terra); }
+    .nav-btn-sell:hover { background: #b85e30; }
+
+    /* ─── CATEGORÍAS ─── */
+    .cats {
+      background: var(--white);
+      border-bottom: 1px solid #ebebeb;
+      padding: 0 24px;
+      display: flex; gap: 0;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .cats::-webkit-scrollbar { display: none; }
+
+    .cat {
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      padding: 12px 18px; cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap; text-decoration: none;
+      transition: border-color 0.2s;
+    }
+    .cat:hover { border-bottom-color: #d0d0d0; }
+    .cat.active { border-bottom-color: var(--brown); }
+
+    .cat-icon { font-size: 20px; }
+    .cat-label { font-size: 11px; font-weight: 600; color: var(--gray); }
+    .cat.active .cat-label { color: var(--brown); }
+
+    /* ─── HERO COMPACTO ─── */
+    .hero {
+      background: var(--brown);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .hero-inner { max-width: 600px; margin: 0 auto; }
+
+    .hero h1 {
+      font-size: 26px; font-weight: 800; color: #fff;
+      letter-spacing: -0.8px; margin-bottom: 16px;
+    }
+    .hero h1 em { font-style: normal; color: #e07a44; }
+
+    .hero-search {
+      display: flex; background: #fff; border-radius: 10px;
+      overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+    .hero-search select {
+      border: none; border-right: 1px solid #ebebeb; outline: none;
+      padding: 0 16px; font-size: 13px; font-family: inherit;
+      color: var(--gray); background: #fff; cursor: pointer; white-space: nowrap;
+    }
+    .hero-search input {
+      flex: 1; border: none; outline: none;
+      padding: 14px 16px; font-size: 14px; font-family: inherit;
+    }
+    .hero-search button {
+      background: var(--terra); border: none; color: #fff;
+      padding: 0 22px; font-size: 14px; font-weight: 700; font-family: inherit;
+      cursor: pointer; transition: background 0.15s; white-space: nowrap;
+    }
+    .hero-search button:hover { background: #b85e30; }
+
+    /* ─── FILTROS AL ESTILO VINTED ─── */
+    .filters {
+      background: var(--white);
+      border-bottom: 1px solid #ebebeb;
+      padding: 10px 24px;
+      display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      display: flex; align-items: center; gap: 5px;
+      padding: 7px 14px; border-radius: 100px;
+      border: 1px solid #d0d0d0; background: var(--white);
+      font-size: 13px; font-weight: 500; color: var(--brown);
+      cursor: pointer; font-family: inherit; transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .filter-btn:hover { border-color: var(--brown); }
+    .filter-btn.active { border-color: var(--brown); background: var(--brown); color: #fff; font-weight: 600; }
+    .filter-btn select {
+      border: none; outline: none; font-family: inherit; font-size: 13px;
+      font-weight: 500; color: inherit; cursor: pointer; background: transparent;
+    }
+    .filter-btn.active select { color: #fff; }
+
+    .filter-sep { width: 1px; height: 20px; background: #ebebeb; margin: 0 4px; }
+    .sort-wrap { margin-left: auto; }
+    .sort-select {
+      border: 1px solid #d0d0d0; border-radius: 8px; padding: 7px 12px;
+      font-size: 13px; font-family: inherit; color: var(--brown);
+      background: var(--white); cursor: pointer; outline: none;
+    }
+
+    /* ─── LAYOUT PRINCIPAL ─── */
+    .page-wrap {
+      max-width: 1400px; margin: 0 auto;
+      padding: 20px 24px;
+    }
+
+    .results-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px;
+    }
+    .results-count { font-size: 14px; font-weight: 600; color: var(--brown); }
+    .results-count span { color: var(--gray); font-weight: 400; }
+
+    /* ─── GRID VINTED ─── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    /* ─── CARD AL ESTILO VINTED ─── */
+    .card {
+      background: var(--white);
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      color: inherit;
+      transition: transform 0.15s, box-shadow 0.15s;
+      border: 1px solid #f0f0f0;
+      position: relative;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+
+    /* Imagen vertical como Vinted */
+    .card-img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      position: relative;
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+
+    .card-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform 0.3s;
+    }
+    .card:hover .card-img img { transform: scale(1.04); }
+
+    /* Favorito — aparece en hover */
+    .card-fav {
+      position: absolute; top: 8px; right: 8px;
+      width: 30px; height: 30px;
+      background: rgba(255,255,255,0.92);
+      border-radius: 50%; border: none;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; cursor: pointer;
+      opacity: 0; transition: opacity 0.15s;
+      z-index: 2;
+    }
+    .card:hover .card-fav { opacity: 1; }
+    .card-fav.saved { opacity: 1; color: #e05050; }
+
+    /* Badge tipo/estado */
+    .card-badge {
+      position: absolute; top: 8px; left: 8px;
+      font-size: 10px; font-weight: 700;
+      padding: 3px 8px; border-radius: 4px;
+      background: rgba(255,255,255,0.92);
+      color: var(--brown);
+    }
+    .card-badge.new { background: #1a0d07; color: #fff; }
+
+    /* Info bajo imagen — muy compacta como Vinted */
+    .card-body { padding: 8px 10px 10px; }
+
+    .card-store {
+      font-size: 11px; font-weight: 600; color: var(--gray);
+      margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .card-title {
+      font-size: 12px; color: #444;
+      margin-bottom: 4px;
+      overflow: hidden; text-overflow: ellipsis;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      line-height: 1.4;
+    }
+
+    .card-condition { font-size: 11px; color: var(--gray-l); margin-bottom: 5px; }
+
+    .card-prices { display: flex; align-items: baseline; gap: 5px; }
+    .card-price { font-size: 14px; font-weight: 700; color: var(--brown); }
+    .card-price-incl { font-size: 10px; color: var(--gray-l); }
+
+    /* ─── SECCIÓN DESTACADOS / SEPARADORES ─── */
+    .section-label {
+      font-size: 18px; font-weight: 800; letter-spacing: -0.5px;
+      margin-bottom: 14px; margin-top: 32px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .section-label a { font-size: 13px; font-weight: 600; color: var(--terra); text-decoration: none; }
+    .section-label a:hover { text-decoration: underline; }
+
+    /* ─── BANNER ─── */
+    .banner {
+      background: var(--brown);
+      border-radius: 12px; padding: 28px 32px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin: 28px 0; overflow: hidden; position: relative;
+    }
+    .banner::after {
+      content: '';
+      position: absolute; right: -40px; top: -40px;
+      width: 240px; height: 240px; border-radius: 50%;
+      background: rgba(201,106,56,0.15);
+    }
+    .banner-left { position: relative; }
+    .banner h2 { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-bottom: 6px; }
+    .banner p { font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 16px; max-width: 380px; }
+    .banner-cta {
+      display: inline-block; font-size: 13px; font-weight: 700;
+      color: #fff; text-decoration: none;
+      background: var(--terra); padding: 10px 20px; border-radius: 8px;
+      transition: background 0.15s;
+    }
+    .banner-cta:hover { background: #b85e30; }
+    .banner-emoji { font-size: 64px; position: relative; z-index: 1; }
+
+    /* ─── CIUDADES ─── */
+    .cities-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px; margin-bottom: 32px;
+    }
+    .city-card {
+      background: var(--white); border: 1px solid #ebebeb;
+      border-radius: 10px; padding: 16px 12px;
+      text-align: center; cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s;
+      text-decoration: none; color: inherit;
+    }
+    .city-card:hover { border-color: var(--brown); transform: translateY(-2px); }
+    .city-emoji { font-size: 22px; margin-bottom: 6px; }
+    .city-name { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+    .city-count { font-size: 10px; color: var(--gray-l); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #fff; border-top: 1px solid #ebebeb;
+      padding: 24px; margin-top: 32px;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-logo { font-size: 16px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .footer-logo em { font-style: normal; color: var(--terra); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: var(--gray); text-decoration: none; transition: color 0.15s; }
+    .footer-links a:hover { color: var(--brown); }
+    .footer-copy { font-size: 12px; color: #ccc; }
+
+    /* ─── REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s, transform 0.5s; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1{transition-delay:.04s} .d2{transition-delay:.08s} .d3{transition-delay:.12s}
+    .d4{transition-delay:.16s} .d5{transition-delay:.20s}
+
+    @media (max-width: 1100px) { .grid { grid-template-columns: repeat(4,1fr); } .cities-grid { grid-template-columns: repeat(4,1fr); } }
+    @media (max-width: 800px)  { .grid { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width: 560px)  { .grid { grid-template-columns: repeat(2,1fr); } }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="#" class="logo">Mueble<em>ista</em></a>
+  <div class="nav-search">
+    <span>🔍</span>
+    <input type="text" placeholder="Busca sofás, mesas, sillas..." />
+  </div>
+  <div class="nav-right">
+    <a href="panel-login.html" class="nav-btn nav-btn-ghost">Para tiendas</a>
+    <a href="#" class="nav-btn nav-btn-ghost">Iniciar sesión</a>
+    <a href="#" class="nav-btn nav-btn-sell">+ Vender</a>
+  </div>
+</nav>
+
+<!-- ─── CATEGORÍAS ─── -->
+<div class="cats">
+  <a href="#" class="cat active" onclick="setCat(this)"><div class="cat-icon">✨</div><span class="cat-label">Todo</span></a>
+  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🛋️</div><span class="cat-label">Sofás</span></a>
+  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🪑</div><span class="cat-label">Sillas</span></a>
+  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🛏️</div><span class="cat-label">Camas</span></a>
+  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🍽️</div><span class="cat-label">Mesas</span></a>
+  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🗄️</div><span class="cat-label">Armarios</span></a>
+  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">💡</div><span class="cat-label">Lámparas</span></a>
+  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🪞</div><span class="cat-label">Espejos</span></a>
+  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">📦</div><span class="cat-label">Estanterías</span></a>
+  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🌿</div><span class="cat-label">Decoración</span></a>
+  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🛁</div><span class="cat-label">Baño</span></a>
+</div>
+
+<!-- ─── HERO ─── -->
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Muebles únicos, <em>cerca de ti</em></h1>
+    <div class="hero-search">
+      <select>
+        <option>📍 Toda España</option>
+        <option>Madrid</option>
+        <option>Barcelona</option>
+        <option>Valencia</option>
+        <option>Sevilla</option>
+        <option>Bilbao</option>
+      </select>
+      <input type="text" placeholder="¿Qué mueble buscas?" />
+      <button>Buscar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FILTROS ─── -->
+<div class="filters">
+  <button class="filter-btn active" onclick="setFilter(this)">Todos</button>
+  <button class="filter-btn" onclick="setFilter(this)">Segunda mano</button>
+  <button class="filter-btn" onclick="setFilter(this)">Nuevo</button>
+  <div class="filter-sep"></div>
+  <div class="filter-btn">
+    <select>
+      <option>Estado</option>
+      <option>Nuevo</option>
+      <option>Como nuevo</option>
+      <option>Muy bueno</option>
+      <option>Bueno</option>
+      <option>Aceptable</option>
+    </select>
+  </div>
+  <div class="filter-btn">
+    <select>
+      <option>Ciudad</option>
+      <option>Madrid</option>
+      <option>Barcelona</option>
+      <option>Valencia</option>
+      <option>Sevilla</option>
+    </select>
+  </div>
+  <div class="filter-btn">
+    <select>
+      <option>Precio</option>
+      <option>Menos de 50 €</option>
+      <option>50 – 150 €</option>
+      <option>150 – 400 €</option>
+      <option>Más de 400 €</option>
+    </select>
+  </div>
+  <div class="sort-wrap">
+    <select class="sort-select">
+      <option>Más recientes</option>
+      <option>Precio: menor a mayor</option>
+      <option>Precio: mayor a menor</option>
+      <option>Más vistos</option>
+    </select>
+  </div>
+</div>
+
+<!-- ─── CONTENIDO ─── -->
+<div class="page-wrap">
+
+  <div class="results-header">
+    <div class="results-count">840 resultados <span>en toda España</span></div>
+  </div>
+
+  <!-- GRID PRINCIPAL -->
+  <div class="grid">
+
+    <a href="producto.html" class="card reveal d1">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80" alt="Sofá Chester" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+      </div>
+      <div class="card-body">
+        <div class="card-store">Vintage Home · Madrid</div>
+        <div class="card-title">Sofá Chester 3 plazas cuero marrón</div>
+        <div class="card-condition">Muy bueno · Segunda mano</div>
+        <div class="card-prices"><span class="card-price">380 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d2">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=400&q=80" alt="Silla escandinava" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+        <span class="card-badge new">Nuevo</span>
+      </div>
+      <div class="card-body">
+        <div class="card-store">Muebles Roca · Barcelona</div>
+        <div class="card-title">Silla escandinava roble macizo</div>
+        <div class="card-condition">Nuevo · Sin estrenar</div>
+        <div class="card-prices"><span class="card-price">95 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d3">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80" alt="Espejo vintage" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+      </div>
+      <div class="card-body">
+        <div class="card-store">El Baúl · Valencia</div>
+        <div class="card-title">Espejo vintage redondo 80cm dorado</div>
+        <div class="card-condition">Bueno · Segunda mano</div>
+        <div class="card-prices"><span class="card-price">60 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d4">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=400&q=80" alt="Cabecero" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+      </div>
+      <div class="card-body">
+        <div class="card-store">Ferro Antiguo · Madrid</div>
+        <div class="card-title">Cabecero madera maciza 150cm</div>
+        <div class="card-condition">Muy bueno · Segunda mano</div>
+        <div class="card-prices"><span class="card-price">140 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d5">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=400&q=80" alt="Lámpara arco" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+        <span class="card-badge new">Nuevo</span>
+      </div>
+      <div class="card-body">
+        <div class="card-store">Luz & Deco · Sevilla</div>
+        <div class="card-title">Lámpara de pie arco dorado 180cm</div>
+        <div class="card-condition">Nuevo · Sin estrenar</div>
+        <div class="card-prices"><span class="card-price">189 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d1">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=400&q=80" alt="Aparador" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+      </div>
+      <div class="card-body">
+        <div class="card-store">Ferro Antiguo · Madrid</div>
+        <div class="card-title">Aparador industrial acero negro 160cm</div>
+        <div class="card-condition">Bueno · Segunda mano</div>
+        <div class="card-prices"><span class="card-price">290 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d2">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1524758631624-e2822b8eb346?auto=format&fit=crop&w=400&q=80" alt="Estantería" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+      </div>
+      <div class="card-body">
+        <div class="card-store">El Baúl · Valencia</div>
+        <div class="card-title">Estantería madera pino 5 niveles</div>
+        <div class="card-condition">Muy bueno · Segunda mano</div>
+        <div class="card-prices"><span class="card-price">75 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d3">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=400&q=80" alt="Mesa comedor" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+        <span class="card-badge new">Nuevo</span>
+      </div>
+      <div class="card-body">
+        <div class="card-store">Muebles Roca · Barcelona</div>
+        <div class="card-title">Mesa comedor extensible 140–180cm roble</div>
+        <div class="card-condition">Nuevo · Sin estrenar</div>
+        <div class="card-prices"><span class="card-price">320 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d4">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=400&q=80" alt="Silla cuero" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+      </div>
+      <div class="card-body">
+        <div class="card-store">Vintage Home · Madrid</div>
+        <div class="card-title">Silla vintage cuero negro patas doradas</div>
+        <div class="card-condition">Bueno · Segunda mano</div>
+        <div class="card-prices"><span class="card-price">45 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d5">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80" alt="Sofá azul" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+      </div>
+      <div class="card-body">
+        <div class="card-store">El Baúl · Valencia</div>
+        <div class="card-title">Sofá 2 plazas azul petróleo</div>
+        <div class="card-condition">Muy bueno · Segunda mano</div>
+        <div class="card-prices"><span class="card-price">220 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d1">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80" alt="Espejo ovalado" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+      </div>
+      <div class="card-body">
+        <div class="card-store">Luz & Deco · Sevilla</div>
+        <div class="card-title">Espejo ovalado marco dorado baño</div>
+        <div class="card-condition">Como nuevo · Segunda mano</div>
+        <div class="card-prices"><span class="card-price">35 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d2">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1595526051466-1d34a44b0a7a?auto=format&fit=crop&w=400&q=80" alt="Mesa escritorio" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+        <span class="card-badge new">Nuevo</span>
+      </div>
+      <div class="card-body">
+        <div class="card-store">Muebles Roca · Barcelona</div>
+        <div class="card-title">Mesa escritorio industrial 140cm</div>
+        <div class="card-condition">Nuevo · Sin estrenar</div>
+        <div class="card-prices"><span class="card-price">180 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d3">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1538688525198-d56c8a066311?auto=format&fit=crop&w=400&q=80" alt="Cómoda vintage" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+      </div>
+      <div class="card-body">
+        <div class="card-store">Ferro Antiguo · Madrid</div>
+        <div class="card-title">Cómoda vintage 4 cajones madera</div>
+        <div class="card-condition">Bueno · Segunda mano</div>
+        <div class="card-prices"><span class="card-price">160 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d4">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=400&q=80" alt="Macetero cerámica" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+      </div>
+      <div class="card-body">
+        <div class="card-store">El Baúl · Valencia</div>
+        <div class="card-title">Macetero cerámica artesanal grande</div>
+        <div class="card-condition">Como nuevo · Segunda mano</div>
+        <div class="card-prices"><span class="card-price">28 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+    <a href="producto.html" class="card reveal d5">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1513506003901-1e6a35294bf6?auto=format&fit=crop&w=400&q=80" alt="Lámpara sobremesa" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
+      </div>
+      <div class="card-body">
+        <div class="card-store">Luz & Deco · Sevilla</div>
+        <div class="card-title">Lámpara sobremesa cerámica azul</div>
+        <div class="card-condition">Como nuevo · Segunda mano</div>
+        <div class="card-prices"><span class="card-price">55 €</span><span class="card-price-incl">+ protección</span></div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- BANNER -->
+  <div class="banner">
+    <div class="banner-left">
+      <h2>¿Tienes muebles que ya no usas?</h2>
+      <p>Únete a las 38 tiendas que ya venden en Mueblista. Solo pagas cuando vendes.</p>
+      <a href="panel-login.html" class="banner-cta">Solicitar acceso para tiendas →</a>
+    </div>
+    <div class="banner-emoji">🏪</div>
+  </div>
+
+  <!-- CIUDADES -->
+  <div class="section-label reveal">
+    Busca por ciudad <a href="#">Ver todas →</a>
+  </div>
+  <div class="cities-grid">
+    <a href="#" class="city-card reveal d1"><div class="city-emoji">🏛️</div><div class="city-name">Madrid</div><div class="city-count">312 muebles</div></a>
+    <a href="#" class="city-card reveal d2"><div class="city-emoji">🌊</div><div class="city-name">Barcelona</div><div class="city-count">198 muebles</div></a>
+    <a href="#" class="city-card reveal d3"><div class="city-emoji">🍊</div><div class="city-name">Valencia</div><div class="city-count">104 muebles</div></a>
+    <a href="#" class="city-card reveal d4"><div class="city-emoji">🌸</div><div class="city-name">Sevilla</div><div class="city-count">89 muebles</div></a>
+    <a href="#" class="city-card reveal d5"><div class="city-emoji">⛰️</div><div class="city-name">Bilbao</div><div class="city-count">67 muebles</div></a>
+    <a href="#" class="city-card reveal d1"><div class="city-emoji">🌴</div><div class="city-name">Málaga</div><div class="city-count">54 muebles</div></a>
+  </div>
+
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <a href="#" class="footer-logo">Mueble<em>ista</em></a>
+  <div class="footer-links">
+    <a href="#">Catálogo</a>
+    <a href="panel-login.html">Soy una tienda</a>
+    <a href="#">Cómo funciona</a>
+    <a href="#">Ayuda</a>
+    <a href="#">Aviso legal</a>
+    <a href="#">Privacidad</a>
+  </div>
+  <div class="footer-copy">© 2026 Mueblista</div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e => {
+    e.forEach(el => { if (el.isIntersecting) { el.target.classList.add('visible'); obs.unobserve(el.target); }});
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  function toggleFav(el) {
+    const on = el.textContent === '♥';
+    el.textContent = on ? '♡' : '♥';
+    el.style.color = on ? '' : '#e05050';
+    el.classList.toggle('saved', !on);
+  }
+
+  function setFilter(el) {
+    el.closest('.filters').querySelectorAll('button.filter-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function setCat(el) {
+    event.preventDefault();
+    document.querySelectorAll('.cat').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+</script>
+</body>
+</html>
