@@ -484,11 +484,19 @@
       <span class="nav-badge">5</span>
     </a>
 
+    <a class="nav-item" onclick="showView('envios', this)">
+      <span class="nav-icon">🚚</span> Envíos
+      <span class="nav-badge">2</span>
+    </a>
+    <a class="nav-item" onclick="showView('valoraciones', this)">
+      <span class="nav-icon">⭐</span> Valoraciones
+    </a>
+
     <div class="nav-section-label">Finanzas</div>
     <a class="nav-item" onclick="showView('ingresos', this)">
       <span class="nav-icon">💰</span> Ingresos
     </a>
-    <a class="nav-item" onclick="showView('ingresos', this)">
+    <a class="nav-item" onclick="showView('facturas', this)">
       <span class="nav-icon">📄</span> Facturas
     </a>
 
@@ -598,7 +606,7 @@
                 <div class="mini-stat-icon ms1">💰</div>
                 <div>
                   <div class="mini-stat-label">Comisión pagada</div>
-                  <div class="mini-stat-sub">14% sobre ventas</div>
+                  <div class="mini-stat-sub">Comisión sobre ventas</div>
                 </div>
               </div>
               <div class="mini-stat-value">397 €</div>
@@ -1060,14 +1068,243 @@
   </div>
 </div>
 
+    <!-- ─── VIEW: ENVÍOS ─── -->
+    <div class="view" id="view-envios">
+      <div class="panel-card" style="margin-bottom:20px">
+        <div class="panel-card-header">
+          <span class="panel-card-title">Envíos pendientes de gestionar</span>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Pedido</th><th>Comprador</th><th>Artículo</th><th>Destino</th><th>Estado</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>#MBL-2041</strong></td>
+              <td>María García</td>
+              <td>Sofá Chester 3 plazas</td>
+              <td>Madrid</td>
+              <td><span class="status-badge status-pending">⏳ Etiqueta pendiente</span></td>
+              <td><button class="action-btn" onclick="generateLabel('MBL-2041')">Generar etiqueta</button></td>
+            </tr>
+            <tr>
+              <td><strong>#MBL-2038</strong></td>
+              <td>Carlos Ruiz</td>
+              <td>Mesa de comedor roble</td>
+              <td>Barcelona</td>
+              <td><span class="status-badge status-pending">⏳ Etiqueta pendiente</span></td>
+              <td><button class="action-btn" onclick="generateLabel('MBL-2038')">Generar etiqueta</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-card-header">
+          <span class="panel-card-title">Envíos en tránsito</span>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Pedido</th><th>Comprador</th><th>Transportista</th><th>Seguimiento</th><th>Estado</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>#MBL-2033</strong></td>
+              <td>Laura Martínez</td>
+              <td>SEUR</td>
+              <td><span style="font-size:12px;font-family:monospace;background:var(--sand-l);padding:2px 6px;border-radius:4px">77240018912</span></td>
+              <td><span class="status-badge" style="background:#e8eef5;color:#2c5282">🚚 En reparto</span></td>
+            </tr>
+            <tr>
+              <td><strong>#MBL-2029</strong></td>
+              <td>Pedro Sánchez</td>
+              <td>MRW</td>
+              <td><span style="font-size:12px;font-family:monospace;background:var(--sand-l);padding:2px 6px;border-radius:4px">MRW-449201</span></td>
+              <td><span class="status-badge" style="background:#e8eef5;color:#2c5282">📦 En almacén</span></td>
+            </tr>
+            <tr>
+              <td><strong>#MBL-2021</strong></td>
+              <td>Sofía Díaz</td>
+              <td>Correos</td>
+              <td><span style="font-size:12px;font-family:monospace;background:var(--sand-l);padding:2px 6px;border-radius:4px">EA123456789ES</span></td>
+              <td><span class="status-badge status-ok">✅ Entregado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Etiqueta simulada -->
+      <div id="labelModal" style="display:none; margin-top:20px;">
+        <div class="panel-card" style="border:2px solid var(--green); background:var(--green-l);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <strong style="color:var(--green)">✓ Etiqueta generada — Pedido <span id="labelOrderId"></span></strong>
+            <button onclick="document.getElementById('labelModal').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--gray)">✕</button>
+          </div>
+          <div style="background:var(--white);border-radius:10px;padding:20px;border:1px dashed #999;font-family:monospace;font-size:13px;line-height:1.8;">
+            <div style="text-align:center;margin-bottom:12px;">
+              <strong style="font-size:16px;font-family:'Plus Jakarta Sans',sans-serif">MUEBLISTA · ENVÍO</strong>
+            </div>
+            <div>DE: Vintage Home Madrid, Calle Mayor 12, 28013 Madrid</div>
+            <div>PARA: Comprador verificado — Dirección protegida</div>
+            <div style="margin-top:8px;">Transportista: SEUR · Servicio: 24h</div>
+            <div style="text-align:center; margin-top:12px; letter-spacing:4px; font-size:1.1rem; font-weight:700;">||| ||| ||| | || ||| ||| || | |||</div>
+            <div style="text-align:center;font-size:.9rem">MBL-<span id="labelCode"></span></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:14px;">
+            <button onclick="alert('En producción real se descargaría el PDF')" style="flex:1;padding:10px;border-radius:8px;background:var(--green);color:#fff;border:none;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;">⬇ Descargar PDF</button>
+            <button onclick="alert('En producción real se imprimiría')" style="flex:1;padding:10px;border-radius:8px;background:var(--white);color:var(--brown);border:1.5px solid var(--sand);font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;">🖨 Imprimir</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── VIEW: VALORACIONES ─── -->
+    <div class="view" id="view-valoraciones">
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:20px;margin-bottom:20px;">
+        <!-- Resumen -->
+        <div class="panel-card" style="text-align:center;">
+          <div style="font-size:3rem;font-weight:800;line-height:1;margin-bottom:4px;">4.9</div>
+          <div style="color:var(--terra);font-size:1.2rem;margin-bottom:8px;">★★★★★</div>
+          <div style="font-size:13px;color:var(--gray);">Basado en 87 reseñas</div>
+          <div style="margin-top:16px;display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;">
+              <span style="width:12px;text-align:right;">5</span>
+              <div style="flex:1;height:6px;background:var(--sand);border-radius:3px;overflow:hidden;"><div style="width:82%;height:100%;background:var(--terra);border-radius:3px;"></div></div>
+              <span style="color:var(--gray);width:24px;">71</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;">
+              <span style="width:12px;text-align:right;">4</span>
+              <div style="flex:1;height:6px;background:var(--sand);border-radius:3px;overflow:hidden;"><div style="width:13%;height:100%;background:var(--terra);border-radius:3px;"></div></div>
+              <span style="color:var(--gray);width:24px;">11</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;">
+              <span style="width:12px;text-align:right;">3</span>
+              <div style="flex:1;height:6px;background:var(--sand);border-radius:3px;overflow:hidden;"><div style="width:5%;height:100%;background:var(--terra);border-radius:3px;"></div></div>
+              <span style="color:var(--gray);width:24px;">4</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;">
+              <span style="width:12px;text-align:right;">2</span>
+              <div style="flex:1;height:6px;background:var(--sand);border-radius:3px;overflow:hidden;"><div style="width:1%;height:100%;background:var(--terra);border-radius:3px;"></div></div>
+              <span style="color:var(--gray);width:24px;">1</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;">
+              <span style="width:12px;text-align:right;">1</span>
+              <div style="flex:1;height:6px;background:var(--sand);border-radius:3px;overflow:hidden;"><div style="width:0%;height:100%;background:var(--terra);border-radius:3px;"></div></div>
+              <span style="color:var(--gray);width:24px;">0</span>
+            </div>
+          </div>
+        </div>
+        <!-- Lista reseñas -->
+        <div style="display:flex;flex-direction:column;gap:14px;">
+
+          <div class="panel-card" style="padding:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+              <div>
+                <strong style="font-size:14px;">María G.</strong>
+                <span style="color:var(--terra);margin-left:8px;">★★★★★</span>
+              </div>
+              <span style="font-size:12px;color:var(--gray-l);">Hace 2 días · Sofá Chester</span>
+            </div>
+            <p style="font-size:13px;line-height:1.6;color:var(--gray);">El sofá llegó perfectamente embalado y en el estado descrito. La tienda fue muy rápida con el envío. Totalmente recomendable.</p>
+            <div style="margin-top:10px;">
+              <button onclick="toggleReply(this)" style="font-size:12px;font-weight:600;color:var(--terra);background:none;border:none;cursor:pointer;font-family:inherit;padding:0;">Responder →</button>
+              <div class="reply-box" style="display:none;margin-top:10px;">
+                <textarea placeholder="Escribe tu respuesta pública..." style="width:100%;border:1.5px solid var(--sand);border-radius:8px;padding:10px;font-size:13px;font-family:inherit;resize:none;min-height:70px;outline:none;"></textarea>
+                <button onclick="alert('Respuesta publicada')" style="margin-top:6px;padding:7px 16px;border-radius:8px;background:var(--terra);color:#fff;border:none;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;">Publicar respuesta</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-card" style="padding:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+              <div>
+                <strong style="font-size:14px;">Carlos R.</strong>
+                <span style="color:var(--terra);margin-left:8px;">★★★★★</span>
+              </div>
+              <span style="font-size:12px;color:var(--gray-l);">Hace 5 días · Mesa comedor</span>
+            </div>
+            <p style="font-size:13px;line-height:1.6;color:var(--gray);">Exactamente como en las fotos. Me ayudaron a coordinar la recogida con el transportista sin problemas. Muy buena experiencia.</p>
+            <div style="margin-top:10px;">
+              <button onclick="toggleReply(this)" style="font-size:12px;font-weight:600;color:var(--terra);background:none;border:none;cursor:pointer;font-family:inherit;padding:0;">Responder →</button>
+              <div class="reply-box" style="display:none;margin-top:10px;">
+                <textarea placeholder="Escribe tu respuesta pública..." style="width:100%;border:1.5px solid var(--sand);border-radius:8px;padding:10px;font-size:13px;font-family:inherit;resize:none;min-height:70px;outline:none;"></textarea>
+                <button onclick="alert('Respuesta publicada')" style="margin-top:6px;padding:7px 16px;border-radius:8px;background:var(--terra);color:#fff;border:none;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;">Publicar respuesta</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-card" style="padding:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+              <div>
+                <strong style="font-size:14px;">Laura M.</strong>
+                <span style="color:#e0a030;margin-left:8px;">★★★★☆</span>
+              </div>
+              <span style="font-size:12px;color:var(--gray-l);">Hace 1 semana · Silla oficina</span>
+            </div>
+            <p style="font-size:13px;line-height:1.6;color:var(--gray);">El artículo está bien pero tardó un día más de lo prometido en el envío. La tienda respondió rápido cuando pregunté, y al final todo bien.</p>
+            <div style="margin-top:10px;background:var(--green-l);border-radius:8px;padding:10px;">
+              <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:4px;">Respuesta de Vintage Home Madrid</div>
+              <p style="font-size:13px;color:#1f5c38;line-height:1.5;">Gracias por tu valoración, Laura. Disculpa el pequeño retraso en el transporte. Nos alegra que todo llegara en perfectas condiciones.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── VIEW: FACTURAS ─── -->
+    <div class="view" id="view-facturas">
+      <div class="panel-card">
+        <div class="panel-card-header">
+          <span class="panel-card-title">Facturas emitidas</span>
+          <button onclick="alert('En producción real se descargarían todas las facturas')" style="font-size:12px;font-weight:600;color:var(--terra);background:none;border:none;cursor:pointer;font-family:inherit;">Descargar todas →</button>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Nº Factura</th><th>Fecha</th><th>Pedido</th><th>Comprador</th><th>Importe</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>FAC-2026-042</strong></td><td>06 jun 2026</td><td>#MBL-2041</td><td>María García</td>
+              <td><strong>380 €</strong></td>
+              <td><button class="action-btn" onclick="alert('Descargando FAC-2026-042.pdf')">⬇ PDF</button></td>
+            </tr>
+            <tr>
+              <td><strong>FAC-2026-039</strong></td><td>04 jun 2026</td><td>#MBL-2038</td><td>Carlos Ruiz</td>
+              <td><strong>290 €</strong></td>
+              <td><button class="action-btn" onclick="alert('Descargando FAC-2026-039.pdf')">⬇ PDF</button></td>
+            </tr>
+            <tr>
+              <td><strong>FAC-2026-035</strong></td><td>01 jun 2026</td><td>#MBL-2033</td><td>Laura Martínez</td>
+              <td><strong>650 €</strong></td>
+              <td><button class="action-btn" onclick="alert('Descargando FAC-2026-035.pdf')">⬇ PDF</button></td>
+            </tr>
+            <tr>
+              <td><strong>FAC-2026-031</strong></td><td>28 may 2026</td><td>#MBL-2029</td><td>Pedro Sánchez</td>
+              <td><strong>180 €</strong></td>
+              <td><button class="action-btn" onclick="alert('Descargando FAC-2026-031.pdf')">⬇ PDF</button></td>
+            </tr>
+            <tr>
+              <td><strong>FAC-2026-024</strong></td><td>21 may 2026</td><td>#MBL-2021</td><td>Sofía Díaz</td>
+              <td><strong>420 €</strong></td>
+              <td><button class="action-btn" onclick="alert('Descargando FAC-2026-024.pdf')">⬇ PDF</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
 <script>
   const titles = {
-    dashboard: ['Dashboard', 'Bienvenida, Ana · Viernes 6 de junio de 2026'],
-    productos:  ['Mis productos', '14 artículos publicados · 1 vendido'],
-    pedidos:    ['Pedidos', '3 pedidos pendientes de gestionar'],
-    mensajes:   ['Mensajes', '5 mensajes sin leer'],
-    ingresos:   ['Ingresos y cobros', 'Datos actualizados a hoy'],
-    ajustes:    ['Ajustes de tienda', 'Gestiona tu perfil y datos de cobro'],
+    dashboard:     ['Dashboard', 'Bienvenida, Ana · Viernes 6 de junio de 2026'],
+    productos:     ['Mis productos', '14 artículos publicados · 1 vendido'],
+    pedidos:       ['Pedidos', '3 pedidos pendientes de gestionar'],
+    mensajes:      ['Mensajes', '5 mensajes sin leer'],
+    envios:        ['Envíos', '2 envíos pendientes de etiqueta'],
+    valoraciones:  ['Valoraciones', '87 reseñas · Media 4.9 ★'],
+    ingresos:      ['Ingresos y cobros', 'Datos actualizados a hoy'],
+    facturas:      ['Facturas', 'Historial de facturas emitidas'],
+    ajustes:       ['Ajustes de tienda', 'Gestiona tu perfil y datos de cobro'],
   };
 
   function showView(name, el) {
@@ -1108,6 +1345,20 @@
   function saveProduct() {
     alert('¡Mueble publicado con éxito! Ya aparece en el catálogo.');
     closeModal();
+  }
+
+  function generateLabel(orderId) {
+    document.getElementById('labelModal').style.display = 'block';
+    document.getElementById('labelOrderId').textContent = '#' + orderId;
+    document.getElementById('labelCode').textContent = orderId;
+    document.getElementById('labelModal').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function toggleReply(btn) {
+    const box = btn.nextElementSibling;
+    const isOpen = box.style.display !== 'none';
+    box.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? 'Responder →' : 'Cancelar';
   }
 </script>
 </body>

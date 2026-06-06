@@ -243,16 +243,10 @@
 
     .card-img {
       width: 100%; aspect-ratio: 1;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 44px; position: relative;
+      position: relative; overflow: hidden; background: #f0f0f0;
     }
-
-    .g1 { background: linear-gradient(140deg,#f5e0c0,#e8c090); }
-    .g2 { background: linear-gradient(140deg,#cfe8c8,#9ac888); }
-    .g3 { background: linear-gradient(140deg,#c8d8f0,#90a8d8); }
-    .g4 { background: linear-gradient(140deg,#e8e0b0,#c8b870); }
-    .g5 { background: linear-gradient(140deg,#f0ccd0,#d8909a); }
-    .g6 { background: linear-gradient(140deg,#d8cce8,#a890c8); }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.25s; }
+    .card:hover .card-img img { transform: scale(1.04); }
 
     .card-fav {
       position: absolute; top: 8px; right: 8px;
@@ -430,9 +424,8 @@
     <button>🔍</button>
   </div>
   <div class="nav-actions">
-    <a href="#" class="nav-link">Iniciar sesión</a>
-    <a href="#" class="nav-link">Registrarse</a>
-    <a href="#" class="btn-sell">+ Vender</a>
+    <a href="perfil.html" class="nav-link">Mi perfil</a>
+    <a href="publicar.html" class="btn-sell">+ Vender</a>
   </div>
 </nav>
 
@@ -460,7 +453,7 @@
       </div>
     </div>
     <div class="store-hero-actions">
-      <button class="btn-contact">💬 Contactar</button>
+      <a href="chat.html" class="btn-contact">💬 Contactar</a>
       <button class="btn-follow" id="followBtn" onclick="toggleFollow(this)">+ Seguir</button>
     </div>
   </div>
@@ -537,110 +530,80 @@
       <div class="product-grid">
 
         <a href="producto.html" class="card reveal d1">
-          <div class="card-img g1">
-            🛋️
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80" alt="Sofá Chester" loading="lazy" />
             <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
             <span class="card-condition cond-verygood">Muy bueno</span>
           </div>
           <div class="card-body">
             <div class="card-price">380 €</div>
             <div class="card-title">Sofá Chester 3 plazas cuero marrón</div>
-            <div class="card-meta">
-              <div class="card-stats">
-                <span class="card-stat">♡ 24</span>
-                <span class="card-stat">👁 180</span>
-              </div>
-            </div>
+            <div class="card-meta"><div class="card-stats"><span class="card-stat">♡ 24</span><span class="card-stat">👁 180</span></div></div>
           </div>
         </a>
 
         <a href="producto.html" class="card reveal d2">
-          <div class="card-img g4">
-            🛏️
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=400&q=80" alt="Cabecero" loading="lazy" />
             <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
             <span class="card-condition cond-verygood">Muy bueno</span>
           </div>
           <div class="card-body">
             <div class="card-price">140 €</div>
             <div class="card-title">Cabecero madera maciza 150cm</div>
-            <div class="card-meta">
-              <div class="card-stats">
-                <span class="card-stat">♡ 7</span>
-                <span class="card-stat">👁 49</span>
-              </div>
-            </div>
+            <div class="card-meta"><div class="card-stats"><span class="card-stat">♡ 7</span><span class="card-stat">👁 49</span></div></div>
           </div>
         </a>
 
         <a href="producto.html" class="card reveal d3">
-          <div class="card-img g3">
-            🪞
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80" alt="Espejo" loading="lazy" />
             <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
             <span class="card-condition cond-good">Bueno</span>
           </div>
           <div class="card-body">
             <div class="card-price">60 €</div>
             <div class="card-title">Espejo vintage redondo 80cm</div>
-            <div class="card-meta">
-              <div class="card-stats">
-                <span class="card-stat">♡ 38</span>
-                <span class="card-stat">👁 210</span>
-              </div>
-            </div>
+            <div class="card-meta"><div class="card-stats"><span class="card-stat">♡ 38</span><span class="card-stat">👁 210</span></div></div>
           </div>
         </a>
 
         <a href="producto.html" class="card reveal d4">
-          <div class="card-img g6">
-            🗄️
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=400&q=80" alt="Aparador" loading="lazy" />
             <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
             <span class="card-condition cond-good">Bueno</span>
           </div>
           <div class="card-body">
             <div class="card-price">290 €</div>
             <div class="card-title">Aparador industrial acero negro</div>
-            <div class="card-meta">
-              <div class="card-stats">
-                <span class="card-stat">♡ 31</span>
-                <span class="card-stat">👁 155</span>
-              </div>
-            </div>
+            <div class="card-meta"><div class="card-stats"><span class="card-stat">♡ 31</span><span class="card-stat">👁 155</span></div></div>
           </div>
         </a>
 
         <a href="producto.html" class="card reveal d5">
-          <div class="card-img g2">
-            🪑
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=400&q=80" alt="Silla" loading="lazy" />
             <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
             <span class="card-condition cond-new">Nuevo</span>
           </div>
           <div class="card-body">
             <div class="card-price">95 €</div>
             <div class="card-title">Silla vintage cuero negro</div>
-            <div class="card-meta">
-              <div class="card-stats">
-                <span class="card-stat">♡ 12</span>
-                <span class="card-stat">👁 74</span>
-              </div>
-            </div>
+            <div class="card-meta"><div class="card-stats"><span class="card-stat">♡ 12</span><span class="card-stat">👁 74</span></div></div>
           </div>
         </a>
 
         <a href="producto.html" class="card reveal d6">
-          <div class="card-img g5">
-            💡
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=400&q=80" alt="Lámpara" loading="lazy" />
             <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
             <span class="card-condition cond-new">Nuevo</span>
           </div>
           <div class="card-body">
             <div class="card-price">189 €</div>
             <div class="card-title">Lámpara pie arco dorado 180cm</div>
-            <div class="card-meta">
-              <div class="card-stats">
-                <span class="card-stat">♡ 15</span>
-                <span class="card-stat">👁 92</span>
-              </div>
-            </div>
+            <div class="card-meta"><div class="card-stats"><span class="card-stat">♡ 15</span><span class="card-stat">👁 92</span></div></div>
           </div>
         </a>
 
@@ -834,10 +797,13 @@
 <footer>
   <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
   <div class="footer-links">
-    <a href="#">Aviso legal</a>
-    <a href="#">Privacidad</a>
-    <a href="#">Cookies</a>
-    <a href="#">Ayuda</a>
+    <a href="terminos.html">Aviso legal</a>
+    <a href="privacidad.html">Privacidad</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="devoluciones.html">Devoluciones</a>
+    <a href="quienes-somos.html">Quiénes somos</a>
+    <a href="ayuda.html">Ayuda</a>
+    <a href="como-funciona.html">Ayuda</a>
   </div>
   <div class="footer-copy">© 2026 Mueblista</div>
 </footer>
@@ -877,5 +843,6 @@
     el.style.color = active ? '' : '#e05050';
   }
 </script>
+<script src="cookie-banner.js"></script>
 </body>
 </html>

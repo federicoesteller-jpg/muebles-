@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mensajes — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:  #1a0d07;
+      --terra:  #c96a38;
+      --cream:  #fdf6ee;
+      --sand:   #ede3d5;
+      --sand-l: #f7f0e6;
+      --gray:   #7a726b;
+      --gray-l: #a09890;
+      --white:  #ffffff;
+      --green:  #2d7a4f;
+      --green-l:#e8f5ee;
+      --red:    #d94040;
+      --red-l:  #fdeaea;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); display: flex; flex-direction: column; }
+
+    /* ─── NAV ─── */
+    nav {
+      height: 58px; padding: 0 24px;
+      display: flex; align-items: center; gap: 16px;
+      background: var(--white); border-bottom: 1px solid #ebebeb;
+      flex-shrink: 0; z-index: 10;
+    }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+    .nav-btn {
+      font-size: 13px; font-weight: 600; padding: 8px 16px;
+      border-radius: 8px; text-decoration: none; border: none;
+      cursor: pointer; font-family: inherit; transition: all 0.15s;
+    }
+    .nav-btn-ghost { color: var(--gray); background: transparent; }
+    .nav-btn-ghost:hover { color: var(--brown); background: #f5f5f5; }
+    .nav-btn-sell { color: var(--white); background: var(--terra); }
+    .nav-btn-sell:hover { background: #b85e30; }
+
+    /* ─── LAYOUT CHAT ─── */
+    .chat-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      flex: 1;
+      overflow: hidden;
+      max-height: calc(100vh - 58px);
+    }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      border-right: 1px solid var(--sand);
+      background: var(--white);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      padding: 18px 16px 14px;
+      border-bottom: 1px solid var(--sand);
+      flex-shrink: 0;
+    }
+    .sidebar-header h2 { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
+
+    .sidebar-search {
+      display: flex; align-items: center;
+      background: var(--cream); border: 1.5px solid var(--sand);
+      border-radius: 10px; overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .sidebar-search:focus-within { border-color: var(--terra); }
+    .sidebar-search span { padding: 0 10px; font-size: 14px; color: var(--gray-l); }
+    .sidebar-search input {
+      flex: 1; border: none; outline: none;
+      padding: 8px 0; font-size: 13px; font-family: inherit;
+      background: transparent; color: var(--brown);
+    }
+    .sidebar-search input::placeholder { color: #c0b8b0; }
+
+    .conv-list { overflow-y: auto; flex: 1; }
+    .conv-list::-webkit-scrollbar { width: 4px; }
+    .conv-list::-webkit-scrollbar-thumb { background: var(--sand); border-radius: 4px; }
+
+    .conv-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 14px 16px; cursor: pointer;
+      border-bottom: 1px solid #f5f0ea;
+      transition: background 0.15s; position: relative;
+    }
+    .conv-item:hover { background: var(--sand-l); }
+    .conv-item.active { background: #fef0e4; }
+
+    .conv-avatar {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(140deg, #f5c898, #c96a38);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+
+    .conv-info { flex: 1; min-width: 0; }
+    .conv-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
+    .conv-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .conv-time { font-size: 11px; color: var(--gray-l); flex-shrink: 0; margin-left: 6px; }
+    .conv-product { font-size: 11px; color: var(--terra); font-weight: 600; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .conv-preview { font-size: 12px; color: var(--gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .conv-unread {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--terra); color: #fff;
+      font-size: 10px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+
+    /* ─── PANEL PRINCIPAL ─── */
+    .chat-main {
+      display: flex; flex-direction: column;
+      overflow: hidden; background: var(--cream);
+    }
+
+    /* Cabecera del chat */
+    .chat-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--sand);
+      padding: 12px 20px;
+      display: flex; align-items: center; gap: 14px;
+      flex-shrink: 0;
+    }
+
+    .chat-header-avatar {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(140deg, #f5c898, #c96a38);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+
+    .chat-header-info { flex: 1; }
+    .chat-header-name { font-size: 15px; font-weight: 700; }
+    .chat-header-sub { font-size: 12px; color: var(--gray); }
+
+    .chat-header-product {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--sand-l); border: 1px solid var(--sand);
+      border-radius: 10px; padding: 8px 12px;
+      text-decoration: none; color: inherit;
+      transition: border-color 0.15s;
+    }
+    .chat-header-product:hover { border-color: var(--terra); }
+    .chat-header-product img { width: 36px; height: 36px; object-fit: cover; border-radius: 6px; }
+    .chp-title { font-size: 12px; font-weight: 700; }
+    .chp-price { font-size: 12px; color: var(--terra); font-weight: 700; }
+
+    /* Mensajes */
+    .messages-wrap {
+      flex: 1; overflow-y: auto;
+      padding: 20px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .messages-wrap::-webkit-scrollbar { width: 4px; }
+    .messages-wrap::-webkit-scrollbar-thumb { background: var(--sand); border-radius: 4px; }
+
+    /* Separador de fecha */
+    .date-sep {
+      text-align: center;
+      font-size: 11px; font-weight: 700;
+      color: var(--gray-l); margin: 4px 0;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .date-sep::before, .date-sep::after {
+      content: ''; flex: 1; height: 1px; background: var(--sand);
+    }
+
+    /* Burbuja */
+    .msg { display: flex; gap: 8px; max-width: 68%; }
+    .msg.mine { align-self: flex-end; flex-direction: row-reverse; }
+    .msg.theirs { align-self: flex-start; }
+
+    .msg-avatar {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: var(--sand); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 12px; flex-shrink: 0; margin-top: auto;
+    }
+    .msg.mine .msg-avatar { background: linear-gradient(140deg, #f5c898, #c96a38); }
+
+    .msg-bubble {
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 14px; line-height: 1.5;
+    }
+    .msg.mine .msg-bubble {
+      background: var(--terra); color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .msg.theirs .msg-bubble {
+      background: var(--white); color: var(--brown);
+      border: 1px solid var(--sand);
+      border-bottom-left-radius: 4px;
+    }
+
+    .msg-time {
+      font-size: 10px; color: var(--gray-l);
+      margin-top: 4px; align-self: flex-end;
+    }
+    .msg.mine .msg-time { text-align: right; }
+
+    /* Mensaje de sistema */
+    .msg-system {
+      text-align: center;
+      font-size: 12px; color: var(--gray);
+      background: var(--white); border: 1px solid var(--sand);
+      border-radius: 10px; padding: 10px 16px;
+      margin: 4px auto; max-width: 420px;
+      line-height: 1.5;
+    }
+    .msg-system strong { color: var(--brown); }
+
+    /* ─── AVISO BLOQUEADO ─── */
+    .blocked-warning {
+      display: none;
+      background: var(--red-l); border: 1.5px solid #f0b0b0;
+      border-radius: 12px; padding: 12px 16px;
+      margin: 0 20px 8px;
+      font-size: 13px; color: var(--red);
+      display: none; align-items: flex-start; gap: 10px;
+      flex-shrink: 0;
+    }
+    .blocked-warning.show { display: flex; }
+    .blocked-warning strong { display: block; font-size: 13px; margin-bottom: 2px; }
+    .blocked-warning p { font-size: 12px; color: #a03030; line-height: 1.4; }
+
+    /* ─── INPUT ─── */
+    .chat-input-wrap {
+      background: var(--white);
+      border-top: 1px solid var(--sand);
+      padding: 12px 20px;
+      flex-shrink: 0;
+    }
+
+    .chat-input-row {
+      display: flex; gap: 10px; align-items: flex-end;
+    }
+
+    .chat-textarea {
+      flex: 1;
+      border: 1.5px solid var(--sand); border-radius: 12px;
+      padding: 10px 14px; font-size: 14px; font-family: inherit;
+      color: var(--brown); background: var(--cream);
+      outline: none; resize: none;
+      max-height: 120px; min-height: 42px;
+      line-height: 1.5; transition: border-color 0.2s;
+      overflow-y: auto;
+    }
+    .chat-textarea:focus { border-color: var(--terra); background: var(--white); }
+    .chat-textarea::placeholder { color: #c0b8b0; }
+    .chat-textarea.error { border-color: var(--red); background: #fff8f8; }
+
+    .send-btn {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: var(--terra); border: none;
+      color: #fff; font-size: 18px;
+      cursor: pointer; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .send-btn:hover { background: #b85e30; }
+    .send-btn:active { transform: scale(0.93); }
+    .send-btn:disabled { background: var(--sand); cursor: not-allowed; }
+
+    .input-hint {
+      font-size: 11px; color: var(--gray-l);
+      margin-top: 6px; text-align: center;
+    }
+    .input-hint a { color: var(--terra); text-decoration: none; }
+
+    /* ─── PANTALLA VACÍA ─── */
+    .empty-chat {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 40px;
+      color: var(--gray);
+    }
+    .empty-chat .icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-chat h3 { font-size: 18px; font-weight: 700; color: var(--brown); margin-bottom: 6px; }
+    .empty-chat p { font-size: 14px; line-height: 1.5; }
+
+    @media (max-width: 700px) {
+      .chat-layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .sidebar.show { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <div class="nav-right">
+    <a href="perfil.html" class="nav-btn nav-btn-ghost">Mi perfil</a>
+    <a href="publicar.html" class="nav-btn nav-btn-sell">+ Vender</a>
+  </div>
+</nav>
+
+<!-- ─── CHAT LAYOUT ─── -->
+<div class="chat-layout">
+
+  <!-- SIDEBAR: lista de conversaciones -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>Mensajes</h2>
+      <div class="sidebar-search">
+        <span>🔍</span>
+        <input type="text" placeholder="Buscar conversación..." oninput="filterConvs(this.value)" />
+      </div>
+    </div>
+
+    <div class="conv-list" id="convList">
+
+      <div class="conv-item active" onclick="openConv(this, 0)">
+        <div class="conv-avatar">🛋️</div>
+        <div class="conv-info">
+          <div class="conv-top">
+            <span class="conv-name">Laura M.</span>
+            <span class="conv-time">Ahora</span>
+          </div>
+          <div class="conv-product">Sofá Chester 3 plazas — 380 €</div>
+          <div class="conv-preview">¿Todavía está disponible?</div>
+        </div>
+        <div class="conv-unread">2</div>
+      </div>
+
+      <div class="conv-item" onclick="openConv(this, 1)">
+        <div class="conv-avatar">🪑</div>
+        <div class="conv-info">
+          <div class="conv-top">
+            <span class="conv-name">Carlos R.</span>
+            <span class="conv-time">Ayer</span>
+          </div>
+          <div class="conv-product">Silla escandinava roble — 95 €</div>
+          <div class="conv-preview">Perfecto, quedamos el sábado</div>
+        </div>
+      </div>
+
+      <div class="conv-item" onclick="openConv(this, 2)">
+        <div class="conv-avatar">🪞</div>
+        <div class="conv-info">
+          <div class="conv-top">
+            <span class="conv-name">Ana P.</span>
+            <span class="conv-time">Lun</span>
+          </div>
+          <div class="conv-product">Espejo vintage redondo — 60 €</div>
+          <div class="conv-preview">¿Puedes bajar un poco el precio?</div>
+        </div>
+      </div>
+
+      <div class="conv-item" onclick="openConv(this, 3)">
+        <div class="conv-avatar">💡</div>
+        <div class="conv-info">
+          <div class="conv-top">
+            <span class="conv-name">Roberto S.</span>
+            <span class="conv-time">Vie</span>
+          </div>
+          <div class="conv-product">Lámpara de pie arco dorado — 189 €</div>
+          <div class="conv-preview">Muchas gracias, ya la recibí 👍</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PANEL DERECHO -->
+  <div class="chat-main" id="chatMain">
+
+    <!-- Cabecera -->
+    <div class="chat-header" id="chatHeader">
+      <div class="chat-header-avatar">🛋️</div>
+      <div class="chat-header-info">
+        <div class="chat-header-name" id="chatName">Laura M.</div>
+        <div class="chat-header-sub" id="chatSub">Compradora · En línea ahora</div>
+      </div>
+      <a href="producto.html" class="chat-header-product" id="chatProduct">
+        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=80&q=80" id="chatProductImg" alt="Producto" />
+        <div>
+          <div class="chp-title" id="chatProductTitle">Sofá Chester 3 plazas</div>
+          <div class="chp-price" id="chatProductPrice">380 €</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Mensajes -->
+    <div class="messages-wrap" id="messagesWrap">
+
+      <div class="date-sep">Hoy</div>
+
+      <div class="msg-system">
+        🛡️ <strong>Conversación protegida por Mueblista</strong><br>
+        Por seguridad, no compartas datos de contacto (teléfono, email, WhatsApp). Mueblista gestiona el pago y el envío.
+      </div>
+
+      <div class="msg theirs">
+        <div class="msg-avatar">L</div>
+        <div>
+          <div class="msg-bubble">Hola, ¿todavía está disponible el sofá?</div>
+          <div class="msg-time">10:32</div>
+        </div>
+      </div>
+
+      <div class="msg mine">
+        <div class="msg-avatar">M</div>
+        <div>
+          <div class="msg-bubble">Sí, sigue disponible. ¿Tienes alguna pregunta?</div>
+          <div class="msg-time">10:35</div>
+        </div>
+      </div>
+
+      <div class="msg theirs">
+        <div class="msg-avatar">L</div>
+        <div>
+          <div class="msg-bubble">¿Tiene alguna mancha o defecto? No se aprecia bien en las fotos</div>
+          <div class="msg-time">10:36</div>
+        </div>
+      </div>
+
+      <div class="msg mine">
+        <div class="msg-avatar">M</div>
+        <div>
+          <div class="msg-bubble">Está en muy buen estado, sin manchas. Hay una pequeña marca en el brazo derecho que apenas se nota, la puedo fotografiar si quieres.</div>
+          <div class="msg-time">10:38</div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- Aviso de contenido bloqueado -->
+    <div class="blocked-warning" id="blockedWarning">
+      <span style="font-size:20px;flex-shrink:0">🚫</span>
+      <div>
+        <strong>Mensaje bloqueado</strong>
+        <p>No puedes compartir datos de contacto (teléfonos, emails, redes sociales) dentro del chat. Todas las transacciones deben realizarse a través de Mueblista para que estés protegido.</p>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="chat-input-wrap">
+      <div class="chat-input-row">
+        <textarea
+          class="chat-textarea"
+          id="msgInput"
+          placeholder="Escribe un mensaje..."
+          rows="1"
+          onkeydown="handleKey(event)"
+          oninput="autoResize(this); checkInput(this)"
+        ></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>➤</button>
+      </div>
+      <div class="input-hint">
+        Las transacciones fuera de Mueblista no están protegidas.
+        <a href="como-funciona.html">Saber más</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  /* ─── DATOS DE CONVERSACIONES ─── */
+  const convData = [
+    {
+      name: 'Laura M.',
+      sub: 'Compradora · En línea ahora',
+      avatar: '🛋️',
+      productTitle: 'Sofá Chester 3 plazas',
+      productPrice: '380 €',
+      productImg: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=80&q=80',
+    },
+    {
+      name: 'Carlos R.',
+      sub: 'Comprador · Última vez ayer',
+      avatar: '🪑',
+      productTitle: 'Silla escandinava roble',
+      productPrice: '95 €',
+      productImg: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=80&q=80',
+    },
+    {
+      name: 'Ana P.',
+      sub: 'Compradora · Última vez el lunes',
+      avatar: '🪞',
+      productTitle: 'Espejo vintage redondo',
+      productPrice: '60 €',
+      productImg: 'https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=80&q=80',
+    },
+    {
+      name: 'Roberto S.',
+      sub: 'Comprador · Última vez el viernes',
+      avatar: '💡',
+      productTitle: 'Lámpara de pie arco dorado',
+      productPrice: '189 €',
+      productImg: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=80&q=80',
+    },
+  ];
+
+  /* ─── ABRIR CONVERSACIÓN ─── */
+  function openConv(el, idx) {
+    document.querySelectorAll('.conv-item').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    const unread = el.querySelector('.conv-unread');
+    if (unread) unread.remove();
+
+    const d = convData[idx];
+    document.getElementById('chatName').textContent = d.name;
+    document.getElementById('chatSub').textContent = d.sub;
+    document.querySelector('.chat-header-avatar').textContent = d.avatar;
+    document.getElementById('chatProductTitle').textContent = d.productTitle;
+    document.getElementById('chatProductPrice').textContent = d.productPrice;
+    document.getElementById('chatProductImg').src = d.productImg;
+  }
+
+  /* ─── FILTRO ANTI-CONTACTO ─── */
+  const blockedPatterns = [
+    // Teléfonos
+    /(\+34|0034)?[\s.-]?[6789]\d{2}[\s.-]?\d{3}[\s.-]?\d{3}/,
+    /\b\d{3}[\s.-]\d{3}[\s.-]\d{3}\b/,
+    // Email con @
+    /[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/,
+    // Email sin @ pero con proveedores conocidos
+    /\b(gmail|hotmail|outlook|yahoo|icloud|proton)\s*(punto|dot|\.)\s*(com|es|net|org)\b/i,
+    // Arroba escrita
+    /\barroba\b|\[at\]|\(at\)/i,
+    // Redes sociales y links
+    /whatsapp|wasap|washap|whasap|wassap|guasap|wasa|wsp|telegram|signal/i,
+    /@[a-z0-9_]{3,}/i,
+    /wa\.me|t\.me|instagram\.com/i,
+  ];
+
+  function containsContact(text) {
+    // Comprueba el texto original
+    if (blockedPatterns.some(p => p.test(text))) return true;
+    // Comprueba también sin espacios (detecta "6 1 2 3 4 5 6 7 8")
+    const noSpaces = text.replace(/\s/g, '');
+    if (blockedPatterns.some(p => p.test(noSpaces))) return true;
+    // Comprueba solo los dígitos del texto (detecta cualquier secuencia de 9 dígitos)
+    const onlyDigits = text.replace(/\D/g, '');
+    if (/[6789]\d{8}/.test(onlyDigits)) return true;
+    return false;
+  }
+
+  /* ─── VALIDAR INPUT ─── */
+  function checkInput(el) {
+    const val = el.value.trim();
+    const sendBtn = document.getElementById('sendBtn');
+    sendBtn.disabled = val.length === 0;
+    if (val.length > 0) {
+      el.classList.remove('error');
+      document.getElementById('blockedWarning').classList.remove('show');
+    }
+  }
+
+  /* ─── ENVIAR MENSAJE ─── */
+  function sendMessage() {
+    const input = document.getElementById('msgInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    if (containsContact(text)) {
+      input.classList.add('error');
+      document.getElementById('blockedWarning').classList.add('show');
+      return;
+    }
+
+    input.classList.remove('error');
+    document.getElementById('blockedWarning').classList.remove('show');
+
+    appendMessage(text, 'mine');
+    input.value = '';
+    input.style.height = 'auto';
+    document.getElementById('sendBtn').disabled = true;
+
+    // Respuesta automática de demo
+    setTimeout(() => {
+      const replies = [
+        '¡Perfecto, gracias por la info!',
+        'De acuerdo, lo tengo en cuenta.',
+        '¿Podría verlo en persona antes de comprarlo?',
+        'Entendido. ¿El envío está incluido en el precio?',
+      ];
+      appendMessage(replies[Math.floor(Math.random() * replies.length)], 'theirs');
+    }, 1400);
+  }
+
+  function appendMessage(text, who) {
+    const wrap = document.getElementById('messagesWrap');
+    const avatarLetter = who === 'mine' ? 'M' : convData[getActiveConvIdx()].name[0];
+    const now = new Date();
+    const time = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+
+    const div = document.createElement('div');
+    div.className = 'msg ' + who;
+    div.innerHTML = `
+      <div class="msg-avatar">${avatarLetter}</div>
+      <div>
+        <div class="msg-bubble">${escapeHtml(text)}</div>
+        <div class="msg-time">${time}</div>
+      </div>
+    `;
+    wrap.appendChild(div);
+    wrap.scrollTop = wrap.scrollHeight;
+  }
+
+  function getActiveConvIdx() {
+    const items = document.querySelectorAll('.conv-item');
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].classList.contains('active')) return i;
+    }
+    return 0;
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  /* ─── ENTER PARA ENVIAR ─── */
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (!document.getElementById('sendBtn').disabled) sendMessage();
+    }
+  }
+
+  /* ─── AUTO RESIZE TEXTAREA ─── */
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  }
+
+  /* ─── FILTRO SIDEBAR ─── */
+  function filterConvs(q) {
+    const lower = q.toLowerCase();
+    document.querySelectorAll('.conv-item').forEach(item => {
+      const text = item.textContent.toLowerCase();
+      item.style.display = text.includes(lower) ? '' : 'none';
+    });
+  }
+
+  /* Scroll al fondo al cargar */
+  window.onload = () => {
+    const wrap = document.getElementById('messagesWrap');
+    wrap.scrollTop = wrap.scrollHeight;
+  };
+
+<script src="cookie-banner.js"></script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Política de privacidad — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:  #1a0d07; --terra:  #c96a38; --cream:  #fdf6ee;
+      --sand:   #ede3d5; --sand-l: #f7f0e6; --gray:   #7a726b;
+      --gray-l: #a09890; --white:  #ffffff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); }
+    nav { position: sticky; top: 0; z-index: 200; height: 58px; padding: 0 24px; display: flex; align-items: center; gap: 16px; background: var(--white); border-bottom: 1px solid #ebebeb; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .nav-right { margin-left: auto; }
+    .nav-back { font-size: 13px; font-weight: 600; color: var(--gray); text-decoration: none; padding: 8px 16px; border-radius: 8px; transition: all 0.15s; }
+    .nav-back:hover { color: var(--brown); background: #f5f5f5; }
+    .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; display: grid; grid-template-columns: 220px 1fr; gap: 40px; align-items: start; }
+    .toc { position: sticky; top: 78px; }
+    .toc-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-l); margin-bottom: 12px; }
+    .toc a { display: block; padding: 6px 10px; border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--gray); text-decoration: none; transition: all 0.15s; border-left: 2px solid transparent; }
+    .toc a:hover { color: var(--terra); background: var(--sand-l); }
+    .toc a.active { color: var(--terra); border-left-color: var(--terra); background: var(--sand-l); }
+    .legal-content { min-width: 0; }
+    .legal-header { margin-bottom: 36px; }
+    .legal-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--terra); background: #fdecd8; padding: 4px 12px; border-radius: 100px; margin-bottom: 12px; }
+    .legal-header h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.7px; margin-bottom: 10px; }
+    .legal-meta { font-size: 13px; color: var(--gray); }
+    .legal-meta strong { color: var(--brown); }
+    .draft-banner { background: #fff7e0; border: 1px solid #f0d080; border-radius: 12px; padding: 14px 16px; font-size: 13px; color: #8a6000; margin-bottom: 32px; display: flex; gap: 10px; align-items: flex-start; }
+    .legal-section { margin-bottom: 36px; scroll-margin-top: 80px; }
+    .legal-section h2 { font-size: 18px; font-weight: 800; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--sand); display: flex; align-items: center; gap: 8px; }
+    .sec-num { font-size: 12px; font-weight: 700; color: var(--terra); background: #fdecd8; padding: 2px 8px; border-radius: 4px; }
+    .legal-section p { font-size: 14px; color: #4a3d35; line-height: 1.8; margin-bottom: 12px; }
+    .legal-section ul { margin: 8px 0 12px 20px; }
+    .legal-section ul li { font-size: 14px; color: #4a3d35; line-height: 1.7; margin-bottom: 4px; }
+    .legal-section h3 { font-size: 15px; font-weight: 700; margin: 16px 0 8px; }
+    .placeholder { background: var(--sand-l); border: 1.5px dashed var(--sand); border-radius: 10px; padding: 14px 16px; font-size: 13px; color: var(--gray); line-height: 1.6; font-style: italic; margin-bottom: 12px; }
+    .placeholder strong { color: var(--terra); font-style: normal; }
+    .rights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+    .right-card { background: var(--white); border: 1px solid var(--sand); border-radius: 12px; padding: 14px 16px; }
+    .right-card strong { display: block; font-size: 14px; margin-bottom: 4px; }
+    .right-card p { font-size: 13px; color: var(--gray); line-height: 1.5; margin: 0; }
+    footer { background: var(--white); border-top: 1px solid #ebebeb; padding: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-logo { font-size: 16px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .footer-logo em { font-style: normal; color: var(--terra); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: var(--gray); text-decoration: none; }
+    .footer-links a:hover { color: var(--brown); }
+    .footer-copy { font-size: 12px; color: #ccc; }
+    @media (max-width: 700px) { .page { grid-template-columns: 1fr; } .toc { display: none; } .rights-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <div class="nav-right"><a href="index.html" class="nav-back">← Volver</a></div>
+</nav>
+
+<div class="page">
+  <div class="toc">
+    <div class="toc-title">Contenido</div>
+    <a href="#responsable" class="active">1. Responsable</a>
+    <a href="#datos">2. Datos que recogemos</a>
+    <a href="#finalidad">3. Finalidad</a>
+    <a href="#legitimacion">4. Legitimación</a>
+    <a href="#destinatarios">5. Destinatarios</a>
+    <a href="#conservacion">6. Conservación</a>
+    <a href="#derechos">7. Tus derechos</a>
+    <a href="#menores">8. Menores</a>
+    <a href="#seguridad">9. Seguridad</a>
+    <a href="#contacto">10. Contacto</a>
+  </div>
+
+  <div class="legal-content">
+    <div class="legal-header">
+      <div class="legal-tag">Legal</div>
+      <h1>Política de privacidad</h1>
+      <div class="legal-meta">Última actualización: <strong>junio 2026</strong> · Conforme al RGPD (UE) 2016/679 y la LOPDGDD</div>
+    </div>
+
+    <div class="draft-banner">
+      ⚠️ <div><strong>Documento en borrador</strong> — Este texto tiene carácter orientativo. Debe ser revisado y completado por un asesor legal antes de la puesta en producción.</div>
+    </div>
+
+    <div class="legal-section" id="responsable">
+      <h2><span class="sec-num">1</span> Responsable del tratamiento</h2>
+      <p>El responsable del tratamiento de los datos personales recogidos a través de Mueblista es:</p>
+      <div class="placeholder">
+        <strong>Por completar:</strong><br>
+        Nombre / Razón social: [NOMBRE]<br>
+        NIF/CIF: [NÚMERO]<br>
+        Domicilio: [DIRECCIÓN COMPLETA]<br>
+        Correo de contacto: [EMAIL PROTECCIÓN DE DATOS]<br>
+        Delegado de Protección de Datos (si aplica): [NOMBRE Y CONTACTO]
+      </div>
+    </div>
+
+    <div class="legal-section" id="datos">
+      <h2><span class="sec-num">2</span> Datos que recogemos</h2>
+      <h3>Al registrarte</h3>
+      <ul>
+        <li>Nombre y apellidos</li>
+        <li>Dirección de correo electrónico</li>
+        <li>Contraseña (almacenada cifrada)</li>
+        <li>Número de teléfono (opcional)</li>
+      </ul>
+      <h3>Al comprar o vender</h3>
+      <ul>
+        <li>Dirección de envío o recogida</li>
+        <li>Datos de pago (gestionados por el proveedor de pagos, no almacenados por Mueblista)</li>
+        <li>Historial de transacciones</li>
+        <li>Valoraciones recibidas y emitidas</li>
+      </ul>
+      <h3>Al usar la plataforma</h3>
+      <ul>
+        <li>Dirección IP y datos del dispositivo</li>
+        <li>Páginas visitadas y búsquedas realizadas</li>
+        <li>Artículos guardados en favoritos</li>
+        <li>Mensajes del chat (contenido y metadatos)</li>
+      </ul>
+    </div>
+
+    <div class="legal-section" id="finalidad">
+      <h2><span class="sec-num">3</span> Finalidad del tratamiento</h2>
+      <ul>
+        <li><strong>Gestión de la cuenta:</strong> crear, mantener y dar acceso a tu perfil de usuario.</li>
+        <li><strong>Intermediación en compraventas:</strong> facilitar el proceso de compra, pago y entrega.</li>
+        <li><strong>Comunicaciones transaccionales:</strong> enviarte confirmaciones de pedido, actualizaciones de envío y notificaciones de mensajes.</li>
+        <li><strong>Seguridad:</strong> detectar y prevenir fraudes, abusos y conductas prohibidas.</li>
+        <li><strong>Mejora del servicio:</strong> analizar el uso de la plataforma para mejorar la experiencia.</li>
+        <li><strong>Comunicaciones comerciales:</strong> solo si has dado tu consentimiento explícito.</li>
+      </ul>
+    </div>
+
+    <div class="legal-section" id="legitimacion">
+      <h2><span class="sec-num">4</span> Base de legitimación</h2>
+      <ul>
+        <li><strong>Ejecución de un contrato</strong> (Art. 6.1.b RGPD): para prestarte el servicio de compraventa.</li>
+        <li><strong>Interés legítimo</strong> (Art. 6.1.f RGPD): para prevenir fraudes y mejorar el servicio.</li>
+        <li><strong>Consentimiento</strong> (Art. 6.1.a RGPD): para el envío de comunicaciones comerciales.</li>
+        <li><strong>Obligación legal</strong> (Art. 6.1.c RGPD): para cumplir con obligaciones fiscales y contables.</li>
+      </ul>
+    </div>
+
+    <div class="legal-section" id="destinatarios">
+      <h2><span class="sec-num">5</span> Destinatarios de los datos</h2>
+      <p>Tus datos pueden ser compartidos con:</p>
+      <ul>
+        <li><strong>Proveedores de pago</strong> ([NOMBRE]) para procesar las transacciones.</li>
+        <li><strong>Empresas de transporte</strong> para gestionar los envíos.</li>
+        <li><strong>Proveedor de hosting y servicios en la nube</strong> ([NOMBRE]) que actúa como encargado del tratamiento.</li>
+        <li><strong>Autoridades públicas</strong> cuando exista obligación legal.</li>
+      </ul>
+      <p>No vendemos ni cedemos datos personales a terceros con fines comerciales.</p>
+      <div class="placeholder"><strong>Por completar:</strong> nombres concretos de proveedores, contratos de encargado del tratamiento firmados, transferencias internacionales si las hay.</div>
+    </div>
+
+    <div class="legal-section" id="conservacion">
+      <h2><span class="sec-num">6</span> Plazo de conservación</h2>
+      <ul>
+        <li>Datos de cuenta: mientras la cuenta esté activa + 1 año tras su cancelación.</li>
+        <li>Datos de transacciones: 5 años por obligaciones fiscales y contables.</li>
+        <li>Mensajes del chat: [PLAZO A DEFINIR] por motivos de seguridad y resolución de disputas.</li>
+        <li>Datos de navegación y cookies: según la política de cookies.</li>
+      </ul>
+    </div>
+
+    <div class="legal-section" id="derechos">
+      <h2><span class="sec-num">7</span> Tus derechos</h2>
+      <p>Tienes derecho a ejercer en cualquier momento los siguientes derechos enviando un email a <strong>[EMAIL PROTECCIÓN DE DATOS]</strong> con copia de tu DNI:</p>
+      <div class="rights-grid">
+        <div class="right-card">
+          <strong>Acceso</strong>
+          <p>Saber qué datos tenemos sobre ti y cómo los usamos.</p>
+        </div>
+        <div class="right-card">
+          <strong>Rectificación</strong>
+          <p>Corregir datos inexactos o incompletos.</p>
+        </div>
+        <div class="right-card">
+          <strong>Supresión</strong>
+          <p>Solicitar el borrado de tus datos cuando ya no sean necesarios.</p>
+        </div>
+        <div class="right-card">
+          <strong>Limitación</strong>
+          <p>Restringir el tratamiento en determinadas circunstancias.</p>
+        </div>
+        <div class="right-card">
+          <strong>Portabilidad</strong>
+          <p>Recibir tus datos en formato estructurado y legible por máquina.</p>
+        </div>
+        <div class="right-card">
+          <strong>Oposición</strong>
+          <p>Oponerte al tratamiento basado en interés legítimo.</p>
+        </div>
+      </div>
+      <p style="margin-top:14px">También puedes presentar una reclamación ante la <strong>Agencia Española de Protección de Datos (AEPD)</strong> en <a href="https://www.aepd.es" style="color:var(--terra)">www.aepd.es</a>.</p>
+    </div>
+
+    <div class="legal-section" id="menores">
+      <h2><span class="sec-num">8</span> Menores de edad</h2>
+      <p>Mueblista no está dirigido a menores de 18 años. Si detectamos que un menor ha facilitado datos sin consentimiento parental, los eliminaremos de inmediato. Si eres padre o tutor y tienes conocimiento de ello, contáctanos en [EMAIL].</p>
+    </div>
+
+    <div class="legal-section" id="seguridad">
+      <h2><span class="sec-num">9</span> Seguridad</h2>
+      <p>Aplicamos medidas técnicas y organizativas para proteger tus datos: cifrado en tránsito (HTTPS/TLS), contraseñas hasheadas, acceso restringido a los datos y auditorías periódicas de seguridad.</p>
+      <p>En caso de brecha de seguridad que afecte a tus datos, te notificaremos en los plazos establecidos por el RGPD.</p>
+    </div>
+
+    <div class="legal-section" id="contacto">
+      <h2><span class="sec-num">10</span> Contacto</h2>
+      <p>Para cualquier consulta sobre el tratamiento de tus datos personales puedes contactarnos en:</p>
+      <div class="placeholder"><strong>Por completar:</strong> email de protección de datos, dirección postal, formulario de contacto.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+  <div class="footer-links">
+    <a href="terminos.html">Términos</a>
+    <a href="privacidad.html">Privacidad</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="devoluciones.html">Devoluciones</a>
+    <a href="quienes-somos.html">Quiénes somos</a>
+    <a href="ayuda.html">Ayuda</a>
+  </div>
+  <div class="footer-copy">© 2026 Mueblista</div>
+</footer>
+
+<script>
+  const sections = document.querySelectorAll('.legal-section');
+  const tocLinks = document.querySelectorAll('.toc a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector('.toc a[href="#' + e.target.id + '"]');
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -65% 0px' });
+  sections.forEach(s => obs.observe(s));
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

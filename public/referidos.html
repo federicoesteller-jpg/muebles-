@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programa de referidos — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:  #1a0d07;
+      --terra:  #c96a38;
+      --cream:  #fafafa;
+      --sand:   #e8e0d8;
+      --gray:   #717171;
+      --gray-l: #a0a0a0;
+      --white:  #ffffff;
+      --green:  #2d7a4f;
+      --green-l:#e8f5ee;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: var(--white); border-bottom: 1px solid #ebebeb;
+      height: 58px; padding: 0 24px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+    .nav-btn {
+      font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px;
+      text-decoration: none; transition: all 0.15s; border: none; cursor: pointer; font-family: inherit;
+    }
+    .nav-btn-ghost { color: var(--gray); background: transparent; }
+    .nav-btn-ghost:hover { color: var(--brown); background: #f5f5f5; }
+    .nav-btn-sell { color: var(--white); background: var(--terra); }
+    .nav-btn-sell:hover { background: #b85e30; }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: var(--brown);
+      padding: 80px 24px 72px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 0%, rgba(201,106,56,.3) 0%, transparent 65%),
+                  radial-gradient(ellipse at 20% 100%, rgba(201,106,56,.15) 0%, transparent 55%);
+    }
+    .hero-inner { position: relative; max-width: 680px; margin: 0 auto; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(201,106,56,.2); color: #f0b48a;
+      font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 99px; margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(1.9rem, 5vw, 3rem); font-weight: 800; line-height: 1.15;
+      color: var(--white); margin-bottom: 16px;
+    }
+    .hero h1 em { font-style: normal; color: var(--terra); }
+    .hero p {
+      font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,.7);
+      max-width: 520px; margin: 0 auto 36px;
+    }
+
+    /* Caja de enlace de referido */
+    .ref-link-box {
+      background: rgba(255,255,255,.08);
+      border: 1.5px solid rgba(255,255,255,.18);
+      border-radius: 16px; padding: 24px 28px;
+      max-width: 520px; margin: 0 auto;
+      text-align: left;
+    }
+    .ref-link-label {
+      font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+      color: rgba(255,255,255,.55); margin-bottom: 10px;
+    }
+    .ref-link-row {
+      display: flex; gap: 8px; align-items: center;
+    }
+    .ref-link-input {
+      flex: 1; background: rgba(255,255,255,.12); border: 1.5px solid rgba(255,255,255,.2);
+      border-radius: 10px; padding: 11px 14px;
+      font-size: 13px; font-weight: 600; font-family: inherit;
+      color: var(--white); outline: none; letter-spacing: .03em;
+    }
+    .ref-link-input::selection { background: var(--terra); }
+    .btn-copy {
+      flex-shrink: 0; padding: 11px 20px; border-radius: 10px;
+      background: var(--terra); color: var(--white);
+      font-size: 13px; font-weight: 700; font-family: inherit;
+      border: none; cursor: pointer; transition: background .15s;
+      white-space: nowrap;
+    }
+    .btn-copy:hover { background: #b85e30; }
+    .btn-copy.copied { background: var(--green); }
+    .ref-share-row {
+      display: flex; gap: 8px; margin-top: 14px;
+    }
+    .btn-share {
+      flex: 1; padding: 9px 0; border-radius: 9px;
+      border: 1.5px solid rgba(255,255,255,.2);
+      background: transparent; color: rgba(255,255,255,.8);
+      font-size: 12px; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: background .15s, border-color .15s;
+    }
+    .btn-share:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.4); }
+
+    /* ─── STATS PERSONALES ─── */
+    .my-stats {
+      background: var(--sand); padding: 36px 24px;
+    }
+    .my-stats-grid {
+      max-width: 720px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+    }
+    .my-stat-card {
+      background: var(--white); border-radius: 14px;
+      padding: 20px 20px 18px; text-align: center;
+      border: 1.5px solid #d9cfc6;
+    }
+    .my-stat-val { font-size: 2rem; font-weight: 800; line-height: 1; margin-bottom: 5px; color: var(--brown); }
+    .my-stat-val.green { color: var(--green); }
+    .my-stat-lbl { font-size: 12px; color: var(--gray); font-weight: 500; }
+
+    /* ─── CÓMO FUNCIONA ─── */
+    .section { padding: 72px 24px; }
+    .section-inner { max-width: 960px; margin: 0 auto; }
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--terra); margin-bottom: 10px; text-align: center;
+    }
+    .section-title {
+      font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; line-height: 1.2;
+      margin-bottom: 48px; text-align: center;
+    }
+
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; position: relative;
+    }
+    .steps-grid::before {
+      content: '';
+      position: absolute; top: 28px; left: calc(50% / 3 + 16px); right: calc(50% / 3 + 16px);
+      height: 2px; background: linear-gradient(to right, var(--sand), var(--terra), var(--sand));
+      z-index: 0;
+    }
+    .step-card {
+      background: var(--white); border: 1.5px solid var(--sand);
+      border-radius: 16px; padding: 28px 22px;
+      text-align: center; position: relative; z-index: 1;
+    }
+    .step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--terra); color: var(--white);
+      font-size: 1.3rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 18px;
+    }
+    .step-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .step-card p { font-size: .875rem; line-height: 1.6; color: var(--gray); }
+
+    /* ─── RECOMPENSAS ─── */
+    .rewards-bg { background: var(--brown); }
+    .rewards-bg .section-label { color: #f0b48a; }
+    .rewards-bg .section-title { color: var(--white); }
+    .rewards-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+    .reward-card {
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px; padding: 24px 20px;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: background .2s;
+    }
+    .reward-card:hover { background: rgba(255,255,255,.12); }
+    .reward-icon { font-size: 2rem; }
+    .reward-title { font-size: .95rem; font-weight: 700; color: var(--white); }
+    .reward-desc { font-size: .85rem; line-height: 1.55; color: rgba(255,255,255,.6); }
+    .reward-badge {
+      display: inline-block; align-self: flex-start;
+      background: rgba(201,106,56,.3); color: #f0b48a;
+      font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px;
+    }
+
+    /* ─── HISTORIAL DE REFERIDOS ─── */
+    .history-section { background: var(--white); }
+    .ref-table {
+      width: 100%; border-collapse: collapse; margin-top: 32px;
+    }
+    .ref-table th {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+      color: var(--gray-l); padding: 10px 16px; text-align: left;
+      border-bottom: 2px solid var(--sand);
+    }
+    .ref-table td {
+      padding: 14px 16px; font-size: 14px;
+      border-bottom: 1px solid var(--sand);
+    }
+    .ref-table tr:last-child td { border-bottom: none; }
+    .status-badge {
+      display: inline-block; padding: 3px 10px; border-radius: 99px;
+      font-size: 11px; font-weight: 700;
+    }
+    .status-pendiente { background: #fef3e2; color: #c67d1a; }
+    .status-completado { background: var(--green-l); color: var(--green); }
+    .status-registrado { background: #e8eef5; color: #2c5282; }
+
+    /* ─── FAQ ─── */
+    .faq-list { max-width: 680px; margin: 0 auto; }
+    .faq-item {
+      border-bottom: 1px solid var(--sand); padding: 20px 0;
+    }
+    .faq-question {
+      width: 100%; background: none; border: none; text-align: left;
+      font-family: inherit; font-size: .95rem; font-weight: 700; color: var(--brown);
+      cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      padding: 0;
+    }
+    .faq-chevron { font-size: 1.1rem; color: var(--terra); transition: transform .25s; flex-shrink: 0; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      font-size: .9rem; line-height: 1.7; color: var(--gray);
+      max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .3s;
+    }
+    .faq-item.open .faq-answer { max-height: 200px; padding-top: 12px; }
+
+    /* ─── CTA ─── */
+    .cta-band {
+      background: var(--sand); padding: 72px 24px; text-align: center;
+    }
+    .cta-band h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 800; margin-bottom: 12px; }
+    .cta-band p { font-size: .95rem; color: var(--gray); margin-bottom: 28px; max-width: 440px; margin-left: auto; margin-right: auto; }
+    .btn-dark {
+      display: inline-block; background: var(--brown); color: var(--white);
+      font-size: 14px; font-weight: 700; padding: 13px 28px; border-radius: 10px;
+      text-decoration: none; transition: background .15s;
+    }
+    .btn-dark:hover { background: #2d1a0e; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--brown); color: rgba(255,255,255,.55);
+      padding: 36px 24px; text-align: center;
+    }
+    .footer-logo { font-size: 20px; font-weight: 800; color: var(--white); text-decoration: none; display: block; margin-bottom: 20px; }
+    .footer-logo em { font-style: normal; color: var(--terra); }
+    .footer-links { display: flex; gap: 8px 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
+    .footer-links a { color: rgba(255,255,255,.55); text-decoration: none; font-size: 13px; transition: color .15s; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-copy { font-size: 12px; }
+
+    /* ─── TOAST ─── */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--green); color: #fff;
+      padding: 11px 22px; border-radius: 99px;
+      font-size: .875rem; font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+      z-index: 999; opacity: 0; transition: opacity .3s, transform .3s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ─── REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .55s, transform .55s; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 640px) {
+      .steps-grid { grid-template-columns: 1fr; }
+      .steps-grid::before { display: none; }
+      .ref-share-row { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <div class="nav-right">
+    <a href="panel-login.html" class="nav-btn nav-btn-ghost">Para tiendas</a>
+    <a href="login.html" class="nav-btn nav-btn-ghost">Iniciar sesión</a>
+    <a href="login.html#register" class="nav-btn nav-btn-ghost">Registrarse</a>
+    <a href="publicar.html" class="nav-btn nav-btn-sell">+ Vender</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-badge">Programa de referidos</span>
+    <h1>Invita a tus amigos<br>y <em>gana créditos</em></h1>
+    <p>Comparte Mueblista con quien conozcas. Cada vez que alguien se registre con tu enlace y complete su primera compra, los dos ganáis crédito para usar en la plataforma.</p>
+
+    <div class="ref-link-box">
+      <div class="ref-link-label">Tu enlace personal de referido</div>
+      <div class="ref-link-row">
+        <input class="ref-link-input" id="refLink" type="text" value="mueblista.es/r/federico2026" readonly onclick="this.select()" />
+        <button class="btn-copy" id="copyBtn" onclick="copyLink()">Copiar enlace</button>
+      </div>
+      <div class="ref-share-row">
+        <button class="btn-share" onclick="shareWhatsapp()">📱 WhatsApp</button>
+        <button class="btn-share" onclick="shareEmail()">✉️ Email</button>
+        <button class="btn-share" onclick="shareTelegram()">💬 Telegram</button>
+        <button class="btn-share" onclick="shareNative()">↗ Más opciones</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MIS STATS -->
+<div class="my-stats">
+  <div class="my-stats-grid">
+    <div class="my-stat-card">
+      <div class="my-stat-val">7</div>
+      <div class="my-stat-lbl">Amigos invitados</div>
+    </div>
+    <div class="my-stat-card">
+      <div class="my-stat-val">4</div>
+      <div class="my-stat-lbl">Registros completados</div>
+    </div>
+    <div class="my-stat-card">
+      <div class="my-stat-val">2</div>
+      <div class="my-stat-lbl">Primeras compras</div>
+    </div>
+    <div class="my-stat-card">
+      <div class="my-stat-val green">20 €</div>
+      <div class="my-stat-lbl">Créditos ganados</div>
+    </div>
+  </div>
+</div>
+
+<!-- CÓMO FUNCIONA -->
+<section class="section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Paso a paso</div>
+      <h2 class="section-title">¿Cómo funciona?</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-num">1</div>
+        <h3>Comparte tu enlace</h3>
+        <p>Copia tu enlace único y envíaselo a quien quieras: amigos, familia, vecinos que buscan muebles.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">2</div>
+        <h3>Tu amigo se registra</h3>
+        <p>Se crea una cuenta en Mueblista usando tu enlace. Ya aparece en tu historial como invitado.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">3</div>
+        <h3>Los dos ganáis crédito</h3>
+        <p>En cuanto complete su primera compra, tú recibes crédito y él también. Sin límite de invitaciones.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECOMPENSAS -->
+<section class="section rewards-bg">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Lo que ganas</div>
+      <h2 class="section-title">Recompensas del programa</h2>
+    </div>
+    <div class="rewards-grid">
+      <div class="reward-card reveal">
+        <div class="reward-icon">🎁</div>
+        <div class="reward-title">Por cada amigo que compra</div>
+        <div class="reward-desc">Cuando alguien invitado por ti completa su primera compra, tú recibes crédito Mueblista aplicable a tu próxima compra.</div>
+        <span class="reward-badge">Tú ganas</span>
+      </div>
+      <div class="reward-card reveal">
+        <div class="reward-icon">🛍️</div>
+        <div class="reward-title">Bienvenida para tu amigo</div>
+        <div class="reward-desc">Tu amigo también recibe crédito de bienvenida al registrarse con tu enlace, para usar en su primera compra.</div>
+        <span class="reward-badge">Tu amigo gana</span>
+      </div>
+      <div class="reward-card reveal">
+        <div class="reward-icon">♾️</div>
+        <div class="reward-title">Sin límite de referidos</div>
+        <div class="reward-desc">Puedes invitar a todas las personas que quieras. Cuantos más amigos se unan, más créditos acumulas.</div>
+        <span class="reward-badge">Ilimitado</span>
+      </div>
+      <div class="reward-card reveal">
+        <div class="reward-icon">⏳</div>
+        <div class="reward-title">Créditos sin caducidad*</div>
+        <div class="reward-desc">Los créditos que ganes no tienen fecha de vencimiento. Úsalos cuando lo necesites, sin prisa.</div>
+        <span class="reward-badge">Sin prisa</span>
+      </div>
+    </div>
+    <p style="color:rgba(255,255,255,.35); font-size:.78rem; margin-top:24px; text-align:center">* Sujeto a las condiciones del programa. Mueblista se reserva el derecho a modificar las recompensas con previo aviso.</p>
+  </div>
+</section>
+
+<!-- HISTORIAL -->
+<section class="section history-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Mis referidos</div>
+      <h2 class="section-title" style="text-align:center">Historial de invitaciones</h2>
+    </div>
+    <div class="reveal" style="overflow-x:auto">
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th>Amigo/a</th>
+            <th>Fecha de registro</th>
+            <th>Estado</th>
+            <th>Crédito obtenido</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>María G.</strong></td>
+            <td>02 jun 2026</td>
+            <td><span class="status-badge status-completado">✓ Primera compra</span></td>
+            <td style="font-weight:700; color:var(--green)">+10 €</td>
+          </tr>
+          <tr>
+            <td><strong>Carlos R.</strong></td>
+            <td>28 may 2026</td>
+            <td><span class="status-badge status-completado">✓ Primera compra</span></td>
+            <td style="font-weight:700; color:var(--green)">+10 €</td>
+          </tr>
+          <tr>
+            <td><strong>Ana P.</strong></td>
+            <td>21 may 2026</td>
+            <td><span class="status-badge status-registrado">Registrado</span></td>
+            <td style="color:var(--gray-l)">Pendiente de compra</td>
+          </tr>
+          <tr>
+            <td><strong>Javier M.</strong></td>
+            <td>18 may 2026</td>
+            <td><span class="status-badge status-registrado">Registrado</span></td>
+            <td style="color:var(--gray-l)">Pendiente de compra</td>
+          </tr>
+          <tr>
+            <td><strong>Lucía T.</strong></td>
+            <td>10 may 2026</td>
+            <td><span class="status-badge status-pendiente">Enlace enviado</span></td>
+            <td style="color:var(--gray-l)">—</td>
+          </tr>
+          <tr>
+            <td><strong>Roberto F.</strong></td>
+            <td>05 may 2026</td>
+            <td><span class="status-badge status-pendiente">Enlace enviado</span></td>
+            <td style="color:var(--gray-l)">—</td>
+          </tr>
+          <tr>
+            <td><strong>Sofía D.</strong></td>
+            <td>01 may 2026</td>
+            <td><span class="status-badge status-pendiente">Enlace enviado</span></td>
+            <td style="color:var(--gray-l)">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" style="background: var(--sand);">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label" style="text-align:center">Preguntas frecuentes</div>
+      <h2 class="section-title">Dudas sobre el programa</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Cuándo recibo el crédito?
+          <span class="faq-chevron">▾</span>
+        </button>
+        <div class="faq-answer">El crédito se acredita en tu cuenta automáticamente cuando tu amigo completa su primera compra. Recibirás un email de confirmación en ese momento.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Hay un límite de personas que puedo invitar?
+          <span class="faq-chevron">▾</span>
+        </button>
+        <div class="faq-answer">No hay límite. Puedes compartir tu enlace con tantas personas como quieras y acumular crédito por cada una que complete su primera compra.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Los créditos se pueden combinar con otros descuentos?
+          <span class="faq-chevron">▾</span>
+        </button>
+        <div class="faq-answer">Sí, los créditos de referido son acumulables y se aplican automáticamente al pagar, junto con cualquier otro descuento o promoción activa en tu cuenta.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Qué pasa si mi amigo devuelve su primera compra?
+          <span class="faq-chevron">▾</span>
+        </button>
+        <div class="faq-answer">Si la compra es devuelta y reembolsada, el crédito de referido se cancela automáticamente. Solo se consolida cuando la compra queda completada definitivamente.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Puedo usar el crédito para vender, no solo para comprar?
+          <span class="faq-chevron">▾</span>
+        </button>
+        <div class="faq-answer">Por ahora el crédito solo aplica a compras. Estamos explorando opciones para que también sirva para destacar tus anuncios. Te avisaremos cuando esté disponible.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band">
+  <h2>¿Aún no tienes tu enlace?</h2>
+  <p>Crea una cuenta gratis y empieza a ganar crédito invitando a quien quieras.</p>
+  <a href="login.html#register" class="btn-dark">Crear cuenta gratis</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+  <div class="footer-links">
+    <a href="index.html">Catálogo</a>
+    <a href="como-funciona.html">Cómo funciona</a>
+    <a href="quienes-somos.html">Quiénes somos</a>
+    <a href="ayuda.html">Ayuda</a>
+    <a href="referidos.html">Referidos</a>
+    <a href="terminos.html">Aviso legal</a>
+    <a href="privacidad.html">Privacidad</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="devoluciones.html">Devoluciones</a>
+  </div>
+  <div class="footer-copy">© 2026 Mueblista</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ─── COPIAR ENLACE ─── */
+  function copyLink() {
+    const input = document.getElementById('refLink');
+    input.select();
+    navigator.clipboard.writeText(input.value).catch(() => {
+      document.execCommand('copy');
+    });
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✓ Copiado';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copiar enlace';
+      btn.classList.remove('copied');
+    }, 2500);
+    showToast('¡Enlace copiado! Pégalo donde quieras.');
+  }
+
+  /* ─── COMPARTIR ─── */
+  const REF_LINK = document.getElementById('refLink').value;
+  const MSG = 'Te invito a Mueblista, el marketplace de muebles de segunda mano. Usa mi enlace y los dos ganamos crédito: ';
+
+  function shareWhatsapp() {
+    window.open('https://wa.me/?text=' + encodeURIComponent(MSG + REF_LINK));
+  }
+  function shareEmail() {
+    window.location.href = 'mailto:?subject=Te invito a Mueblista&body=' + encodeURIComponent(MSG + REF_LINK);
+  }
+  function shareTelegram() {
+    window.open('https://t.me/share/url?url=' + encodeURIComponent(REF_LINK) + '&text=' + encodeURIComponent(MSG));
+  }
+  function shareNative() {
+    if (navigator.share) {
+      navigator.share({ title: 'Mueblista', text: MSG, url: REF_LINK }).catch(() => {});
+    } else {
+      copyLink();
+    }
+  }
+
+  /* ─── TOAST ─── */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  /* ─── FAQ ─── */
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

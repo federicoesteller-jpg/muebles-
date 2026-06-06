@@ -61,6 +61,22 @@
     .nav-btn-sell { color: var(--white); background: var(--terra); }
     .nav-btn-sell:hover { background: #b85e30; }
 
+    .bell-btn {
+      position: relative; width: 38px; height: 38px; border-radius: 9px;
+      border: none; background: #f5f5f5; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; transition: background .15s; text-decoration: none; color: var(--brown);
+    }
+    .bell-btn:hover { background: var(--sand); }
+    .bell-badge {
+      position: absolute; top: 4px; right: 4px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--terra); color: #fff;
+      font-size: 9px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid var(--white);
+    }
+
     /* ─── CATEGORÍAS ─── */
     .cats {
       background: var(--white);
@@ -337,8 +353,10 @@
   </div>
   <div class="nav-right">
     <a href="panel-login.html" class="nav-btn nav-btn-ghost">Para tiendas</a>
-    <a href="#" class="nav-btn nav-btn-ghost">Iniciar sesión</a>
-    <a href="#" class="nav-btn nav-btn-sell">+ Vender</a>
+    <a href="notificaciones.html" class="bell-btn" title="Notificaciones">🔔<span class="bell-badge">5</span></a>
+    <a href="login.html" class="nav-btn nav-btn-ghost">Iniciar sesión</a>
+    <a href="login.html#register" class="nav-btn nav-btn-ghost">Registrarse</a>
+    <a href="publicar.html" class="nav-btn nav-btn-sell">+ Vender</a>
   </div>
 </nav>
 
@@ -662,10 +680,15 @@
   <div class="footer-links">
     <a href="#">Catálogo</a>
     <a href="panel-login.html">Soy una tienda</a>
-    <a href="#">Cómo funciona</a>
+    <a href="como-funciona.html">Cómo funciona</a>
+    <a href="quienes-somos.html">Quiénes somos</a>
+    <a href="ayuda.html">Ayuda</a>
+    <a href="referidos.html">Referidos</a>
     <a href="#">Ayuda</a>
-    <a href="#">Aviso legal</a>
-    <a href="#">Privacidad</a>
+    <a href="terminos.html">Aviso legal</a>
+    <a href="privacidad.html">Privacidad</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="devoluciones.html">Devoluciones</a>
   </div>
   <div class="footer-copy">© 2026 Mueblista</div>
 </footer>
@@ -694,5 +717,6 @@
     el.classList.add('active');
   }
 </script>
+<script src="cookie-banner.js"></script>
 </body>
 </html>

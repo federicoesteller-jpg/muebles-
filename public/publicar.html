@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publicar artículo — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:  #1a0d07;
+      --terra:  #c96a38;
+      --cream:  #fdf6ee;
+      --sand:   #ede3d5;
+      --sand-l: #f7f0e6;
+      --gray:   #7a726b;
+      --gray-l: #a09890;
+      --white:  #ffffff;
+      --green:  #2d7a4f;
+      --green-l:#e8f5ee;
+      --red:    #d94040;
+      --red-l:  #fdeaea;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); min-height: 100vh; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      height: 58px; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--white); border-bottom: 1px solid #ebebeb;
+    }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .nav-right { display: flex; gap: 8px; align-items: center; }
+    .nav-btn {
+      font-size: 13px; font-weight: 600; padding: 8px 16px;
+      border-radius: 8px; text-decoration: none; border: none;
+      cursor: pointer; font-family: inherit; transition: all 0.15s;
+    }
+    .nav-btn-ghost { color: var(--gray); background: transparent; }
+    .nav-btn-ghost:hover { color: var(--brown); background: #f5f5f5; }
+
+    /* ─── LAYOUT ─── */
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+
+    /* ─── HEADER ─── */
+    .page-header { margin-bottom: 28px; }
+    .page-header h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.7px; margin-bottom: 4px; }
+    .page-header p { font-size: 14px; color: var(--gray); }
+
+    /* ─── PROGRESS ─── */
+    .progress-wrap { margin-bottom: 36px; }
+
+    .steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 10px;
+    }
+
+    .step {
+      display: flex; align-items: center; gap: 8px;
+      flex: 1;
+      position: relative;
+    }
+
+    .step-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+      flex-shrink: 0;
+      transition: all 0.3s;
+      background: var(--sand); color: var(--gray);
+      border: 2px solid var(--sand);
+    }
+
+    .step.active .step-num { background: var(--terra); color: #fff; border-color: var(--terra); }
+    .step.done .step-num { background: var(--green); color: #fff; border-color: var(--green); }
+
+    .step-label {
+      font-size: 12px; font-weight: 600;
+      color: var(--gray-l);
+      transition: color 0.3s;
+      white-space: nowrap;
+    }
+    .step.active .step-label { color: var(--terra); }
+    .step.done .step-label { color: var(--green); }
+
+    .step-line {
+      flex: 1; height: 2px;
+      background: var(--sand);
+      margin: 0 10px;
+      transition: background 0.3s;
+    }
+    .step-line.done { background: var(--green); }
+
+    /* ─── CARDS DE PASO ─── */
+    .step-card {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .step-card.active { display: block; }
+
+    .card-title {
+      font-size: 16px; font-weight: 800; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-title-icon {
+      width: 32px; height: 32px;
+      background: var(--sand-l);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    /* ─── CAMPO ─── */
+    .field { margin-bottom: 20px; }
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 13px; font-weight: 700;
+      margin-bottom: 6px; color: var(--brown);
+    }
+    label .req { color: var(--terra); margin-left: 2px; }
+    label .hint { font-weight: 400; color: var(--gray-l); font-size: 12px; margin-left: 6px; }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--sand);
+      border-radius: 10px;
+      font-size: 14px; font-family: inherit;
+      color: var(--brown);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    textarea:focus,
+    select:focus { border-color: var(--terra); }
+
+    input[type="text"]::placeholder,
+    input[type="number"]::placeholder,
+    textarea::placeholder { color: #c0b8b0; }
+
+    textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '▾';
+      position: absolute; right: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-l); pointer-events: none;
+      font-size: 12px;
+    }
+
+    .char-count {
+      font-size: 11px; color: var(--gray-l);
+      text-align: right; margin-top: 4px;
+    }
+
+    /* ─── GRID DE DOS COLUMNAS ─── */
+    .fields-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .fields-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* ─── CHIPS DE ESTADO ─── */
+    .chip-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .chip {
+      padding: 8px 16px;
+      border-radius: 100px;
+      border: 1.5px solid var(--sand);
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all 0.15s;
+      background: var(--white); color: var(--gray);
+      user-select: none;
+    }
+    .chip:hover { border-color: var(--terra); color: var(--terra); }
+    .chip.selected { border-color: var(--terra); background: var(--terra); color: #fff; }
+
+    /* ─── ZONA DE FOTOS ─── */
+    .photo-zone {
+      border: 2px dashed var(--sand);
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--sand-l);
+      position: relative;
+    }
+    .photo-zone:hover, .photo-zone.drag-over {
+      border-color: var(--terra);
+      background: #fef5ec;
+    }
+    .photo-zone input[type="file"] {
+      position: absolute; inset: 0;
+      opacity: 0; cursor: pointer;
+      width: 100%; height: 100%;
+      border: none; padding: 0;
+    }
+    .photo-icon { font-size: 36px; margin-bottom: 10px; }
+    .photo-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .photo-sub { font-size: 13px; color: var(--gray); }
+    .photo-hint { font-size: 11px; color: var(--gray-l); margin-top: 8px; }
+
+    /* Miniaturas de fotos */
+    .photo-previews {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .photo-preview {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      border: 1.5px solid var(--sand);
+      background: #f0f0f0;
+    }
+
+    .photo-preview img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+
+    .photo-preview .badge-main {
+      position: absolute; top: 5px; left: 5px;
+      font-size: 9px; font-weight: 700;
+      padding: 2px 6px; border-radius: 4px;
+      background: var(--terra); color: #fff;
+    }
+
+    .photo-preview .del-btn {
+      position: absolute; top: 5px; right: 5px;
+      width: 22px; height: 22px;
+      background: rgba(26,13,7,0.7);
+      border-radius: 50%; border: none;
+      color: #fff; font-size: 12px;
+      cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+      line-height: 1;
+    }
+    .photo-preview .del-btn:hover { background: var(--red); }
+
+    .photo-count {
+      font-size: 12px; color: var(--gray);
+      margin-top: 8px; text-align: center;
+    }
+
+    /* ─── TIPS FOTOS ─── */
+    .photo-tips {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .tip {
+      display: flex; align-items: flex-start; gap: 8px;
+      background: var(--sand-l);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 12px;
+      color: var(--gray);
+      line-height: 1.4;
+    }
+    .tip span { font-size: 16px; flex-shrink: 0; }
+    .tip strong { display: block; color: var(--brown); font-size: 12px; margin-bottom: 1px; }
+
+    /* ─── PRECIO ─── */
+    .price-input-wrap { position: relative; }
+    .price-input-wrap input { padding-left: 40px; font-size: 20px; font-weight: 700; }
+    .price-symbol {
+      position: absolute; left: 14px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px; font-weight: 700;
+      color: var(--brown); pointer-events: none;
+    }
+
+    .price-suggestion {
+      margin-top: 10px;
+      background: #fef5ec;
+      border: 1px solid #f5d5b0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: #9a5520;
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+    .price-suggestion strong { color: var(--terra); }
+
+    /* ─── OPCIONES DE ENTREGA ─── */
+    .delivery-options { display: flex; flex-direction: column; gap: 10px; }
+
+    .delivery-opt {
+      border: 1.5px solid var(--sand);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex; align-items: flex-start; gap: 14px;
+      position: relative;
+    }
+    .delivery-opt:hover { border-color: var(--terra); }
+    .delivery-opt.selected { border-color: var(--terra); background: #fef5ec; }
+
+    .delivery-opt input[type="radio"] { display: none; }
+
+    .delivery-icon { font-size: 24px; flex-shrink: 0; margin-top: 1px; }
+
+    .delivery-text strong {
+      display: block; font-size: 14px; font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .delivery-text p { font-size: 13px; color: var(--gray); line-height: 1.4; }
+
+    .delivery-check {
+      position: absolute; right: 16px; top: 16px;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--sand);
+      transition: all 0.15s;
+    }
+    .delivery-opt.selected .delivery-check {
+      border-color: var(--terra);
+      background: var(--terra);
+    }
+    .delivery-opt.selected .delivery-check::after {
+      content: '✓';
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 11px; font-weight: 700;
+      width: 100%; height: 100%;
+    }
+
+    /* Subfields de envío */
+    .ship-details {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--sand);
+      display: none;
+    }
+    .ship-details.show { display: block; }
+
+    /* ─── SEPARADOR ─── */
+    .divider {
+      height: 1px; background: var(--sand);
+      margin: 20px 0;
+    }
+
+    /* ─── TARJETA RESUMEN ─── */
+    .summary-card {
+      background: var(--sand-l);
+      border: 1px solid var(--sand);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .summary-title {
+      font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      color: var(--gray-l); margin-bottom: 14px;
+    }
+
+    .summary-row {
+      display: flex; justify-content: space-between;
+      align-items: center;
+      font-size: 14px; padding: 5px 0;
+      border-bottom: 1px solid var(--sand);
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row .key { color: var(--gray); }
+    .summary-row .val { font-weight: 600; }
+    .summary-row .val.price { font-size: 20px; font-weight: 800; color: var(--terra); }
+
+    /* ─── BOTONES DE NAVEGACIÓN ─── */
+    .nav-buttons {
+      display: flex; gap: 12px; align-items: center;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    .btn-back {
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: 1.5px solid var(--sand);
+      background: transparent;
+      font-size: 14px; font-weight: 600;
+      color: var(--gray); cursor: pointer;
+      font-family: inherit; transition: all 0.15s;
+    }
+    .btn-back:hover { border-color: var(--brown); color: var(--brown); }
+
+    .btn-next {
+      padding: 13px 28px;
+      border-radius: 10px;
+      border: none;
+      background: var(--terra);
+      font-size: 15px; font-weight: 700;
+      color: #fff; cursor: pointer;
+      font-family: inherit; transition: all 0.15s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .btn-next:hover { background: #b85e30; }
+    .btn-next:disabled { background: var(--sand); color: var(--gray-l); cursor: not-allowed; }
+
+    .btn-publish {
+      padding: 15px 32px;
+      border-radius: 10px;
+      border: none;
+      background: var(--green);
+      font-size: 15px; font-weight: 700;
+      color: #fff; cursor: pointer;
+      font-family: inherit; transition: all 0.15s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .btn-publish:hover { background: #236040; }
+
+    /* ─── SUCCESS ─── */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
+    }
+    .success-screen.show { display: block; }
+
+    .success-icon {
+      font-size: 64px; margin-bottom: 20px;
+      animation: pop 0.4s cubic-bezier(.34,1.4,.64,1);
+    }
+    @keyframes pop { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .success-screen h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .success-screen p { font-size: 15px; color: var(--gray); margin-bottom: 28px; }
+
+    .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-success {
+      padding: 12px 24px; border-radius: 10px;
+      font-size: 14px; font-weight: 700;
+      text-decoration: none; font-family: inherit;
+      cursor: pointer; border: none; transition: all 0.15s;
+    }
+    .btn-success-primary { background: var(--terra); color: #fff; }
+    .btn-success-primary:hover { background: #b85e30; }
+    .btn-success-ghost { background: var(--sand-l); color: var(--brown); border: 1.5px solid var(--sand); }
+    .btn-success-ghost:hover { border-color: var(--brown); }
+
+    /* ─── VALIDACIÓN ─── */
+    .field-error {
+      font-size: 12px; color: var(--red);
+      margin-top: 4px; display: none;
+    }
+    input.error, select.error, textarea.error { border-color: var(--red); }
+
+    @media (max-width: 600px) {
+      .fields-row, .fields-row-3 { grid-template-columns: 1fr; }
+      .photo-tips { grid-template-columns: 1fr; }
+      .photo-previews { grid-template-columns: repeat(3, 1fr); }
+      .step-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-btn nav-btn-ghost">← Volver al catálogo</a>
+  </div>
+</nav>
+
+<!-- ─── CONTENIDO ─── -->
+<div class="page" id="mainContent">
+
+  <div class="page-header">
+    <h1 id="pageTitle">Publicar artículo</h1>
+    <p>Completa los 3 pasos para poner tu mueble a la venta</p>
+  </div>
+
+  <!-- SELECTOR TIPO -->
+  <div style="display:flex; gap:10px; margin-bottom:28px;">
+    <button
+      id="btnIndividual"
+      onclick="setMode('individual')"
+      style="flex:1; padding:14px 16px; border-radius:12px; border:2px solid var(--brown); background:var(--brown); color:#fff; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all .15s;"
+    >🪑 Artículo individual</button>
+    <button
+      id="btnLote"
+      onclick="setMode('lote')"
+      style="flex:1; padding:14px 16px; border-radius:12px; border:2px solid var(--sand); background:var(--white); color:var(--gray); font-size:14px; font-weight:700; font-family:inherit; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all .15s;"
+    >📦 Lote o conjunto</button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="steps">
+      <div class="step active" id="s1">
+        <div class="step-num">1</div>
+        <div class="step-label">Fotos</div>
+      </div>
+      <div class="step-line" id="line1"></div>
+      <div class="step" id="s2">
+        <div class="step-num">2</div>
+        <div class="step-label">Detalles</div>
+      </div>
+      <div class="step-line" id="line2"></div>
+      <div class="step" id="s3">
+        <div class="step-num">3</div>
+        <div class="step-label">Precio</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PASO 1 — FOTOS
+  ══════════════════════════════════════════ -->
+  <div class="step-card active" id="card1">
+    <div class="card-title">
+      <div class="card-title-icon">📷</div>
+      Fotos del artículo
+    </div>
+
+    <div class="field">
+      <label>Sube tus fotos <span class="req">*</span> <span class="hint">Mín. 1 · Máx. 8</span></label>
+      <div class="photo-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+        <input type="file" id="fileInput" accept="image/*" multiple />
+        <div class="photo-icon">🖼️</div>
+        <div class="photo-title">Arrastra las fotos aquí o haz clic para seleccionar</div>
+        <div class="photo-sub">JPG, PNG o WEBP · Máx. 10 MB por foto</div>
+        <div class="photo-hint">La primera foto será la portada del anuncio</div>
+      </div>
+      <div class="photo-previews" id="photoPreviews"></div>
+      <div class="photo-count" id="photoCount" style="display:none"></div>
+      <div class="field-error" id="photoError">Añade al menos una foto para continuar</div>
+    </div>
+
+    <div class="photo-tips">
+      <div class="tip">
+        <span>☀️</span>
+        <div><strong>Buena luz</strong>Fotografía cerca de una ventana o al exterior</div>
+      </div>
+      <div class="tip">
+        <span>🔲</span>
+        <div><strong>Fondo neutro</strong>Pared blanca o suelo limpio destacan el mueble</div>
+      </div>
+      <div class="tip">
+        <span>🔍</span>
+        <div><strong>Muestra detalles</strong>Foto de cerca si hay marcas o imperfecciones</div>
+      </div>
+      <div class="tip">
+        <span>📐</span>
+        <div><strong>Varios ángulos</strong>Frontal, lateral y detalle aumentan las ventas</div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-next" onclick="goStep(2)">Siguiente → Detalles</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PASO 2 — DETALLES
+  ══════════════════════════════════════════ -->
+  <div class="step-card" id="card2">
+    <div class="card-title">
+      <div class="card-title-icon">📝</div>
+      <span id="card2Title">Detalles del artículo</span>
+    </div>
+
+    <!-- SECCIÓN LOTE (oculta por defecto) -->
+    <div id="loteSection" style="display:none; margin-bottom:28px;">
+      <div style="background:var(--sand-l); border:1.5px solid var(--sand); border-radius:14px; padding:20px;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:4px;">Artículos incluidos en el lote</div>
+        <div style="font-size:13px; color:var(--gray); margin-bottom:16px;">Añade cada pieza del conjunto por separado. Mínimo 2 artículos.</div>
+        <div id="loteItems"></div>
+        <button
+          onclick="addLoteItem()"
+          style="width:100%; padding:11px; border-radius:10px; border:2px dashed var(--sand); background:transparent; color:var(--terra); font-size:13px; font-weight:700; font-family:inherit; cursor:pointer; transition:border-color .15s, background .15s; margin-top:4px;"
+          onmouseenter="this.style.borderColor='var(--terra)'; this.style.background='rgba(201,106,56,.05)'"
+          onmouseleave="this.style.borderColor='var(--sand)'; this.style.background='transparent'"
+        >+ Añadir artículo al lote</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="titulo">Título <span class="req">*</span></label>
+      <input type="text" id="titulo" maxlength="80"
+        placeholder="Ej: Sofá Chester 3 plazas cuero marrón" />
+      <div class="char-count"><span id="tituloCount">0</span>/80</div>
+      <div class="field-error" id="tituloError">El título es obligatorio</div>
+    </div>
+
+    <div class="field">
+      <label for="categoria">Categoría <span class="req">*</span></label>
+      <div class="select-wrap">
+        <select id="categoria">
+          <option value="">Selecciona una categoría</option>
+          <option>Sofás y sillones</option>
+          <option>Sillas y taburetes</option>
+          <option>Camas y cabeceros</option>
+          <option>Mesas</option>
+          <option>Armarios y cómodas</option>
+          <option>Estanterías y librerías</option>
+          <option>Lámparas e iluminación</option>
+          <option>Espejos</option>
+          <option>Decoración</option>
+          <option>Muebles de baño</option>
+          <option>Muebles de jardín</option>
+          <option>Muebles de oficina</option>
+          <option>Otros</option>
+        </select>
+      </div>
+      <div class="field-error" id="categoriaError">Selecciona una categoría</div>
+    </div>
+
+    <div class="field">
+      <label>Estado del artículo <span class="req">*</span></label>
+      <div class="chip-group" id="estadoGroup">
+        <div class="chip" data-val="nuevo" onclick="selectChip(this, 'estadoGroup')">Nuevo</div>
+        <div class="chip" data-val="como-nuevo" onclick="selectChip(this, 'estadoGroup')">Como nuevo</div>
+        <div class="chip" data-val="muy-bueno" onclick="selectChip(this, 'estadoGroup')">Muy bueno</div>
+        <div class="chip" data-val="bueno" onclick="selectChip(this, 'estadoGroup')">Bueno</div>
+        <div class="chip" data-val="aceptable" onclick="selectChip(this, 'estadoGroup')">Aceptable</div>
+      </div>
+      <div class="field-error" id="estadoError">Selecciona el estado del artículo</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="fields-row">
+      <div class="field">
+        <label for="material">Material</label>
+        <div class="select-wrap">
+          <select id="material">
+            <option value="">Sin especificar</option>
+            <option>Madera maciza</option>
+            <option>Madera contrachapada</option>
+            <option>Cuero auténtico</option>
+            <option>Cuero sintético</option>
+            <option>Tela / Tejido</option>
+            <option>Metal / Acero</option>
+            <option>Hierro forjado</option>
+            <option>Plástico</option>
+            <option>Ratán / Mimbre</option>
+            <option>Cristal / Vidrio</option>
+            <option>Mármol</option>
+            <option>Otro</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="color">Color principal</label>
+        <div class="select-wrap">
+          <select id="color">
+            <option value="">Sin especificar</option>
+            <option>Blanco</option>
+            <option>Negro</option>
+            <option>Gris</option>
+            <option>Beige / Crema</option>
+            <option>Marrón</option>
+            <option>Madera natural</option>
+            <option>Verde</option>
+            <option>Azul</option>
+            <option>Amarillo / Ocre</option>
+            <option>Rojo / Burdeos</option>
+            <option>Rosa</option>
+            <option>Dorado</option>
+            <option>Plateado</option>
+            <option>Multicolor</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Dimensiones <span class="hint">(en centímetros)</span></label>
+      <div class="fields-row-3">
+        <div>
+          <input type="number" id="dimAncho" placeholder="Ancho" min="1" max="999" />
+        </div>
+        <div>
+          <input type="number" id="dimFondo" placeholder="Fondo" min="1" max="999" />
+        </div>
+        <div>
+          <input type="number" id="dimAlto" placeholder="Alto" min="1" max="999" />
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="descripcion">Descripción <span class="req">*</span></label>
+      <textarea id="descripcion" maxlength="1000"
+        placeholder="Describe el artículo: estado, historia, motivo de venta, detalles a tener en cuenta..."></textarea>
+      <div class="char-count"><span id="descCount">0</span>/1000</div>
+      <div class="field-error" id="descripcionError">La descripción es obligatoria</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-back" onclick="goStep(1)">← Atrás</button>
+      <button class="btn-next" onclick="goStep(3)">Siguiente → Precio</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PASO 3 — PRECIO Y ENTREGA
+  ══════════════════════════════════════════ -->
+  <div class="step-card" id="card3">
+    <div class="card-title">
+      <div class="card-title-icon">💰</div>
+      Precio y entrega
+    </div>
+
+    <div class="field">
+      <label for="precio">Precio de venta <span class="req">*</span></label>
+      <div class="price-input-wrap">
+        <span class="price-symbol">€</span>
+        <input type="number" id="precio" placeholder="0" min="1" max="99999" />
+      </div>
+      <div class="price-suggestion" id="priceSuggestion" style="display:none">
+        💡 Artículos similares en Mueblista se venden entre <strong id="priceRange">—</strong>. Un precio competitivo vende hasta 3× más rápido.
+      </div>
+      <div class="field-error" id="precioError">Introduce un precio válido</div>
+    </div>
+
+    <div class="field">
+      <label>¿Admites ofertas?</label>
+      <div class="chip-group" id="ofertaGroup">
+        <div class="chip selected" data-val="si" onclick="selectChip(this, 'ofertaGroup')">Sí, acepto ofertas</div>
+        <div class="chip" data-val="no" onclick="selectChip(this, 'ofertaGroup')">No, precio fijo</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label>Ciudad <span class="req">*</span></label>
+      <div class="select-wrap">
+        <select id="ciudad">
+          <option value="">Selecciona tu ciudad</option>
+          <option>Madrid</option>
+          <option>Barcelona</option>
+          <option>Valencia</option>
+          <option>Sevilla</option>
+          <option>Bilbao</option>
+          <option>Málaga</option>
+          <option>Zaragoza</option>
+          <option>Murcia</option>
+          <option>Palma de Mallorca</option>
+          <option>Las Palmas de Gran Canaria</option>
+          <option>Alicante</option>
+          <option>Córdoba</option>
+          <option>Valladolid</option>
+          <option>Vigo</option>
+          <option>Gijón</option>
+          <option>Granada</option>
+          <option>A Coruña</option>
+          <option>Otra ciudad</option>
+        </select>
+      </div>
+      <div class="field-error" id="ciudadError">Selecciona tu ciudad</div>
+    </div>
+
+    <div class="field">
+      <label>Opciones de entrega <span class="req">*</span></label>
+      <div class="delivery-options" id="deliveryGroup">
+
+        <label class="delivery-opt selected" id="dOpt1" onclick="selectDelivery('envio')">
+          <input type="radio" name="entrega" value="envio" checked />
+          <div class="delivery-icon">📦</div>
+          <div class="delivery-text">
+            <strong>Envío a domicilio</strong>
+            <p>El comprador recibe el artículo en casa. Puedes usar transportistas de la plataforma o acordarlo directamente.</p>
+            <div class="ship-details show" id="shipDetails">
+              <div class="fields-row" style="margin-top:0">
+                <div class="field" style="margin-bottom:0">
+                  <label style="font-size:12px; margin-bottom:4px">Coste del envío</label>
+                  <div class="select-wrap">
+                    <select id="costoEnvio">
+                      <option>Gratis</option>
+                      <option>A calcular según destino</option>
+                      <option>Incluido en el precio</option>
+                      <option>El comprador lo paga</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field" style="margin-bottom:0">
+                  <label style="font-size:12px; margin-bottom:4px">Tamaño del paquete</label>
+                  <div class="select-wrap">
+                    <select id="tamPaquete">
+                      <option>Pequeño (cabe en coche)</option>
+                      <option>Mediano (furgoneta)</option>
+                      <option>Grande (camión)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="delivery-check"></div>
+        </label>
+
+        <label class="delivery-opt" id="dOpt2" onclick="selectDelivery('recogida')">
+          <input type="radio" name="entrega" value="recogida" />
+          <div class="delivery-icon">🤝</div>
+          <div class="delivery-text">
+            <strong>Solo recogida en mano</strong>
+            <p>El comprador pasa a recogerlo. Sin coste de envío, ideal para artículos grandes o frágiles.</p>
+          </div>
+          <div class="delivery-check"></div>
+        </label>
+
+        <label class="delivery-opt" id="dOpt3" onclick="selectDelivery('ambos')">
+          <input type="radio" name="entrega" value="ambos" />
+          <div class="delivery-icon">✅</div>
+          <div class="delivery-text">
+            <strong>Envío y recogida en mano</strong>
+            <p>Ofreces las dos opciones. El comprador elige la que prefiere.</p>
+          </div>
+          <div class="delivery-check"></div>
+        </label>
+
+      </div>
+      <div class="field-error" id="entregaError">Selecciona una opción de entrega</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- RESUMEN -->
+    <div class="summary-card" id="summaryCard">
+      <div class="summary-title">Resumen del anuncio</div>
+      <div class="summary-row"><span class="key">Artículo</span><span class="val" id="sumTitulo">—</span></div>
+      <div class="summary-row"><span class="key">Categoría</span><span class="val" id="sumCategoria">—</span></div>
+      <div class="summary-row"><span class="key">Estado</span><span class="val" id="sumEstado">—</span></div>
+      <div class="summary-row"><span class="key">Ciudad</span><span class="val" id="sumCiudad">—</span></div>
+      <div class="summary-row"><span class="key">Precio</span><span class="val price" id="sumPrecio">— €</span></div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-back" onclick="goStep(2)">← Atrás</button>
+      <button class="btn-publish" onclick="publish()">🚀 Publicar artículo</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── ÉXITO ─── -->
+<div class="page success-screen" id="successScreen">
+  <div class="success-icon">🎉</div>
+  <h2>¡Artículo publicado!</h2>
+  <p>Tu anuncio ya está visible en Mueblista.<br>Te notificaremos cuando alguien se interese.</p>
+  <div class="success-actions">
+    <a href="producto.html" class="btn-success btn-success-primary">Ver mi anuncio</a>
+    <a href="publicar.html" class="btn-success btn-success-ghost">Publicar otro artículo</a>
+    <a href="index.html" class="btn-success btn-success-ghost">Ir al catálogo</a>
+  </div>
+</div>
+
+<script>
+  let currentStep = 1;
+  let photos = [];
+  let deliveryMode = 'envio';
+
+  /* ─── NAVEGACIÓN ENTRE PASOS ─── */
+  function goStep(n) {
+    if (n > currentStep && !validate(currentStep)) return;
+
+    const prev = currentStep;
+    currentStep = n;
+
+    // cards
+    document.querySelectorAll('.step-card').forEach(c => c.classList.remove('active'));
+    document.getElementById('card' + n).classList.add('active');
+
+    // steps
+    [1,2,3].forEach(i => {
+      const s = document.getElementById('s' + i);
+      s.classList.remove('active','done');
+      if (i < n) s.classList.add('done');
+      else if (i === n) s.classList.add('active');
+    });
+    [1,2].forEach(i => {
+      const l = document.getElementById('line' + i);
+      l.classList.toggle('done', i < n);
+    });
+
+    if (n === 3) updateSummary();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ─── VALIDACIÓN ─── */
+  function validate(step) {
+    let ok = true;
+
+    if (step === 1) {
+      const err = document.getElementById('photoError');
+      if (photos.length === 0) { err.style.display = 'block'; ok = false; }
+      else err.style.display = 'none';
+    }
+
+    if (step === 2) {
+      const checks = [
+        { id: 'titulo', err: 'tituloError', test: v => v.trim().length >= 3 },
+        { id: 'categoria', err: 'categoriaError', test: v => v !== '' },
+        { id: 'descripcion', err: 'descripcionError', test: v => v.trim().length >= 10 },
+      ];
+      checks.forEach(({ id, err, test }) => {
+        const el = document.getElementById(id);
+        const errEl = document.getElementById(err);
+        if (!test(el.value)) { el.classList.add('error'); errEl.style.display = 'block'; ok = false; }
+        else { el.classList.remove('error'); errEl.style.display = 'none'; }
+      });
+
+      const estadoVal = document.querySelector('#estadoGroup .chip.selected');
+      const estadoErr = document.getElementById('estadoError');
+      if (!estadoVal) { estadoErr.style.display = 'block'; ok = false; }
+      else estadoErr.style.display = 'none';
+    }
+
+    if (step === 3) {
+      const precioEl = document.getElementById('precio');
+      const precioErr = document.getElementById('precioError');
+      if (!precioEl.value || Number(precioEl.value) < 1) {
+        precioEl.classList.add('error'); precioErr.style.display = 'block'; ok = false;
+      } else { precioEl.classList.remove('error'); precioErr.style.display = 'none'; }
+
+      const ciudadEl = document.getElementById('ciudad');
+      const ciudadErr = document.getElementById('ciudadError');
+      if (!ciudadEl.value) { ciudadEl.classList.add('error'); ciudadErr.style.display = 'block'; ok = false; }
+      else { ciudadEl.classList.remove('error'); ciudadErr.style.display = 'none'; }
+    }
+
+    return ok;
+  }
+
+  /* ─── CHIPS ─── */
+  function selectChip(el, groupId) {
+    document.querySelectorAll('#' + groupId + ' .chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    if (groupId === 'estadoError') document.getElementById('estadoError').style.display = 'none';
+  }
+
+  /* ─── ENTREGA ─── */
+  function selectDelivery(mode) {
+    deliveryMode = mode;
+    ['dOpt1','dOpt2','dOpt3'].forEach(id => document.getElementById(id).classList.remove('selected'));
+    const shipDetails = document.getElementById('shipDetails');
+
+    if (mode === 'envio') {
+      document.getElementById('dOpt1').classList.add('selected');
+      shipDetails.classList.add('show');
+    } else if (mode === 'recogida') {
+      document.getElementById('dOpt2').classList.add('selected');
+      shipDetails.classList.remove('show');
+    } else {
+      document.getElementById('dOpt3').classList.add('selected');
+      shipDetails.classList.remove('show');
+    }
+  }
+
+  /* ─── FOTOS ─── */
+  const fileInput = document.getElementById('fileInput');
+  const dropZone  = document.getElementById('dropZone');
+
+  fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    handleFiles(e.dataTransfer.files);
+  });
+
+  // Prevent click on the drop zone from triggering if clicking the input directly
+  dropZone.addEventListener('click', e => {
+    if (e.target !== fileInput) { e.preventDefault(); fileInput.click(); }
+  });
+
+  function handleFiles(files) {
+    Array.from(files).forEach(file => {
+      if (!file.type.startsWith('image/')) return;
+      if (photos.length >= 8) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        photos.push({ src: e.target.result, name: file.name });
+        renderPreviews();
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function renderPreviews() {
+    const container = document.getElementById('photoPreviews');
+    const count = document.getElementById('photoCount');
+    container.innerHTML = '';
+    photos.forEach((p, i) => {
+      const div = document.createElement('div');
+      div.className = 'photo-preview';
+      div.innerHTML = `
+        <img src="${p.src}" alt="Foto ${i+1}" />
+        ${i === 0 ? '<span class="badge-main">Portada</span>' : ''}
+        <button class="del-btn" onclick="removePhoto(${i})">×</button>
+      `;
+      container.appendChild(div);
+    });
+    if (photos.length > 0) {
+      count.style.display = 'block';
+      count.textContent = `${photos.length} de 8 fotos añadidas`;
+      document.getElementById('photoError').style.display = 'none';
+    } else {
+      count.style.display = 'none';
+    }
+  }
+
+  function removePhoto(idx) {
+    photos.splice(idx, 1);
+    renderPreviews();
+  }
+
+  /* ─── CONTADORES DE CARACTERES ─── */
+  document.getElementById('titulo').addEventListener('input', function() {
+    document.getElementById('tituloCount').textContent = this.value.length;
+  });
+
+  document.getElementById('descripcion').addEventListener('input', function() {
+    document.getElementById('descCount').textContent = this.value.length;
+  });
+
+  /* ─── SUGERENCIA DE PRECIO ─── */
+  const priceRanges = {
+    'Sofás y sillones': '150 – 600 €',
+    'Sillas y taburetes': '20 – 120 €',
+    'Camas y cabeceros': '80 – 450 €',
+    'Mesas': '60 – 400 €',
+    'Armarios y cómodas': '80 – 500 €',
+    'Estanterías y librerías': '30 – 200 €',
+    'Lámparas e iluminación': '20 – 180 €',
+    'Espejos': '15 – 150 €',
+    'Decoración': '10 – 80 €',
+  };
+
+  document.getElementById('precio').addEventListener('focus', () => {
+    const cat = document.getElementById('categoria').value;
+    const box = document.getElementById('priceSuggestion');
+    if (cat && priceRanges[cat]) {
+      document.getElementById('priceRange').textContent = priceRanges[cat];
+      box.style.display = 'flex';
+    }
+  });
+
+  /* ─── RESUMEN ─── */
+  function updateSummary() {
+    const titulo = document.getElementById('titulo').value || '—';
+    const categoria = document.getElementById('categoria').value || '—';
+    const estado = document.querySelector('#estadoGroup .chip.selected')?.textContent || '—';
+    const ciudad = document.getElementById('ciudad').value || '—';
+    const precio = document.getElementById('precio').value;
+
+    document.getElementById('sumTitulo').textContent = titulo.length > 36 ? titulo.slice(0,36)+'…' : titulo;
+    document.getElementById('sumCategoria').textContent = categoria;
+    document.getElementById('sumEstado').textContent = estado;
+    document.getElementById('sumCiudad').textContent = ciudad;
+    document.getElementById('sumPrecio').textContent = precio ? precio + ' €' : '— €';
+  }
+
+  /* ─── PUBLICAR ─── */
+  function publish() {
+    if (!validate(3)) return;
+    document.getElementById('mainContent').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ─── MODO LOTE ─── */
+  let currentMode = 'individual';
+  let loteItemCount = 0;
+
+  function setMode(mode) {
+    currentMode = mode;
+    const btnI = document.getElementById('btnIndividual');
+    const btnL = document.getElementById('btnLote');
+    const loteSection = document.getElementById('loteSection');
+    const pageTitle = document.getElementById('pageTitle');
+    const card2Title = document.getElementById('card2Title');
+
+    if (mode === 'lote') {
+      btnL.style.cssText = btnL.style.cssText.replace(/border:[^;]+;/, 'border:2px solid var(--brown);');
+      btnL.style.background = 'var(--brown)';
+      btnL.style.color = '#fff';
+      btnI.style.background = 'var(--white)';
+      btnI.style.color = 'var(--gray)';
+      btnI.style.borderColor = 'var(--sand)';
+      loteSection.style.display = 'block';
+      pageTitle.textContent = 'Publicar lote';
+      card2Title.textContent = 'Detalles del lote';
+      if (loteItemCount === 0) { addLoteItem(); addLoteItem(); }
+    } else {
+      btnI.style.background = 'var(--brown)';
+      btnI.style.color = '#fff';
+      btnI.style.borderColor = 'var(--brown)';
+      btnL.style.background = 'var(--white)';
+      btnL.style.color = 'var(--gray)';
+      btnL.style.borderColor = 'var(--sand)';
+      loteSection.style.display = 'none';
+      pageTitle.textContent = 'Publicar artículo';
+      card2Title.textContent = 'Detalles del artículo';
+    }
+  }
+
+  function addLoteItem() {
+    loteItemCount++;
+    const n = loteItemCount;
+    const container = document.getElementById('loteItems');
+    const div = document.createElement('div');
+    div.id = 'loteItem' + n;
+    div.style.cssText = 'background:var(--white); border:1.5px solid var(--sand); border-radius:10px; padding:14px 16px; margin-bottom:10px;';
+    div.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <span style="font-size:13px; font-weight:700; color:var(--brown);">Artículo ${n}</span>
+        ${n > 2 ? `<button onclick="removeLoteItem(${n})" style="background:none; border:none; cursor:pointer; font-size:12px; color:var(--gray-l); font-family:inherit; font-weight:600; padding:0;">✕ Eliminar</button>` : ''}
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <div>
+          <label style="font-size:12px; font-weight:600; color:var(--gray); display:block; margin-bottom:4px;">Nombre del artículo</label>
+          <input type="text" placeholder="Ej: Mesa de comedor" style="width:100%; border:1.5px solid var(--sand); border-radius:8px; padding:9px 12px; font-size:13px; font-family:inherit; color:var(--brown); outline:none; transition:border-color .2s;" onfocus="this.style.borderColor='var(--terra)'" onblur="this.style.borderColor='var(--sand)'" />
+        </div>
+        <div>
+          <label style="font-size:12px; font-weight:600; color:var(--gray); display:block; margin-bottom:4px;">Estado</label>
+          <select style="width:100%; border:1.5px solid var(--sand); border-radius:8px; padding:9px 12px; font-size:13px; font-family:inherit; color:var(--brown); outline:none; background:var(--white); appearance:none; cursor:pointer;">
+            <option>Nuevo</option>
+            <option selected>Poco uso</option>
+            <option>Buen estado</option>
+            <option>Con desgaste</option>
+          </select>
+        </div>
+      </div>`;
+    container.appendChild(div);
+  }
+
+  function removeLoteItem(n) {
+    const el = document.getElementById('loteItem' + n);
+    if (el) el.remove();
+  }
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

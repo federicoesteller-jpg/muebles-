@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi perfil — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:  #1a0d07;
+      --terra:  #c96a38;
+      --cream:  #fdf6ee;
+      --sand:   #ede3d5;
+      --sand-l: #f7f0e6;
+      --gray:   #7a726b;
+      --gray-l: #a09890;
+      --white:  #ffffff;
+      --green:  #2d7a4f;
+      --green-l:#e8f5ee;
+      --red:    #d94040;
+      --red-l:  #fdeaea;
+      --blue:   #2563eb;
+      --blue-l: #eff6ff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      height: 58px; padding: 0 24px;
+      display: flex; align-items: center; gap: 16px;
+      background: var(--white); border-bottom: 1px solid #ebebeb;
+    }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+    .nav-btn {
+      font-size: 13px; font-weight: 600; padding: 8px 16px;
+      border-radius: 8px; text-decoration: none; border: none;
+      cursor: pointer; font-family: inherit; transition: all 0.15s;
+    }
+    .nav-btn-ghost { color: var(--gray); background: transparent; }
+    .nav-btn-ghost:hover { color: var(--brown); background: #f5f5f5; }
+    .nav-btn-sell { color: var(--white); background: var(--terra); }
+    .nav-btn-sell:hover { background: #b85e30; }
+
+    .bell-btn {
+      position: relative; width: 38px; height: 38px; border-radius: 9px;
+      border: none; background: #f5f5f5; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; transition: background .15s; text-decoration: none; color: var(--brown);
+    }
+    .bell-btn:hover { background: var(--sand); }
+    .bell-badge {
+      position: absolute; top: 4px; right: 4px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--terra); color: #fff;
+      font-size: 9px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid var(--white);
+    }
+
+    /* ─── LAYOUT ─── */
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+
+    /* ─── HEADER PERFIL ─── */
+    .profile-header {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 20px;
+      padding: 28px;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .avatar-wrap { position: relative; flex-shrink: 0; }
+
+    .avatar {
+      width: 80px; height: 80px;
+      border-radius: 20px;
+      background: linear-gradient(140deg, #f5c898, #c96a38);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; font-weight: 800; color: #fff;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar-edit {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; opacity: 0;
+      transition: opacity 0.2s;
+      cursor: pointer;
+    }
+    .avatar:hover .avatar-edit { opacity: 1; }
+
+    .verified-badge {
+      position: absolute; bottom: -4px; right: -4px;
+      width: 22px; height: 22px;
+      background: var(--green); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; border: 2px solid var(--white);
+    }
+
+    .profile-info { flex: 1; }
+
+    .profile-name {
+      font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+      margin-bottom: 4px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .member-since { font-size: 13px; color: var(--gray); margin-bottom: 12px; }
+
+    .profile-rating {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--gray); margin-bottom: 14px;
+    }
+    .stars { color: #f5a623; font-size: 14px; }
+
+    .profile-stats {
+      display: flex; gap: 0;
+    }
+
+    .pstat {
+      padding: 0 20px 0 0;
+      margin-right: 20px;
+      border-right: 1px solid var(--sand);
+    }
+    .pstat:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+    .pstat strong { display: block; font-size: 20px; font-weight: 800; color: var(--brown); }
+    .pstat span { font-size: 12px; color: var(--gray-l); }
+
+    .profile-actions { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+
+    .btn-edit-profile {
+      padding: 9px 18px;
+      border-radius: 10px;
+      border: 1.5px solid var(--sand);
+      background: transparent;
+      font-size: 13px; font-weight: 700;
+      color: var(--brown); cursor: pointer;
+      font-family: inherit; transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .btn-edit-profile:hover { border-color: var(--brown); }
+
+    .trust-badge {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600;
+      color: var(--green);
+      background: var(--green-l);
+      padding: 5px 10px; border-radius: 100px;
+    }
+
+    /* ─── TABS ─── */
+    .tabs-wrap {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .tabs-header {
+      display: flex;
+      border-bottom: 1px solid var(--sand);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tabs-header::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      padding: 14px 20px;
+      font-size: 14px; font-weight: 600;
+      color: var(--gray); cursor: pointer;
+      border-bottom: 2.5px solid transparent;
+      white-space: nowrap; transition: all 0.15s;
+      display: flex; align-items: center; gap: 6px;
+      border: none; background: none; font-family: inherit;
+      margin-bottom: -1px;
+    }
+    .tab-btn:hover { color: var(--terra); }
+    .tab-btn.active { color: var(--terra); border-bottom-color: var(--terra); }
+
+    .tab-count {
+      background: var(--sand);
+      color: var(--gray);
+      font-size: 11px; font-weight: 700;
+      padding: 2px 7px; border-radius: 100px;
+    }
+    .tab-btn.active .tab-count { background: #fdecd8; color: var(--terra); }
+
+    .tab-panel { display: none; padding: 24px; }
+    .tab-panel.active { display: block; }
+
+    /* ─── ANUNCIOS ─── */
+    .anuncios-toolbar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px; gap: 12px; flex-wrap: wrap;
+    }
+
+    .filter-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+    .fchip {
+      padding: 6px 14px; border-radius: 100px;
+      border: 1.5px solid var(--sand);
+      font-size: 12px; font-weight: 600;
+      cursor: pointer; background: var(--white);
+      color: var(--gray); transition: all 0.15s;
+    }
+    .fchip:hover { border-color: var(--terra); color: var(--terra); }
+    .fchip.active { border-color: var(--terra); background: var(--terra); color: #fff; }
+
+    .btn-new {
+      padding: 9px 16px; border-radius: 10px;
+      background: var(--terra); color: #fff;
+      font-size: 13px; font-weight: 700;
+      text-decoration: none; white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .btn-new:hover { background: #b85e30; }
+
+    /* Grid anuncios */
+    .listings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .listing-card {
+      border: 1px solid var(--sand);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--white);
+      transition: box-shadow 0.15s;
+    }
+    .listing-card:hover { box-shadow: 0 4px 16px rgba(26,13,7,0.09); }
+
+    .listing-img {
+      width: 100%; aspect-ratio: 4/3;
+      position: relative; overflow: hidden;
+      background: #f0f0f0;
+    }
+    .listing-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.2s; }
+    .listing-card:hover .listing-img img { transform: scale(1.03); }
+
+    .listing-status {
+      position: absolute; top: 8px; left: 8px;
+      font-size: 10px; font-weight: 700; padding: 3px 8px;
+      border-radius: 4px; text-transform: uppercase; letter-spacing: 0.3px;
+    }
+    .status-activo { background: var(--green); color: #fff; }
+    .status-vendido { background: var(--brown); color: #fff; }
+    .status-pausado { background: #f0f0f0; color: var(--gray); }
+
+    .listing-views {
+      position: absolute; bottom: 8px; right: 8px;
+      font-size: 11px; font-weight: 600;
+      background: rgba(26,13,7,0.55);
+      color: #fff; padding: 3px 8px; border-radius: 4px;
+    }
+
+    .listing-body { padding: 12px; }
+    .listing-title {
+      font-size: 13px; font-weight: 600; margin-bottom: 4px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .listing-price { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+    .listing-price .sold-price { color: var(--gray-l); text-decoration: line-through; font-size: 13px; font-weight: 400; }
+
+    .listing-actions {
+      display: flex; gap: 6px;
+    }
+    .lbtn {
+      flex: 1; padding: 7px 0;
+      border-radius: 8px; border: 1.5px solid var(--sand);
+      font-size: 12px; font-weight: 700; font-family: inherit;
+      cursor: pointer; background: var(--white); color: var(--gray);
+      transition: all 0.15s; text-align: center; text-decoration: none;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+    }
+    .lbtn:hover { border-color: var(--brown); color: var(--brown); }
+    .lbtn.danger:hover { border-color: var(--red); color: var(--red); }
+
+    /* ─── COMPRAS ─── */
+    .orders-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .order-card {
+      border: 1px solid var(--sand);
+      border-radius: 14px;
+      padding: 16px;
+      background: var(--white);
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+
+    .order-img {
+      width: 72px; height: 72px;
+      border-radius: 10px; overflow: hidden;
+      background: #f0f0f0; flex-shrink: 0;
+    }
+    .order-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .order-info { flex: 1; }
+    .order-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .order-seller { font-size: 12px; color: var(--gray); margin-bottom: 8px; }
+
+    .order-meta {
+      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    }
+
+    .order-price { font-size: 16px; font-weight: 800; }
+
+    .order-status {
+      font-size: 11px; font-weight: 700; padding: 3px 10px;
+      border-radius: 100px; text-transform: uppercase; letter-spacing: 0.3px;
+    }
+    .os-pending { background: #fff7e0; color: #c08000; }
+    .os-shipped { background: var(--blue-l); color: var(--blue); }
+    .os-delivered { background: var(--green-l); color: var(--green); }
+    .os-review { background: var(--sand-l); color: var(--gray); }
+
+    .order-date { font-size: 12px; color: var(--gray-l); }
+
+    .order-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; flex-shrink: 0; }
+    .obtn {
+      padding: 7px 14px; border-radius: 8px;
+      font-size: 12px; font-weight: 700; font-family: inherit;
+      cursor: pointer; border: 1.5px solid var(--sand);
+      background: var(--white); color: var(--gray);
+      white-space: nowrap; transition: all 0.15s; text-decoration: none;
+    }
+    .obtn:hover { border-color: var(--brown); color: var(--brown); }
+    .obtn.primary { background: var(--terra); border-color: var(--terra); color: #fff; }
+    .obtn.primary:hover { background: #b85e30; }
+
+    /* ─── FAVORITOS ─── */
+    .favs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .fav-card {
+      border: 1px solid var(--sand); border-radius: 12px;
+      overflow: hidden; background: var(--white);
+      text-decoration: none; color: inherit;
+      display: block; transition: box-shadow 0.15s;
+      position: relative;
+    }
+    .fav-card:hover { box-shadow: 0 4px 16px rgba(26,13,7,0.09); }
+
+    .fav-img { width: 100%; aspect-ratio: 3/4; overflow: hidden; background: #f0f0f0; }
+    .fav-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s; }
+    .fav-card:hover .fav-img img { transform: scale(1.04); }
+
+    .fav-del {
+      position: absolute; top: 8px; right: 8px;
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.9); border-radius: 50%;
+      border: none; cursor: pointer; font-size: 13px;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.15s;
+    }
+    .fav-card:hover .fav-del { opacity: 1; }
+    .fav-del:hover { background: var(--red-l); color: var(--red); }
+
+    .fav-body { padding: 10px 12px 12px; }
+    .fav-price { font-size: 15px; font-weight: 800; margin-bottom: 2px; }
+    .fav-title { font-size: 12px; color: var(--gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ─── AJUSTES ─── */
+    .settings-sections { display: flex; flex-direction: column; gap: 24px; }
+
+    .settings-section {
+      border: 1px solid var(--sand);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .section-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--sand);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .section-head h3 { font-size: 15px; font-weight: 700; }
+    .section-head p { font-size: 12px; color: var(--gray); margin-top: 1px; }
+
+    .section-body { padding: 20px; }
+
+    /* form fields reutilizando estilos de publicar */
+    .field { margin-bottom: 18px; }
+    .field:last-child { margin-bottom: 0; }
+
+    label.field-label {
+      display: block; font-size: 13px; font-weight: 700;
+      margin-bottom: 6px; color: var(--brown);
+    }
+    label.field-label .hint { font-weight: 400; color: var(--gray-l); font-size: 12px; margin-left: 6px; }
+
+    .fields-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--sand); border-radius: 10px;
+      font-size: 14px; font-family: inherit; color: var(--brown);
+      background: var(--white); outline: none;
+      transition: border-color 0.2s; appearance: none;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    select:focus { border-color: var(--terra); }
+    input::placeholder { color: #c0b8b0; }
+
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '▾'; position: absolute; right: 14px; top: 50%;
+      transform: translateY(-50%); color: var(--gray-l); pointer-events: none; font-size: 12px;
+    }
+
+    /* Toggles de notificaciones */
+    .toggle-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .toggle-row {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .toggle-info strong { display: block; font-size: 14px; font-weight: 600; }
+    .toggle-info p { font-size: 12px; color: var(--gray); margin-top: 1px; }
+
+    .toggle {
+      position: relative; width: 44px; height: 24px; flex-shrink: 0;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0;
+      background: var(--sand); border-radius: 100px;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px;
+      left: 3px; top: 3px;
+      background: var(--white); border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    .toggle input:checked + .toggle-slider { background: var(--terra); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+    /* Zona de peligro */
+    .danger-zone {
+      border: 1px solid #f5c0c0;
+      border-radius: 16px;
+      padding: 20px;
+      background: #fff8f8;
+    }
+    .danger-title { font-size: 14px; font-weight: 700; color: var(--red); margin-bottom: 4px; }
+    .danger-text { font-size: 13px; color: var(--gray); margin-bottom: 14px; }
+    .btn-danger {
+      padding: 9px 18px; border-radius: 8px;
+      border: 1.5px solid var(--red);
+      background: transparent; color: var(--red);
+      font-size: 13px; font-weight: 700; font-family: inherit;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .btn-danger:hover { background: var(--red); color: #fff; }
+
+    /* Save button */
+    .btn-save {
+      padding: 11px 24px; border-radius: 10px;
+      background: var(--terra); color: #fff;
+      font-size: 14px; font-weight: 700; font-family: inherit;
+      border: none; cursor: pointer; transition: background 0.15s;
+    }
+    .btn-save:hover { background: #b85e30; }
+
+    .save-row {
+      display: flex; justify-content: flex-end;
+      padding-top: 16px; border-top: 1px solid var(--sand);
+      margin-top: 4px;
+    }
+
+    /* ─── ESTADO VACÍO ─── */
+    .empty-state {
+      text-align: center; padding: 48px 24px;
+    }
+    .empty-icon { font-size: 44px; margin-bottom: 12px; }
+    .empty-state h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+    .empty-state p { font-size: 14px; color: var(--gray); margin-bottom: 20px; }
+
+    /* ─── SAVE TOAST ─── */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--green); color: #fff;
+      padding: 12px 24px; border-radius: 100px;
+      font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transition: transform 0.3s cubic-bezier(.34,1.4,.64,1);
+      z-index: 999; white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 700px) {
+      .listings-grid { grid-template-columns: repeat(2, 1fr); }
+      .favs-grid { grid-template-columns: repeat(2, 1fr); }
+      .fields-row { grid-template-columns: 1fr; }
+      .profile-header { flex-direction: column; }
+      .profile-actions { flex-direction: row; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <div class="nav-right">
+    <a href="chat.html" class="nav-btn nav-btn-ghost">💬 Mensajes</a>
+    <a href="notificaciones.html" class="bell-btn" title="Notificaciones">🔔<span class="bell-badge">5</span></a>
+    <a href="publicar.html" class="nav-btn nav-btn-sell">+ Vender</a>
+  </div>
+</nav>
+
+<!-- ─── PÁGINA ─── -->
+<div class="page">
+
+  <!-- HEADER PERFIL -->
+  <div class="profile-header">
+    <div class="avatar-wrap">
+      <div class="avatar">
+        M
+        <div class="avatar-edit" title="Cambiar foto">📷</div>
+      </div>
+      <div class="verified-badge">✓</div>
+    </div>
+
+    <div class="profile-info">
+      <div class="profile-name">
+        María García
+      </div>
+      <div class="member-since">Miembro desde enero 2024</div>
+      <div class="profile-rating">
+        <span class="stars">★★★★★</span>
+        <span>4.8 · 12 valoraciones</span>
+      </div>
+      <div class="profile-stats">
+        <div class="pstat"><strong>8</strong><span>Anuncios</span></div>
+        <div class="pstat"><strong>5</strong><span>Vendidos</span></div>
+        <div class="pstat"><strong>3</strong><span>Compras</span></div>
+        <div class="pstat"><strong>14</strong><span>Favoritos</span></div>
+      </div>
+    </div>
+
+    <div class="profile-actions">
+      <button class="btn-edit-profile" onclick="switchTab('ajustes')">✏️ Editar perfil</button>
+      <div class="trust-badge">🛡️ Perfil verificado</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-wrap">
+    <div class="tabs-header">
+      <button class="tab-btn active" onclick="switchTab('anuncios')">
+        Mis anuncios <span class="tab-count">8</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('compras')">
+        Compras <span class="tab-count">3</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('favoritos')">
+        Favoritos <span class="tab-count">14</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('ajustes')">
+        Ajustes
+      </button>
+    </div>
+
+    <!-- ══════════ ANUNCIOS ══════════ -->
+    <div class="tab-panel active" id="panel-anuncios">
+
+      <div class="anuncios-toolbar">
+        <div class="filter-chips">
+          <div class="fchip active" onclick="filterListings(this,'todos')">Todos (8)</div>
+          <div class="fchip" onclick="filterListings(this,'activo')">Activos (5)</div>
+          <div class="fchip" onclick="filterListings(this,'vendido')">Vendidos (2)</div>
+          <div class="fchip" onclick="filterListings(this,'pausado')">Pausados (1)</div>
+        </div>
+        <a href="publicar.html" class="btn-new">+ Nuevo anuncio</a>
+      </div>
+
+      <div class="listings-grid" id="listingsGrid">
+
+        <div class="listing-card" data-status="activo">
+          <div class="listing-img">
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80" alt="Sofá Chester" loading="lazy" />
+            <span class="listing-status status-activo">Activo</span>
+            <span class="listing-views">👁 43</span>
+          </div>
+          <div class="listing-body">
+            <div class="listing-title">Sofá Chester 3 plazas cuero</div>
+            <div class="listing-price">380 €</div>
+            <div class="listing-actions">
+              <a href="producto.html" class="lbtn">👁 Ver</a>
+              <button class="lbtn" onclick="editListing(this)">✏️ Editar</button>
+              <button class="lbtn danger" onclick="pauseListing(this)">⏸ Pausar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="listing-card" data-status="activo">
+          <div class="listing-img">
+            <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=400&q=80" alt="Silla" loading="lazy" />
+            <span class="listing-status status-activo">Activo</span>
+            <span class="listing-views">👁 18</span>
+          </div>
+          <div class="listing-body">
+            <div class="listing-title">Silla escandinava roble</div>
+            <div class="listing-price">95 €</div>
+            <div class="listing-actions">
+              <a href="producto.html" class="lbtn">👁 Ver</a>
+              <button class="lbtn" onclick="editListing(this)">✏️ Editar</button>
+              <button class="lbtn danger" onclick="pauseListing(this)">⏸ Pausar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="listing-card" data-status="activo">
+          <div class="listing-img">
+            <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80" alt="Espejo" loading="lazy" />
+            <span class="listing-status status-activo">Activo</span>
+            <span class="listing-views">👁 27</span>
+          </div>
+          <div class="listing-body">
+            <div class="listing-title">Espejo vintage redondo 80cm</div>
+            <div class="listing-price">60 €</div>
+            <div class="listing-actions">
+              <a href="producto.html" class="lbtn">👁 Ver</a>
+              <button class="lbtn" onclick="editListing(this)">✏️ Editar</button>
+              <button class="lbtn danger" onclick="pauseListing(this)">⏸ Pausar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="listing-card" data-status="activo">
+          <div class="listing-img">
+            <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=400&q=80" alt="Lámpara" loading="lazy" />
+            <span class="listing-status status-activo">Activo</span>
+            <span class="listing-views">👁 11</span>
+          </div>
+          <div class="listing-body">
+            <div class="listing-title">Lámpara de pie arco dorado</div>
+            <div class="listing-price">189 €</div>
+            <div class="listing-actions">
+              <a href="producto.html" class="lbtn">👁 Ver</a>
+              <button class="lbtn" onclick="editListing(this)">✏️ Editar</button>
+              <button class="lbtn danger" onclick="pauseListing(this)">⏸ Pausar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="listing-card" data-status="activo">
+          <div class="listing-img">
+            <img src="https://images.unsplash.com/photo-1524758631624-e2822b8eb346?auto=format&fit=crop&w=400&q=80" alt="Estantería" loading="lazy" />
+            <span class="listing-status status-activo">Activo</span>
+            <span class="listing-views">👁 9</span>
+          </div>
+          <div class="listing-body">
+            <div class="listing-title">Estantería madera pino 5 niveles</div>
+            <div class="listing-price">75 €</div>
+            <div class="listing-actions">
+              <a href="producto.html" class="lbtn">👁 Ver</a>
+              <button class="lbtn" onclick="editListing(this)">✏️ Editar</button>
+              <button class="lbtn danger" onclick="pauseListing(this)">⏸ Pausar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="listing-card" data-status="vendido">
+          <div class="listing-img">
+            <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=400&q=80" alt="Aparador" loading="lazy" />
+            <span class="listing-status status-vendido">Vendido</span>
+          </div>
+          <div class="listing-body">
+            <div class="listing-title">Aparador industrial acero negro</div>
+            <div class="listing-price"><span class="sold-price">290 €</span></div>
+            <div class="listing-actions">
+              <a href="producto.html" class="lbtn">👁 Ver</a>
+              <button class="lbtn" onclick="republishListing(this)">🔄 Republicar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="listing-card" data-status="vendido">
+          <div class="listing-img">
+            <img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=400&q=80" alt="Mesa" loading="lazy" />
+            <span class="listing-status status-vendido">Vendido</span>
+          </div>
+          <div class="listing-body">
+            <div class="listing-title">Mesa comedor extensible roble</div>
+            <div class="listing-price"><span class="sold-price">320 €</span></div>
+            <div class="listing-actions">
+              <a href="producto.html" class="lbtn">👁 Ver</a>
+              <button class="lbtn" onclick="republishListing(this)">🔄 Republicar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="listing-card" data-status="pausado">
+          <div class="listing-img">
+            <img src="https://images.unsplash.com/photo-1538688525198-d56c8a066311?auto=format&fit=crop&w=400&q=80" alt="Cómoda" loading="lazy" />
+            <span class="listing-status status-pausado">Pausado</span>
+          </div>
+          <div class="listing-body">
+            <div class="listing-title">Cómoda vintage 4 cajones madera</div>
+            <div class="listing-price">160 €</div>
+            <div class="listing-actions">
+              <a href="producto.html" class="lbtn">👁 Ver</a>
+              <button class="lbtn" onclick="activateListing(this)">▶ Activar</button>
+              <button class="lbtn danger" onclick="deleteListing(this)">🗑</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════ COMPRAS ══════════ -->
+    <div class="tab-panel" id="panel-compras">
+      <div class="orders-list">
+
+        <div class="order-card">
+          <div class="order-img">
+            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=200&q=80" alt="Cabecero" />
+          </div>
+          <div class="order-info">
+            <div class="order-title">Cabecero madera maciza 150cm</div>
+            <div class="order-seller">Vendido por Ferro Antiguo · Madrid</div>
+            <div class="order-meta">
+              <span class="order-price">140 €</span>
+              <span class="order-status os-shipped">En camino</span>
+              <span class="order-date">Pedido el 2 jun 2026</span>
+            </div>
+          </div>
+          <div class="order-actions">
+            <button class="obtn primary">Seguir envío</button>
+            <button class="obtn">Ver detalles</button>
+          </div>
+        </div>
+
+        <div class="order-card">
+          <div class="order-img">
+            <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=200&q=80" alt="Silla cuero" />
+          </div>
+          <div class="order-info">
+            <div class="order-title">Silla vintage cuero negro patas doradas</div>
+            <div class="order-seller">Vendido por Vintage Home · Madrid</div>
+            <div class="order-meta">
+              <span class="order-price">45 €</span>
+              <span class="order-status os-delivered">Entregado</span>
+              <span class="order-date">Pedido el 18 may 2026</span>
+            </div>
+          </div>
+          <div class="order-actions">
+            <button class="obtn primary" onclick="showToast('¡Gracias por tu valoración!')">⭐ Valorar</button>
+            <button class="obtn">Ver detalles</button>
+          </div>
+        </div>
+
+        <div class="order-card">
+          <div class="order-img">
+            <img src="https://images.unsplash.com/photo-1513506003901-1e6a35294bf6?auto=format&fit=crop&w=200&q=80" alt="Lámpara" />
+          </div>
+          <div class="order-info">
+            <div class="order-title">Lámpara sobremesa cerámica azul</div>
+            <div class="order-seller">Vendido por Luz & Deco · Sevilla</div>
+            <div class="order-meta">
+              <span class="order-price">55 €</span>
+              <span class="order-status os-delivered">Entregado</span>
+              <span class="order-date">Pedido el 4 abr 2026</span>
+            </div>
+          </div>
+          <div class="order-actions">
+            <button class="obtn">Ver detalles</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════ FAVORITOS ══════════ -->
+    <div class="tab-panel" id="panel-favoritos">
+      <div class="favs-grid">
+
+        <a href="producto.html" class="fav-card">
+          <div class="fav-img"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80" alt="Sofá" loading="lazy" /></div>
+          <button class="fav-del" onclick="removeFav(event,this)" title="Quitar de favoritos">♥</button>
+          <div class="fav-body"><div class="fav-price">220 €</div><div class="fav-title">Sofá 2 plazas azul petróleo</div></div>
+        </a>
+
+        <a href="producto.html" class="fav-card">
+          <div class="fav-img"><img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=400&q=80" alt="Mesa" loading="lazy" /></div>
+          <button class="fav-del" onclick="removeFav(event,this)" title="Quitar de favoritos">♥</button>
+          <div class="fav-body"><div class="fav-price">320 €</div><div class="fav-title">Mesa comedor extensible roble</div></div>
+        </a>
+
+        <a href="producto.html" class="fav-card">
+          <div class="fav-img"><img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=400&q=80" alt="Cabecero" loading="lazy" /></div>
+          <button class="fav-del" onclick="removeFav(event,this)" title="Quitar de favoritos">♥</button>
+          <div class="fav-body"><div class="fav-price">140 €</div><div class="fav-title">Cabecero madera maciza 150cm</div></div>
+        </a>
+
+        <a href="producto.html" class="fav-card">
+          <div class="fav-img"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80" alt="Espejo" loading="lazy" /></div>
+          <button class="fav-del" onclick="removeFav(event,this)" title="Quitar de favoritos">♥</button>
+          <div class="fav-body"><div class="fav-price">35 €</div><div class="fav-title">Espejo ovalado marco dorado</div></div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ══════════ AJUSTES ══════════ -->
+    <div class="tab-panel" id="panel-ajustes">
+      <div class="settings-sections">
+
+        <!-- Datos personales -->
+        <div class="settings-section">
+          <div class="section-head">
+            <div>
+              <h3>Datos personales</h3>
+              <p>Tu nombre e información de contacto</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="fields-row">
+              <div class="field">
+                <label class="field-label">Nombre</label>
+                <input type="text" value="María" />
+              </div>
+              <div class="field">
+                <label class="field-label">Apellidos</label>
+                <input type="text" value="García López" />
+              </div>
+            </div>
+            <div class="fields-row">
+              <div class="field">
+                <label class="field-label">Correo electrónico <span class="hint">No visible para otros</span></label>
+                <input type="email" value="maria@email.com" />
+              </div>
+              <div class="field">
+                <label class="field-label">Teléfono <span class="hint">Solo para gestión de envíos</span></label>
+                <input type="tel" value="+34 612 345 678" />
+              </div>
+            </div>
+            <div class="save-row">
+              <button class="btn-save" onclick="showToast('Datos guardados correctamente')">Guardar cambios</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dirección de envío -->
+        <div class="settings-section">
+          <div class="section-head">
+            <div>
+              <h3>Dirección de envío</h3>
+              <p>Se usa para recibir tus compras</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="field">
+              <label class="field-label">Calle y número</label>
+              <input type="text" value="Calle Mayor, 42, 3º B" />
+            </div>
+            <div class="fields-row">
+              <div class="field">
+                <label class="field-label">Ciudad</label>
+                <input type="text" value="Madrid" />
+              </div>
+              <div class="field">
+                <label class="field-label">Código postal</label>
+                <input type="text" value="28013" />
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">Provincia</label>
+              <div class="select-wrap">
+                <select>
+                  <option selected>Madrid</option>
+                  <option>Barcelona</option>
+                  <option>Valencia</option>
+                  <option>Sevilla</option>
+                  <option>Bizkaia</option>
+                  <option>Málaga</option>
+                </select>
+              </div>
+            </div>
+            <div class="save-row">
+              <button class="btn-save" onclick="showToast('Dirección guardada correctamente')">Guardar dirección</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notificaciones -->
+        <div class="settings-section">
+          <div class="section-head">
+            <div>
+              <h3>Notificaciones</h3>
+              <p>Elige qué correos quieres recibir</p>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="toggle-list">
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <strong>Mensajes de compradores</strong>
+                  <p>Cuando alguien te escribe sobre un artículo</p>
+                </div>
+                <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <strong>Actualizaciones de envío</strong>
+                  <p>Estado de tus pedidos en camino</p>
+                </div>
+                <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <strong>Recordatorios de artículos sin vender</strong>
+                  <p>Sugerencias para bajar precio o actualizar el anuncio</p>
+                </div>
+                <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <strong>Novedades y promociones</strong>
+                  <p>Descuentos, nuevas funciones y noticias de Mueblista</p>
+                </div>
+                <label class="toggle"><input type="checkbox" /><span class="toggle-slider"></span></label>
+              </div>
+            </div>
+            <div class="save-row">
+              <button class="btn-save" onclick="showToast('Preferencias de notificación guardadas')">Guardar preferencias</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Programa de referidos -->
+        <div class="settings-section">
+          <div class="section-head">
+            <div>
+              <h3>Programa de referidos</h3>
+              <p>Invita a amigos y gana crédito cuando realicen su primera compra</p>
+            </div>
+            <a href="referidos.html" style="font-size:13px; font-weight:700; color:var(--terra); text-decoration:none; white-space:nowrap">Ver todo →</a>
+          </div>
+          <div class="section-body">
+            <!-- Mini stats -->
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px;">
+              <div style="background:var(--cream); border-radius:12px; padding:14px; text-align:center;">
+                <div style="font-size:1.5rem; font-weight:800; color:var(--brown)">7</div>
+                <div style="font-size:11px; color:var(--gray); margin-top:3px">Invitados</div>
+              </div>
+              <div style="background:var(--cream); border-radius:12px; padding:14px; text-align:center;">
+                <div style="font-size:1.5rem; font-weight:800; color:var(--brown)">2</div>
+                <div style="font-size:11px; color:var(--gray); margin-top:3px">Compras</div>
+              </div>
+              <div style="background:var(--cream); border-radius:12px; padding:14px; text-align:center;">
+                <div style="font-size:1.5rem; font-weight:800; color:var(--green)">20 €</div>
+                <div style="font-size:11px; color:var(--gray); margin-top:3px">Crédito</div>
+              </div>
+            </div>
+            <!-- Enlace -->
+            <div style="font-size:12px; font-weight:600; color:var(--gray); margin-bottom:8px; text-transform:uppercase; letter-spacing:.05em;">Tu enlace de referido</div>
+            <div style="display:flex; gap:8px;">
+              <input
+                id="profileRefLink"
+                type="text"
+                value="mueblista.es/r/federico2026"
+                readonly
+                onclick="this.select()"
+                style="flex:1; border:1.5px solid var(--sand); border-radius:10px; padding:10px 12px; font-size:13px; font-weight:600; color:var(--brown); font-family:inherit; outline:none; background:var(--cream);"
+              />
+              <button
+                id="profileCopyBtn"
+                onclick="copyProfileLink()"
+                style="flex-shrink:0; padding:10px 18px; border-radius:10px; background:var(--terra); color:#fff; border:none; font-size:13px; font-weight:700; font-family:inherit; cursor:pointer; white-space:nowrap; transition:background .15s;"
+                onmouseenter="this.style.background='#b85e30'" onmouseleave="this.style.background='var(--terra)'"
+              >Copiar</button>
+            </div>
+            <div style="margin-top:14px;">
+              <a href="referidos.html" style="display:inline-block; padding:10px 20px; border:2px solid var(--sand); border-radius:10px; font-size:13px; font-weight:700; color:var(--brown); text-decoration:none; transition:border-color .15s;" onmouseenter="this.style.borderColor='var(--brown)'" onmouseleave="this.style.borderColor='var(--sand)'">Ver historial completo de referidos →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zona de peligro -->
+        <div class="danger-zone">
+          <div class="danger-title">Zona de peligro</div>
+          <div class="danger-text">Estas acciones son irreversibles. Por favor, asegúrate antes de continuar.</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <button class="btn-danger" onclick="if(confirm('¿Seguro que quieres cerrar sesión?')) window.location='index.html'">Cerrar sesión</button>
+            <button class="btn-danger" onclick="confirm('¿Seguro? Se eliminarán todos tus datos y anuncios.')">Eliminar cuenta</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✓ <span id="toastMsg"></span></div>
+
+<script>
+  /* ─── TABS ─── */
+  function switchTab(name) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector(`[onclick="switchTab('${name}')"]`).classList.add('active');
+    document.getElementById('panel-' + name).classList.add('active');
+  }
+
+  /* ─── FILTRO ANUNCIOS ─── */
+  function filterListings(chip, filter) {
+    document.querySelectorAll('.fchip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    document.querySelectorAll('.listing-card').forEach(card => {
+      card.style.display = (filter === 'todos' || card.dataset.status === filter) ? '' : 'none';
+    });
+  }
+
+  /* ─── ACCIONES ANUNCIOS ─── */
+  function pauseListing(btn) {
+    const card = btn.closest('.listing-card');
+    card.dataset.status = 'pausado';
+    card.querySelector('.listing-status').className = 'listing-status status-pausado';
+    card.querySelector('.listing-status').textContent = 'Pausado';
+    btn.textContent = '▶ Activar';
+    btn.onclick = () => activateListing(btn);
+    showToast('Anuncio pausado');
+  }
+
+  function activateListing(btn) {
+    const card = btn.closest('.listing-card');
+    card.dataset.status = 'activo';
+    card.querySelector('.listing-status').className = 'listing-status status-activo';
+    card.querySelector('.listing-status').textContent = 'Activo';
+    btn.textContent = '⏸ Pausar';
+    btn.onclick = () => pauseListing(btn);
+    showToast('Anuncio activado');
+  }
+
+  function deleteListing(btn) {
+    if (!confirm('¿Eliminar este anuncio?')) return;
+    btn.closest('.listing-card').remove();
+    showToast('Anuncio eliminado');
+  }
+
+  function editListing(btn) {
+    window.location.href = 'publicar.html';
+  }
+
+  function republishListing(btn) {
+    window.location.href = 'publicar.html';
+  }
+
+  /* ─── FAVORITOS ─── */
+  function removeFav(e, btn) {
+    e.preventDefault();
+    btn.closest('.fav-card').remove();
+    showToast('Eliminado de favoritos');
+  }
+
+  /* ─── REFERIDOS ─── */
+  function copyProfileLink() {
+    const input = document.getElementById('profileRefLink');
+    input.select();
+    navigator.clipboard.writeText(input.value).catch(() => document.execCommand('copy'));
+    const btn = document.getElementById('profileCopyBtn');
+    btn.textContent = '✓ Copiado';
+    btn.style.background = '#2d7a4f';
+    setTimeout(() => {
+      btn.textContent = 'Copiar';
+      btn.style.background = 'var(--terra)';
+    }, 2500);
+    showToast('Enlace de referido copiado');
+  }
+
+  /* ─── TOAST ─── */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>
