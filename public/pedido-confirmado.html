@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedido confirmado — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:   #1a0d07;
+      --terra:   #c96a38;
+      --terra-l: #e07a44;
+      --cream:   #fafafa;
+      --sand:    #e8e0d8;
+      --gray:    #717171;
+      --white:   #ffffff;
+      --green:   #2d7a4f;
+      --green-l: #e8f5ee;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); min-height: 100vh; }
+
+    /* ─── NAV ─── */
+    .nav {
+      background: var(--white); border-bottom: 1px solid #ebebeb;
+      height: 58px; padding: 0 24px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo em { font-style: normal; color: var(--terra); }
+
+    /* ─── WRAP ─── */
+    .page { max-width: 640px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    /* ─── CHECKMARK ─── */
+    .success-icon-wrap {
+      width: 96px; height: 96px; margin: 0 auto 28px;
+      position: relative;
+    }
+    .success-circle {
+      width: 96px; height: 96px; border-radius: 50%;
+      background: var(--green-l);
+      display: flex; align-items: center; justify-content: center;
+      animation: popIn 0.45s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .check-svg { width: 48px; height: 48px; }
+    .check-path {
+      stroke: var(--green); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round;
+      fill: none;
+      stroke-dasharray: 60; stroke-dashoffset: 60;
+      animation: drawCheck 0.5s 0.3s ease forwards;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* ─── TEXTOS PRINCIPALES ─── */
+    .success-title {
+      font-size: 26px; font-weight: 800; text-align: center; letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .success-sub {
+      text-align: center; color: var(--gray); font-size: 15px; line-height: 1.5;
+      margin-bottom: 6px;
+    }
+    .order-ref {
+      text-align: center; font-size: 13px; color: var(--gray); margin-bottom: 28px;
+    }
+    .order-ref strong { color: var(--brown); font-weight: 700; letter-spacing: 0.5px; }
+
+    /* ─── TARJETA PRODUCTO ─── */
+    .product-card {
+      background: var(--white); border: 1px solid #ebebeb; border-radius: 14px;
+      padding: 18px; display: flex; gap: 16px; margin-bottom: 20px;
+      animation: fadeUp 0.4s 0.2s both;
+    }
+    .product-card img {
+      width: 80px; height: 80px; border-radius: 10px; object-fit: cover; flex-shrink: 0;
+      background: #f0f0f0;
+    }
+    .product-card-info { flex: 1; min-width: 0; }
+    .product-card-title {
+      font-size: 14px; font-weight: 700; margin-bottom: 4px;
+      overflow: hidden; text-overflow: ellipsis;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    }
+    .product-card-store { font-size: 12px; color: var(--gray); margin-bottom: 8px; }
+    .product-card-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .product-card-price { font-size: 18px; font-weight: 800; color: var(--terra); }
+    .product-card-delivery {
+      font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px;
+      background: var(--green-l); color: var(--green);
+    }
+
+    /* ─── PRECIO DESGLOSADO ─── */
+    .price-detail {
+      background: var(--white); border: 1px solid #ebebeb; border-radius: 14px;
+      padding: 18px; margin-bottom: 20px;
+      animation: fadeUp 0.4s 0.3s both;
+    }
+    .price-detail-title { font-size: 13px; font-weight: 700; color: var(--gray); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .price-row {
+      display: flex; justify-content: space-between;
+      font-size: 13px; margin-bottom: 8px; color: var(--gray);
+    }
+    .price-row span:last-child { font-weight: 600; color: var(--brown); }
+    .price-row.free span:last-child { color: var(--green); }
+    .price-row.total {
+      font-size: 15px; font-weight: 800; color: var(--brown);
+      border-top: 1px solid var(--sand); padding-top: 12px; margin-top: 4px; margin-bottom: 0;
+    }
+    .price-row.total span:last-child { color: var(--terra); }
+
+    /* ─── TIMELINE "QUÉ PASA AHORA" ─── */
+    .whats-next {
+      background: var(--white); border: 1px solid #ebebeb; border-radius: 14px;
+      padding: 20px; margin-bottom: 24px;
+      animation: fadeUp 0.4s 0.4s both;
+    }
+    .whats-next-title { font-size: 15px; font-weight: 800; margin-bottom: 18px; }
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .tl-step { display: flex; gap: 16px; position: relative; }
+    .tl-step:not(:last-child)::before {
+      content: ''; position: absolute; left: 17px; top: 36px;
+      width: 2px; height: calc(100% - 12px);
+      background: linear-gradient(to bottom, var(--sand), transparent);
+    }
+    .tl-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--green-l); color: var(--green);
+      font-size: 17px; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; position: relative; z-index: 1;
+    }
+    .tl-content { flex: 1; padding-bottom: 20px; }
+    .tl-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .tl-desc { font-size: 12px; color: var(--gray); line-height: 1.5; }
+    .tl-step:last-child .tl-content { padding-bottom: 0; }
+
+    /* ─── CTAs ─── */
+    .cta-row {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      animation: fadeUp 0.4s 0.5s both;
+    }
+    .btn-primary {
+      flex: 1; min-width: 160px; padding: 14px;
+      background: var(--terra); color: #fff; border: none; border-radius: 12px;
+      font-size: 14px; font-weight: 700; font-family: inherit;
+      cursor: pointer; text-align: center; text-decoration: none;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-primary:hover { background: #b85e30; }
+    .btn-secondary {
+      flex: 1; min-width: 160px; padding: 14px;
+      background: var(--white); color: var(--brown); border: 1.5px solid var(--sand);
+      border-radius: 12px; font-size: 14px; font-weight: 700; font-family: inherit;
+      cursor: pointer; text-align: center; text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--brown); }
+
+    /* ─── BADGE EMAIL ─── */
+    .email-sent {
+      text-align: center; font-size: 12px; color: var(--gray);
+      margin-bottom: 20px;
+      animation: fadeUp 0.4s 0.45s both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+</nav>
+
+<div class="page">
+
+  <!-- Checkmark animado -->
+  <div class="success-icon-wrap">
+    <div class="success-circle">
+      <svg class="check-svg" viewBox="0 0 48 48">
+        <path class="check-path" d="M12 25 L21 34 L36 16" />
+      </svg>
+    </div>
+  </div>
+
+  <h1 class="success-title">¡Pedido confirmado!</h1>
+  <p class="success-sub">Tu pago se ha procesado correctamente.<br />Guarda el número de referencia por si necesitas contactarnos.</p>
+  <p class="order-ref">Referencia: <strong id="orderRef">MBL-2026-XXXXXX</strong></p>
+
+  <!-- Producto -->
+  <div class="product-card">
+    <img id="prodImg" src="" alt="" />
+    <div class="product-card-info">
+      <div class="product-card-title" id="prodTitle">—</div>
+      <div class="product-card-store" id="prodStore">—</div>
+      <div class="product-card-row">
+        <span class="product-card-price" id="prodPrice">—</span>
+        <span class="product-card-delivery" id="prodDelivery">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Desglose precio -->
+  <div class="price-detail">
+    <div class="price-detail-title">Desglose del pago</div>
+    <div class="price-row">
+      <span>Artículo</span>
+      <span id="rowPrice">—</span>
+    </div>
+    <div class="price-row" id="rowShipWrap" style="display:none">
+      <span>Envío</span>
+      <span>+ 24 €</span>
+    </div>
+    <div class="price-row free" id="rowPickupWrap">
+      <span>Recogida en tienda</span>
+      <span>Gratis</span>
+    </div>
+    <div class="price-row">
+      <span>Protección Mueblista</span>
+      <span id="rowProt">—</span>
+    </div>
+    <div class="price-row total">
+      <span>Total cobrado</span>
+      <span id="rowTotal">—</span>
+    </div>
+  </div>
+
+  <!-- Qué pasa ahora -->
+  <div class="whats-next">
+    <div class="whats-next-title">¿Qué pasa ahora?</div>
+    <div class="timeline">
+      <div class="tl-step">
+        <div class="tl-icon">📧</div>
+        <div class="tl-content">
+          <div class="tl-title">Confirmación por email</div>
+          <div class="tl-desc">Recibirás un email con los detalles del pedido y los datos de contacto del vendedor en los próximos minutos.</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-icon" id="tlDeliveryIcon">🏪</div>
+        <div class="tl-content">
+          <div class="tl-title" id="tlDeliveryTitle">Coordina la recogida</div>
+          <div class="tl-desc" id="tlDeliveryDesc">El vendedor se pondrá en contacto contigo para acordar el día y hora de recogida. Suele responder en menos de 24 horas.</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-icon">✅</div>
+        <div class="tl-content">
+          <div class="tl-title">Confirma la recepción</div>
+          <div class="tl-desc">Cuando tengas el artículo, confirma la entrega en tu panel. Hasta ese momento tu dinero está retenido y protegido por Mueblista.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmación email -->
+  <p class="email-sent">📬 Hemos enviado la confirmación a tu email registrado.</p>
+
+  <!-- CTAs -->
+  <div class="cta-row">
+    <a href="perfil.html" class="btn-primary">Ver mis pedidos</a>
+    <a href="index.html" class="btn-secondary">Seguir comprando</a>
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let order = null;
+    try { order = JSON.parse(localStorage.getItem('lastOrder') || 'null'); } catch(e) {}
+
+    if (order) {
+      document.title = 'Pedido ' + order.orderNum + ' confirmado — Mueblista';
+      document.getElementById('orderRef').textContent   = order.orderNum;
+      document.getElementById('prodImg').src            = order.img || '';
+      document.getElementById('prodImg').alt            = order.title;
+      document.getElementById('prodTitle').textContent  = order.title;
+      document.getElementById('prodStore').textContent  = order.store + ' · ' + order.city;
+      document.getElementById('prodPrice').textContent  = order.total + ' €';
+      document.getElementById('prodDelivery').textContent = order.delivery === 'shipping' ? '🚚 Envío a domicilio' : '🏪 Recogida en tienda';
+
+      document.getElementById('rowPrice').textContent = order.price + ' €';
+      document.getElementById('rowProt').textContent  = order.prot  + ' €';
+      document.getElementById('rowTotal').textContent = order.total + ' €';
+
+      if (order.delivery === 'shipping') {
+        document.getElementById('rowShipWrap').style.display  = '';
+        document.getElementById('rowPickupWrap').style.display = 'none';
+        document.getElementById('tlDeliveryIcon').textContent  = '🚚';
+        document.getElementById('tlDeliveryTitle').textContent = 'Preparación del envío';
+        document.getElementById('tlDeliveryDesc').textContent  = 'El vendedor preparará el paquete y lo entregará a la mensajería en 1–2 días laborables. Recibirás el número de seguimiento por email.';
+      }
+    } else {
+      const ref = 'MBL-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
+      document.getElementById('orderRef').textContent = ref;
+      document.getElementById('prodTitle').textContent = 'Artículo comprado';
+      document.getElementById('prodStore').textContent = 'Mueblista';
+      document.getElementById('prodPrice').textContent = '—';
+      document.getElementById('prodDelivery').textContent = '—';
+    }
+  });
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

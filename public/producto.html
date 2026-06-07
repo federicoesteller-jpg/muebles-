@@ -1385,6 +1385,7 @@
 
     // Botón comprar
     document.getElementById('buyBtn').textContent = '💳 Comprar ahora — ' + p.price + ' €';
+    document.getElementById('buyBtn').onclick = () => { window.location.href = 'checkout.html?id=' + realId; };
 
     // Tabs
     document.getElementById('desc').innerHTML = '<div class="description">' +

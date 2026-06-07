@@ -59,7 +59,8 @@
 | ⬜ | Autenticación real | Supabase Auth — email/password + OAuth (Google) |
 | ⬜ | Base de datos real | Supabase — tablas: productos, usuarios, pedidos, favoritos, mensajes |
 | ⬜ | API routes Next.js | Endpoints en `app/api/` — publicar, comprar, ofertas, mensajes |
-| ⬜ | Sistema de pagos | Stripe — checkout seguro, retención hasta confirmar entrega |
+| ✅ | Flujo de compra (estático) | `checkout.html` + `pedido-confirmado.html` — entrega, pago demo, resumen, confirmación animada |
+| ⬜ | Sistema de pagos real | Stripe — checkout seguro, retención hasta confirmar entrega |
 | ⬜ | Subida de imágenes | Supabase Storage — sustituir URLs Unsplash por fotos reales |
 | ⬜ | Deploy en Vercel | CI/CD desde `main`, variables de entorno, dominio |
 | ⬜ | SEO y meta tags | Open Graph por producto, `<title>` dinámico, sitemap |
