@@ -325,12 +325,68 @@
       font-size: 11px; font-weight: 700; padding: 3px 10px;
       border-radius: 100px; text-transform: uppercase; letter-spacing: 0.3px;
     }
-    .os-pending { background: #fff7e0; color: #c08000; }
-    .os-shipped { background: var(--blue-l); color: var(--blue); }
+    .os-pending   { background: #fff7e0; color: #c08000; }
+    .os-shipped   { background: var(--blue-l); color: var(--blue); }
     .os-delivered { background: var(--green-l); color: var(--green); }
-    .os-review { background: var(--sand-l); color: var(--gray); }
+    .os-review    { background: var(--sand-l); color: var(--gray); }
 
     .order-date { font-size: 12px; color: var(--gray-l); }
+    .order-ref  { font-size: 11px; color: var(--gray-l); font-family: monospace; }
+
+    /* Timeline de estado */
+    .order-timeline { display: flex; align-items: center; margin-top: 10px; }
+    .otl-step { display: flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; color: var(--gray-l); white-space: nowrap; }
+    .otl-step.done   { color: var(--green); }
+    .otl-step.active { color: var(--blue); }
+    .otl-dot {
+      width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 8px;
+      background: var(--sand); color: var(--gray-l);
+    }
+    .otl-step.done   .otl-dot { background: var(--green-l); color: var(--green); }
+    .otl-step.active .otl-dot { background: var(--blue-l); color: var(--blue); }
+    .otl-line { flex: 1; height: 1px; background: var(--sand); margin: 0 4px; max-width: 28px; }
+    .otl-line.done { background: var(--green); }
+
+    /* Modal confirmar recepción */
+    .confirm-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(26,13,7,0.55); backdrop-filter: blur(4px);
+      z-index: 600; align-items: center; justify-content: center;
+    }
+    .confirm-overlay.open { display: flex; }
+    .confirm-modal {
+      background: var(--white); border-radius: 20px; padding: 28px;
+      width: 390px; max-width: 95vw;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+      animation: cfIn 0.2s ease;
+    }
+    @keyframes cfIn { from{opacity:0;transform:scale(0.94)} to{opacity:1;transform:none} }
+    .confirm-modal h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.4px; }
+    .confirm-modal p  { font-size: 13px; color: var(--gray); margin-bottom: 0; }
+    .confirm-product-row {
+      display: flex; gap: 12px; align-items: center;
+      background: var(--cream); border-radius: 12px; padding: 12px; margin: 14px 0;
+    }
+    .confirm-product-row img { width: 52px; height: 52px; border-radius: 8px; object-fit: cover; background: #f0f0f0; }
+    .confirm-product-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+    .confirm-product-store { font-size: 11px; color: var(--gray); }
+    .confirm-escrow {
+      background: var(--green-l); border-radius: 10px; padding: 10px 12px;
+      font-size: 12px; color: #1a4a32; margin-bottom: 20px; display: flex; gap: 8px; align-items: flex-start; line-height: 1.5;
+    }
+    .confirm-btns { display: flex; gap: 10px; }
+    .confirm-cancel {
+      flex: 1; padding: 12px; border-radius: 10px;
+      border: 1.5px solid var(--sand); font-size: 13px; font-weight: 700;
+      font-family: inherit; background: var(--white); color: var(--gray); cursor: pointer;
+    }
+    .confirm-ok {
+      flex: 2; padding: 12px; border-radius: 10px; border: none;
+      background: var(--green); color: #fff;
+      font-size: 13px; font-weight: 800; font-family: inherit; cursor: pointer; transition: background 0.15s;
+    }
+    .confirm-ok:hover { background: #256640; }
 
     .order-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; flex-shrink: 0; }
     .obtn {
@@ -813,61 +869,123 @@
 
     <!-- ══════════ COMPRAS ══════════ -->
     <div class="tab-panel" id="panel-compras">
-      <div class="orders-list">
+      <div class="orders-list" id="ordersList">
 
-        <div class="order-card">
+        <!-- Pedido más reciente (inyectado desde localStorage si existe) -->
+        <div class="order-card" id="order-latest" style="display:none">
+          <div class="order-img">
+            <img id="lat-img" src="" alt="" />
+          </div>
+          <div class="order-info">
+            <div class="order-title" id="lat-title">—</div>
+            <div class="order-seller" id="lat-store">—</div>
+            <div class="order-meta">
+              <span class="order-price" id="lat-price">—</span>
+              <span class="order-status os-shipped">🚚 En camino</span>
+              <span class="order-ref" id="lat-ref">—</span>
+              <span class="order-date" id="lat-date">—</span>
+            </div>
+            <div class="order-timeline">
+              <div class="otl-step done"><div class="otl-dot">✓</div>Pagado</div>
+              <div class="otl-line done"></div>
+              <div class="otl-step done"><div class="otl-dot">✓</div>Preparando</div>
+              <div class="otl-line done"></div>
+              <div class="otl-step active"><div class="otl-dot">▶</div>En camino</div>
+              <div class="otl-line"></div>
+              <div class="otl-step"><div class="otl-dot">○</div>Entregado</div>
+            </div>
+          </div>
+          <div class="order-actions">
+            <button class="obtn primary" id="lat-confirm-btn" onclick="openConfirmModal('latest')">✓ Confirmar recepción</button>
+            <button class="obtn">Seguimiento</button>
+          </div>
+        </div>
+
+        <!-- Pedido en camino (estático) -->
+        <div class="order-card" id="order-static-1">
           <div class="order-img">
             <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=200&q=80" alt="Cabecero" />
           </div>
           <div class="order-info">
             <div class="order-title">Cabecero madera maciza 150cm</div>
-            <div class="order-seller">Vendido por Ferro Antiguo · Madrid</div>
+            <div class="order-seller">Vendido por Ferro Antiguo · Comunidad de Madrid</div>
             <div class="order-meta">
               <span class="order-price">140 €</span>
-              <span class="order-status os-shipped">En camino</span>
+              <span class="order-status os-shipped">🚚 En camino</span>
+              <span class="order-ref">#MBL-2026-442317</span>
               <span class="order-date">Pedido el 2 jun 2026</span>
+            </div>
+            <div class="order-timeline">
+              <div class="otl-step done"><div class="otl-dot">✓</div>Pagado</div>
+              <div class="otl-line done"></div>
+              <div class="otl-step done"><div class="otl-dot">✓</div>Preparando</div>
+              <div class="otl-line done"></div>
+              <div class="otl-step active"><div class="otl-dot">▶</div>En camino</div>
+              <div class="otl-line"></div>
+              <div class="otl-step"><div class="otl-dot">○</div>Entregado</div>
             </div>
           </div>
           <div class="order-actions">
-            <button class="obtn primary">Seguir envío</button>
-            <button class="obtn">Ver detalles</button>
+            <button class="obtn primary" onclick="openConfirmModal('static-1')">✓ Confirmar recepción</button>
+            <button class="obtn">Seguimiento</button>
           </div>
         </div>
 
-        <div class="order-card">
+        <!-- Pedido entregado, pendiente de valorar -->
+        <div class="order-card" id="order-static-2">
           <div class="order-img">
             <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=200&q=80" alt="Silla cuero" />
           </div>
           <div class="order-info">
             <div class="order-title">Silla vintage cuero negro patas doradas</div>
-            <div class="order-seller">Vendido por Vintage Home · Madrid</div>
+            <div class="order-seller">Vendido por Vintage Home · Comunidad de Madrid</div>
             <div class="order-meta">
               <span class="order-price">45 €</span>
-              <span class="order-status os-delivered">Entregado</span>
+              <span class="order-status os-delivered">✅ Entregado</span>
+              <span class="order-ref">#MBL-2026-381204</span>
               <span class="order-date">Pedido el 18 may 2026</span>
+            </div>
+            <div class="order-timeline">
+              <div class="otl-step done"><div class="otl-dot">✓</div>Pagado</div>
+              <div class="otl-line done"></div>
+              <div class="otl-step done"><div class="otl-dot">✓</div>Preparando</div>
+              <div class="otl-line done"></div>
+              <div class="otl-step done"><div class="otl-dot">✓</div>En camino</div>
+              <div class="otl-line done"></div>
+              <div class="otl-step done"><div class="otl-dot">✓</div>Entregado</div>
             </div>
           </div>
           <div class="order-actions">
-            <button class="obtn primary" onclick="showToast('¡Gracias por tu valoración!')">⭐ Valorar</button>
-            <button class="obtn">Ver detalles</button>
+            <button class="obtn primary" onclick="openRatingModal('Vintage Home', 'Silla vintage cuero negro patas doradas')">⭐ Valorar</button>
           </div>
         </div>
 
-        <div class="order-card">
+        <!-- Pedido entregado y valorado -->
+        <div class="order-card" id="order-static-3">
           <div class="order-img">
             <img src="https://images.unsplash.com/photo-1513506003901-1e6a35294bf6?auto=format&fit=crop&w=200&q=80" alt="Lámpara" />
           </div>
           <div class="order-info">
             <div class="order-title">Lámpara sobremesa cerámica azul</div>
-            <div class="order-seller">Vendido por Luz & Deco · Sevilla</div>
+            <div class="order-seller">Vendido por Luz & Deco · Andalucía</div>
             <div class="order-meta">
               <span class="order-price">55 €</span>
-              <span class="order-status os-delivered">Entregado</span>
+              <span class="order-status os-delivered">✅ Entregado</span>
+              <span class="order-ref">#MBL-2026-290481</span>
               <span class="order-date">Pedido el 4 abr 2026</span>
+            </div>
+            <div class="order-timeline">
+              <div class="otl-step done"><div class="otl-dot">✓</div>Pagado</div>
+              <div class="otl-line done"></div>
+              <div class="otl-step done"><div class="otl-dot">✓</div>Preparando</div>
+              <div class="otl-line done"></div>
+              <div class="otl-step done"><div class="otl-dot">✓</div>En camino</div>
+              <div class="otl-line done"></div>
+              <div class="otl-step done"><div class="otl-dot">✓</div>Entregado</div>
             </div>
           </div>
           <div class="order-actions">
-            <button class="obtn">Ver detalles</button>
+            <span style="font-size:12px;color:var(--gray);font-weight:600">★★★★★ Valorado</span>
           </div>
         </div>
 
@@ -1309,9 +1427,62 @@
     showToast('Enlace de referido copiado');
   }
 
+  /* ─── MIS PEDIDOS — LAST ORDER DESDE CHECKOUT ─── */
+  let _confirmTarget = null;
+  const CONFIRM_DATA = {
+    'latest':   { img: '', title: '', store: '', amount: '' },
+    'static-1': { img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=80&q=80', title: 'Cabecero madera maciza 150cm', store: 'Ferro Antiguo', amount: '148 €' },
+  };
+
+  function openConfirmModal(target) {
+    _confirmTarget = target;
+    const d = CONFIRM_DATA[target] || {};
+    document.getElementById('confirmImg').src            = d.img   || '';
+    document.getElementById('confirmTitle').textContent  = d.title || '—';
+    document.getElementById('confirmStore').textContent  = d.store || '—';
+    document.getElementById('confirmAmount').textContent = d.amount|| '—';
+    document.getElementById('confirmOverlay').classList.add('open');
+  }
+  function closeConfirmModal(e) {
+    if (!e || e.target === document.getElementById('confirmOverlay'))
+      document.getElementById('confirmOverlay').classList.remove('open');
+  }
+  function submitConfirmReceipt() {
+    document.getElementById('confirmOverlay').classList.remove('open');
+    const card = document.getElementById('order-' + _confirmTarget);
+    if (card) {
+      card.querySelector('.order-status').className = 'order-status os-delivered';
+      card.querySelector('.order-status').textContent = '✅ Entregado';
+      card.querySelectorAll('.otl-step').forEach(s => { s.classList.remove('active'); s.classList.add('done'); s.querySelector('.otl-dot').textContent = '✓'; });
+      card.querySelectorAll('.otl-line').forEach(l => l.classList.add('done'));
+      const actions = card.querySelector('.order-actions');
+      actions.innerHTML = '<button class="obtn primary" onclick="openRatingModal(\'\', \'\')">⭐ Valorar al vendedor</button>';
+    }
+    showToast('¡Recepción confirmada! El pago ha sido liberado al vendedor.');
+  }
+
+  function openRatingModal(store, product) {
+    showToast('Abriendo formulario de valoración…');
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     renderFavs();
     mFavUpdateBadges();
+
+    /* Cargar último pedido desde checkout */
+    let order = null;
+    try { order = JSON.parse(localStorage.getItem('lastOrder') || 'null'); } catch(e) {}
+    if (order) {
+      const card = document.getElementById('order-latest');
+      card.style.display = '';
+      document.getElementById('lat-img').src           = order.img || '';
+      document.getElementById('lat-title').textContent = order.title;
+      document.getElementById('lat-store').textContent = 'Vendido por ' + order.store + ' · ' + order.city;
+      document.getElementById('lat-price').textContent = order.total + ' €';
+      document.getElementById('lat-ref').textContent   = order.orderNum;
+      const d = new Date(); document.getElementById('lat-date').textContent = 'Pedido el ' + d.getDate() + ' ' + ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][d.getMonth()] + ' ' + d.getFullYear();
+      CONFIRM_DATA['latest'] = { img: order.img, title: order.title, store: order.store, amount: order.total + ' €' };
+    }
   });
 
   /* ─── TOAST ─── */
@@ -1322,6 +1493,28 @@
     setTimeout(() => t.classList.remove('show'), 2800);
   }
 </script>
+<!-- ─── MODAL CONFIRMAR RECEPCIÓN ─── -->
+<div class="confirm-overlay" id="confirmOverlay" onclick="closeConfirmModal(event)">
+  <div class="confirm-modal">
+    <h3>¿Has recibido el artículo?</h3>
+    <p>Confirma solo si lo has recibido y está en buen estado.</p>
+    <div class="confirm-product-row">
+      <img id="confirmImg" src="" alt="" />
+      <div>
+        <div class="confirm-product-title" id="confirmTitle">—</div>
+        <div class="confirm-product-store" id="confirmStore">—</div>
+      </div>
+    </div>
+    <div class="confirm-escrow">
+      🔒 Al confirmar, el pago de <strong id="confirmAmount" style="margin:0 3px">—</strong> se liberará al vendedor. Esta acción no se puede deshacer.
+    </div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeConfirmModal()">Cancelar</button>
+      <button class="confirm-ok" onclick="submitConfirmReceipt()">Sí, lo he recibido ✓</button>
+    </div>
+  </div>
+</div>
+
 <script src="cookie-banner.js"></script>
 </body>
 </html>

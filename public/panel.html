@@ -760,36 +760,37 @@
 
     <!-- ─── VIEW: PEDIDOS ─── -->
     <div class="view" id="view-pedidos">
+      <!-- Filtros -->
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+        <button class="topbar-btn" id="pf-all"       onclick="filterOrders('all')"       style="font-size:12px;padding:6px 14px;background:var(--brown);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:700">Todos (3)</button>
+        <button class="topbar-btn btn-outline" id="pf-pending"  onclick="filterOrders('pending')"   style="font-size:12px;padding:6px 14px">⏳ Nuevos (1)</button>
+        <button class="topbar-btn btn-outline" id="pf-transit"  onclick="filterOrders('transit')"   style="font-size:12px;padding:6px 14px">🚚 En camino (1)</button>
+        <button class="topbar-btn btn-outline" id="pf-done"     onclick="filterOrders('done')"      style="font-size:12px;padding:6px 14px">✅ Completados (1)</button>
+      </div>
+
       <div class="panel-card">
-        <div class="panel-card-header">
-          <span class="panel-card-title">Todos los pedidos</span>
-          <div style="display:flex;gap:8px">
-            <button class="topbar-btn btn-outline" style="font-size:12px;padding:6px 12px">Pendientes (3)</button>
-            <button class="topbar-btn btn-outline" style="font-size:12px;padding:6px 12px">Todos</button>
-          </div>
-        </div>
-        <table>
+        <table id="ordersTable">
           <thead>
             <tr><th>Producto</th><th>Comprador</th><th>Fecha</th><th>Importe</th><th>Tu ingreso</th><th>Estado</th><th></th></tr>
           </thead>
-          <tbody>
-            <tr>
-              <td><div class="order-product"><div class="order-thumb o1">🛋️</div><div><div class="order-name">Sofá Chester 3 plazas</div><div class="order-id">#MBL-2041</div></div></div></td>
-              <td>María García</td><td>Hoy, 11:30</td><td><strong>380 €</strong></td><td><strong style="color:var(--green)">327 €</strong></td>
-              <td><span class="status-badge status-pending">⏳ Pendiente recogida</span></td>
-              <td><button class="action-btn" onclick="showView('envios', document.getElementById('nav-envios'))">Preparar envío</button></td>
+          <tbody id="ordersBody">
+            <tr data-status="pending">
+              <td><div class="order-product"><div class="order-thumb o1">🛋️</div><div><div class="order-name">Sofá Chester 3 plazas</div><div class="order-id">#MBL-2026-442317</div></div></div></td>
+              <td>María García</td><td>Hoy, 11:30</td><td><strong>404 €</strong></td><td><strong style="color:var(--green)">392 €</strong></td>
+              <td><span class="status-badge status-pending">⏳ Nuevo</span></td>
+              <td><button class="action-btn" onclick="openShipModal('MBL-2026-442317','Sofá Chester 3 plazas','María García',this)">Preparar envío</button></td>
             </tr>
-            <tr>
-              <td><div class="order-product"><div class="order-thumb o2">🪑</div><div><div class="order-name">Silla vintage cuero</div><div class="order-id">#MBL-2040</div></div></div></td>
-              <td>Carlos Martín</td><td>Ayer, 16:00</td><td><strong>95 €</strong></td><td><strong style="color:var(--green)">82 €</strong></td>
+            <tr data-status="transit">
+              <td><div class="order-product"><div class="order-thumb o2">🪑</div><div><div class="order-name">Silla vintage cuero</div><div class="order-id">#MBL-2026-381204</div></div></div></td>
+              <td>Carlos Martín</td><td>Ayer, 16:00</td><td><strong>57 €</strong></td><td><strong style="color:var(--green)">55 €</strong></td>
               <td><span class="status-badge status-transit">🚚 En camino</span></td>
-              <td><button class="action-btn" onclick="showView('envios', document.getElementById('nav-envios'))">Ver seguimiento</button></td>
+              <td><button class="action-btn" onclick="showTrackingInfo('SE2041782ES')">Ver seguimiento</button></td>
             </tr>
-            <tr>
-              <td><div class="order-product"><div class="order-thumb o3">🪞</div><div><div class="order-name">Espejo vintage 80cm</div><div class="order-id">#MBL-2039</div></div></div></td>
-              <td>Laura Pérez</td><td>03/06/2026</td><td><strong>60 €</strong></td><td><strong style="color:var(--green)">52 €</strong></td>
+            <tr data-status="done">
+              <td><div class="order-product"><div class="order-thumb o3">🪞</div><div><div class="order-name">Espejo vintage 80cm</div><div class="order-id">#MBL-2026-290481</div></div></div></td>
+              <td>Laura Pérez</td><td>03/06/2026</td><td><strong>63 €</strong></td><td><strong style="color:var(--green)">61 €</strong></td>
               <td><span class="status-badge status-done">✅ Entregado</span></td>
-              <td><button class="action-btn" onclick="showView('valoraciones', document.getElementById('nav-valoraciones'))">Ver valoración</button></td>
+              <td><span style="font-size:12px;color:#f5a623">★★★★★</span></td>
             </tr>
           </tbody>
         </table>
@@ -1372,6 +1373,113 @@
     box.style.display = isOpen ? 'none' : 'block';
     btn.textContent = isOpen ? 'Responder →' : 'Cancelar';
   }
+
+  /* ─── FILTRO DE PEDIDOS ─── */
+  function filterOrders(status) {
+    document.querySelectorAll('[id^="pf-"]').forEach(b => {
+      b.style.background = ''; b.style.color = ''; b.style.border = '';
+    });
+    const active = document.getElementById('pf-' + status);
+    if (active) { active.style.background = 'var(--brown)'; active.style.color = '#fff'; active.style.border = 'none'; }
+    document.querySelectorAll('#ordersBody tr').forEach(row => {
+      row.style.display = (status === 'all' || row.dataset.status === status) ? '' : 'none';
+    });
+  }
+
+  /* ─── MODAL PREPARAR ENVÍO ─── */
+  let _shipRow = null;
+  function openShipModal(orderId, product, buyer, btn) {
+    _shipRow = btn.closest('tr');
+    document.getElementById('shipOrderId').textContent  = '#' + orderId;
+    document.getElementById('shipProduct').textContent  = product;
+    document.getElementById('shipBuyer').textContent    = buyer;
+    document.getElementById('shipTracking').value       = '';
+    const ov = document.getElementById('shipOverlay');
+    ov.style.display = 'flex';
+  }
+  function closeShipModal(e) {
+    if (!e || e.target === document.getElementById('shipOverlay'))
+      document.getElementById('shipOverlay').style.display = 'none';
+  }
+  function submitShipment() {
+    const tracking = document.getElementById('shipTracking').value.trim();
+    const carrier  = document.getElementById('shipCarrier').value;
+    if (!tracking) { document.getElementById('shipTracking').style.borderColor = 'var(--terra)'; return; }
+    document.getElementById('shipOverlay').style.display = 'none';
+    if (_shipRow) {
+      _shipRow.dataset.status = 'transit';
+      _shipRow.querySelector('.status-badge').className = 'status-badge status-transit';
+      _shipRow.querySelector('.status-badge').textContent = '🚚 En camino';
+      const actionTd = _shipRow.querySelector('td:last-child');
+      actionTd.innerHTML = '<button class="action-btn" onclick="showTrackingInfo(\'' + tracking + '\')">Ver seguimiento</button>';
+    }
+    /* Actualizar contador de filtro */
+    const pendingRows = document.querySelectorAll('#ordersBody tr[data-status="pending"]').length;
+    document.getElementById('pf-pending').textContent = '⏳ Nuevos (' + pendingRows + ')';
+    showPanelToast('¡Envío registrado! Número de seguimiento: ' + tracking);
+  }
+  function showTrackingInfo(code) {
+    showPanelToast('Número de seguimiento: ' + code + ' · Transportista: SEUR');
+  }
+  function showPanelToast(msg) {
+    const existing = document.getElementById('panelToast');
+    if (existing) { existing.textContent = msg; existing.style.opacity = '1'; setTimeout(() => existing.style.opacity = '0', 3000); return; }
+    const t = document.createElement('div');
+    t.id = 'panelToast';
+    t.textContent = msg;
+    Object.assign(t.style, { position:'fixed', bottom:'24px', left:'50%', transform:'translateX(-50%)', background:'var(--brown)', color:'#fff', padding:'12px 20px', borderRadius:'10px', fontSize:'13px', fontWeight:'700', zIndex:'9999', transition:'opacity 0.4s', opacity:'1', maxWidth:'420px', textAlign:'center' });
+    document.body.appendChild(t);
+    setTimeout(() => t.style.opacity = '0', 3000);
+  }
+
+  /* Cargar último pedido del comprador en la tabla del vendedor (demo) */
+  document.addEventListener('DOMContentLoaded', () => {
+    let order = null;
+    try { order = JSON.parse(localStorage.getItem('lastOrder') || 'null'); } catch(e) {}
+    if (order) {
+      const income = Math.round(order.price * 0.97);
+      const row = document.createElement('tr');
+      row.dataset.status = 'pending';
+      row.innerHTML = `
+        <td><div class="order-product"><div class="order-thumb o4">📦</div><div><div class="order-name">${order.title.substring(0,28)}…</div><div class="order-id">${order.orderNum}</div></div></div></td>
+        <td>Cliente nuevo</td><td>Hoy</td><td><strong>${order.total} €</strong></td><td><strong style="color:var(--green)">${income} €</strong></td>
+        <td><span class="status-badge status-pending">⏳ Nuevo</span></td>
+        <td><button class="action-btn" onclick="openShipModal('${order.orderNum}','${order.title.substring(0,28)}','Cliente nuevo',this)">Preparar envío</button></td>`;
+      document.getElementById('ordersBody').prepend(row);
+      document.getElementById('pf-all').textContent = 'Todos (4)';
+      document.getElementById('pf-pending').textContent = '⏳ Nuevos (2)';
+    }
+  });
 </script>
+
+<!-- ─── MODAL PREPARAR ENVÍO ─── -->
+<div id="shipOverlay" style="display:none;position:fixed;inset:0;background:rgba(26,13,7,0.55);backdrop-filter:blur(4px);z-index:600;align-items:center;justify-content:center;flex-direction:row" onclick="closeShipModal(event)">
+  <div style="background:#fff;border-radius:20px;padding:28px;width:420px;max-width:95vw;box-shadow:0 24px 64px rgba(0,0,0,0.22);animation:modalIn 0.2s ease">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <div style="font-size:18px;font-weight:800;letter-spacing:-0.4px">Preparar envío</div>
+      <button onclick="closeShipModal()" style="border:none;background:none;font-size:20px;cursor:pointer;color:#999">✕</button>
+    </div>
+    <div style="font-size:13px;color:#717171;margin-bottom:16px">Pedido <strong id="shipOrderId">#—</strong></div>
+    <div style="background:#fafafa;border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:13px">
+      <div style="font-weight:700;margin-bottom:3px" id="shipProduct">—</div>
+      <div style="color:#717171">Comprador: <strong id="shipBuyer">—</strong></div>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#a0a0a0;display:block;margin-bottom:6px">Transportista</label>
+      <select id="shipCarrier" style="width:100%;padding:11px 14px;border:1.5px solid #e8e0d8;border-radius:10px;font-size:14px;font-family:inherit;outline:none">
+        <option>SEUR</option><option>MRW</option><option>Correos</option><option>GLS</option><option>DHL</option>
+      </select>
+    </div>
+    <div style="margin-bottom:20px">
+      <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#a0a0a0;display:block;margin-bottom:6px">Número de seguimiento</label>
+      <input id="shipTracking" type="text" placeholder="Ej. SE2041782ES" style="width:100%;padding:11px 14px;border:1.5px solid #e8e0d8;border-radius:10px;font-size:14px;font-family:inherit;outline:none" />
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onclick="closeShipModal()" style="flex:1;padding:12px;border-radius:10px;border:1.5px solid #e8e0d8;font-size:13px;font-weight:700;font-family:inherit;background:#fff;cursor:pointer;color:#717171">Cancelar</button>
+      <button onclick="submitShipment()" style="flex:2;padding:12px;border-radius:10px;border:none;background:#c96a38;color:#fff;font-size:13px;font-weight:800;font-family:inherit;cursor:pointer">Marcar como enviado 🚚</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
