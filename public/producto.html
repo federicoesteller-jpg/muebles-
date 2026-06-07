@@ -171,6 +171,97 @@
     .thumb.active { border-color: var(--terra); }
     .thumb:hover { border-color: var(--terra); }
 
+    /* Fade entre fotos */
+    .gallery-main img { transition: opacity 0.18s, transform 0.4s; }
+    .gallery-main img.fading { opacity: 0; }
+
+    /* Flechas prev/next sobre la imagen principal */
+    .gallery-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.92); border: none;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; cursor: pointer; z-index: 3;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .gallery-arrow.prev { left: 12px; }
+    .gallery-arrow.next { right: 12px; }
+    .gallery-main:hover .gallery-arrow { opacity: 1; }
+    .gallery-arrow:disabled { opacity: 0.2 !important; cursor: default; }
+    .gallery-arrow:not(:disabled):hover { background: #fff; }
+
+    /* Contador "1 / 4" */
+    .gallery-counter {
+      position: absolute; bottom: 16px; right: 16px;
+      background: rgba(26,13,7,0.55); color: #fff;
+      font-size: 12px; font-weight: 700;
+      padding: 4px 10px; border-radius: 100px;
+      backdrop-filter: blur(6px); pointer-events: none;
+    }
+
+    /* ─── LIGHTBOX ─── */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 9000;
+      background: rgba(14,7,3,0.97);
+      flex-direction: column; align-items: center; justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+
+    .lightbox-top {
+      position: absolute; top: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px 20px;
+    }
+    .lightbox-counter-top {
+      color: rgba(255,255,255,0.55); font-size: 14px; font-weight: 600;
+    }
+    .lightbox-close {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: none; color: #fff;
+      font-size: 18px; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; transition: background 0.15s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.2); }
+
+    .lightbox-img-wrap {
+      flex: 1; width: 100%; display: flex;
+      align-items: center; justify-content: center;
+      position: relative; padding: 12px 80px; overflow: hidden;
+    }
+    .lightbox-img {
+      max-width: 100%; max-height: 100%;
+      object-fit: contain; border-radius: 6px;
+      transition: opacity 0.18s; user-select: none;
+    }
+    .lightbox-img.fading { opacity: 0; }
+
+    .lightbox-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: none; color: #fff;
+      font-size: 24px; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; transition: background 0.15s;
+    }
+    .lightbox-arrow.prev { left: 16px; }
+    .lightbox-arrow.next { right: 16px; }
+    .lightbox-arrow:hover:not(:disabled) { background: rgba(255,255,255,0.2); }
+    .lightbox-arrow:disabled { opacity: 0.2; cursor: default; }
+
+    .lightbox-thumbs {
+      display: flex; gap: 8px; padding: 14px 20px;
+      justify-content: center; flex-shrink: 0;
+    }
+    .lightbox-thumb {
+      width: 56px; height: 56px; border-radius: 6px;
+      overflow: hidden; cursor: pointer; flex-shrink: 0;
+      border: 2px solid transparent; transition: border-color 0.15s, opacity 0.15s;
+      opacity: 0.55;
+    }
+    .lightbox-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .lightbox-thumb.active { border-color: var(--terra); opacity: 1; }
+    .lightbox-thumb:hover { opacity: 1; }
+
     /* ─── PANEL DERECHO ─── */
     .product-info {
       position: sticky;
@@ -770,11 +861,14 @@
   <!-- Columna izquierda: galería + descripción -->
   <div>
     <div class="gallery">
-      <div class="gallery-main" id="mainImg">
+      <div class="gallery-main" id="mainImg" onclick="openLightbox(currentIdx)">
         <img id="mainPhoto" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85" alt="Sofá Chester" />
         <span class="gallery-badge">Muy bueno</span>
-        <button class="gallery-fav" id="mainFavBtn" onclick="toggleFav(this)">♡</button>
-        <div class="gallery-nav">
+        <button class="gallery-fav" id="mainFavBtn" onclick="event.stopPropagation(); toggleFav(this)">♡</button>
+        <button class="gallery-arrow prev" id="galPrev" onclick="event.stopPropagation(); goTo(currentIdx - 1)" disabled>‹</button>
+        <button class="gallery-arrow next" id="galNext" onclick="event.stopPropagation(); goTo(currentIdx + 1)">›</button>
+        <div class="gallery-counter" id="galCounter">1 / 4</div>
+        <div class="gallery-nav" id="galDots">
           <div class="gallery-dot active"></div>
           <div class="gallery-dot"></div>
           <div class="gallery-dot"></div>
@@ -782,16 +876,16 @@
         </div>
       </div>
       <div class="gallery-thumbs">
-        <div class="thumb active" onclick="switchPhoto(this, 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85', 0)">
+        <div class="thumb active" onclick="goTo(0)">
           <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=200&q=70" alt="Vista 1" />
         </div>
-        <div class="thumb" onclick="switchPhoto(this, 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=900&q=85', 1)">
+        <div class="thumb" onclick="goTo(1)">
           <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=200&q=70" alt="Vista 2" />
         </div>
-        <div class="thumb" onclick="switchPhoto(this, 'https://images.unsplash.com/photo-1540574163026-643ea20abb28?auto=format&fit=crop&w=900&q=85', 2)">
+        <div class="thumb" onclick="goTo(2)">
           <img src="https://images.unsplash.com/photo-1540574163026-643ea20abb28?auto=format&fit=crop&w=200&q=70" alt="Vista 3" />
         </div>
-        <div class="thumb" onclick="switchPhoto(this, 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=85', 3)">
+        <div class="thumb" onclick="goTo(3)">
           <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=200&q=70" alt="Vista 4" />
         </div>
       </div>
@@ -1154,6 +1248,20 @@
   <div class="footer-copy">© 2026 Mueblista</div>
 </footer>
 
+<!-- ─── LIGHTBOX ─── -->
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
+  <div class="lightbox-top">
+    <div class="lightbox-counter-top" id="lbCounter">1 / 4</div>
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  </div>
+  <div class="lightbox-img-wrap">
+    <button class="lightbox-arrow prev" id="lbPrev" onclick="lbGo(currentIdx - 1)" disabled>‹</button>
+    <img class="lightbox-img" id="lbImg" src="" alt="Foto ampliada" />
+    <button class="lightbox-arrow next" id="lbNext" onclick="lbGo(currentIdx + 1)">›</button>
+  </div>
+  <div class="lightbox-thumbs" id="lbThumbs"></div>
+</div>
+
 <script>
   /* ─── SISTEMA DE OFERTAS ─── */
   // Cambiar a false para productos que no admiten ofertas
@@ -1264,8 +1372,8 @@
     setTimeout(() => el.style.transform = '', 200);
   }
 
-  // Restaurar estados al cargar
   document.addEventListener('DOMContentLoaded', () => {
+    // Restaurar favoritos
     const mainBtn = document.getElementById('mainFavBtn');
     if (mainBtn && mFavIs(MAIN_FAV_ID)) {
       mainBtn.textContent = '♥';
@@ -1278,6 +1386,15 @@
         btn.style.color = '#e05050';
       }
     });
+
+    // Swipe táctil en lightbox
+    const lb = document.getElementById('lightbox');
+    let tx = 0;
+    lb.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) > 50) lbGo(currentIdx + (dx < 0 ? 1 : -1));
+    }, { passive: true });
   });
 
   function showTab(id, el) {
@@ -1287,13 +1404,84 @@
     el.classList.add('active');
   }
 
-  function switchPhoto(thumb, src, idx) {
-    document.getElementById('mainPhoto').src = src;
-    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.gallery-dot').forEach(d => d.classList.remove('active'));
-    thumb.classList.add('active');
-    document.querySelectorAll('.gallery-dot')[idx].classList.add('active');
+  /* ─── GALERÍA ─── */
+  const photos = [
+    { src: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85', thumb: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=200&q=70' },
+    { src: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=900&q=85', thumb: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=200&q=70' },
+    { src: 'https://images.unsplash.com/photo-1540574163026-643ea20abb28?auto=format&fit=crop&w=900&q=85', thumb: 'https://images.unsplash.com/photo-1540574163026-643ea20abb28?auto=format&fit=crop&w=200&q=70' },
+    { src: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=85', thumb: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=200&q=70' },
+  ];
+  let currentIdx = 0;
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= photos.length) return;
+    const img = document.getElementById('mainPhoto');
+    img.classList.add('fading');
+    setTimeout(() => {
+      currentIdx = idx;
+      img.src = photos[idx].src;
+      img.classList.remove('fading');
+      document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
+      document.querySelectorAll('.gallery-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+      document.getElementById('galCounter').textContent = (idx + 1) + ' / ' + photos.length;
+      document.getElementById('galPrev').disabled = idx === 0;
+      document.getElementById('galNext').disabled = idx === photos.length - 1;
+    }, 180);
   }
+
+  /* ─── LIGHTBOX ─── */
+  function openLightbox(idx) {
+    currentIdx = idx;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    buildLightboxThumbs();
+    renderLightbox(idx);
+  }
+
+  function buildLightboxThumbs() {
+    document.getElementById('lbThumbs').innerHTML = photos.map((p, i) =>
+      `<div class="lightbox-thumb" onclick="lbGo(${i})"><img src="${p.thumb}" alt="Foto ${i + 1}" loading="lazy"/></div>`
+    ).join('');
+  }
+
+  function renderLightbox(idx) {
+    document.getElementById('lbImg').src = photos[idx].src;
+    document.getElementById('lbCounter').textContent = (idx + 1) + ' / ' + photos.length;
+    document.getElementById('lbPrev').disabled = idx === 0;
+    document.getElementById('lbNext').disabled = idx === photos.length - 1;
+    document.querySelectorAll('.lightbox-thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
+  }
+
+  function lbGo(idx) {
+    if (idx < 0 || idx >= photos.length) return;
+    const img = document.getElementById('lbImg');
+    img.classList.add('fading');
+    setTimeout(() => {
+      currentIdx = idx;
+      img.src = photos[idx].src;
+      img.classList.remove('fading');
+      renderLightbox(idx);
+      // Sincronizar galería principal
+      document.getElementById('mainPhoto').src = photos[idx].src;
+      document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
+      document.querySelectorAll('.gallery-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+      document.getElementById('galCounter').textContent = (idx + 1) + ' / ' + photos.length;
+      document.getElementById('galPrev').disabled = idx === 0;
+      document.getElementById('galNext').disabled = idx === photos.length - 1;
+    }, 180);
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowLeft') lbGo(currentIdx - 1);
+    else if (e.key === 'ArrowRight') lbGo(currentIdx + 1);
+  });
 </script>
 <script src="favoritos.js"></script>
 <script src="cookie-banner.js"></script>

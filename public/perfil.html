@@ -493,6 +493,58 @@
       margin-top: 4px;
     }
 
+    /* ─── BIO ─── */
+    .profile-bio {
+      font-size: 14px; color: var(--gray); line-height: 1.65;
+      margin-top: 14px; padding-top: 14px;
+      border-top: 1px solid var(--sand);
+    }
+
+    /* ─── VALORACIONES ─── */
+    .reviews-summary {
+      display: flex; gap: 24px; align-items: center;
+      background: var(--cream); border: 1px solid var(--sand);
+      border-radius: 16px; padding: 20px 24px;
+      margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .review-big {
+      text-align: center; flex-shrink: 0;
+    }
+    .review-big-score { font-size: 52px; font-weight: 800; letter-spacing: -2px; line-height: 1; }
+    .review-big-stars { color: #f5a623; font-size: 16px; margin: 4px 0; }
+    .review-big-count { font-size: 12px; color: var(--gray-l); }
+
+    .review-bars { flex: 1; min-width: 160px; display: flex; flex-direction: column; gap: 5px; }
+    .review-bar-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--gray); }
+    .review-bar-label { width: 18px; text-align: right; flex-shrink: 0; font-weight: 600; }
+    .review-bar-track { flex: 1; height: 7px; background: var(--sand); border-radius: 4px; overflow: hidden; }
+    .review-bar-fill { height: 100%; background: #f5a623; border-radius: 4px; transition: width 0.6s; }
+    .review-bar-n { width: 24px; flex-shrink: 0; font-weight: 600; color: var(--brown); }
+
+    .reviews-list { display: flex; flex-direction: column; gap: 14px; }
+    .review-card {
+      border: 1px solid var(--sand); border-radius: 14px;
+      padding: 18px; background: var(--white);
+    }
+    .review-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .review-avatar {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(140deg, #f5e0c0, #e2a870);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 800; color: var(--brown);
+    }
+    .review-buyer { font-size: 14px; font-weight: 700; }
+    .review-date { font-size: 12px; color: var(--gray-l); }
+    .review-stars { color: #f5a623; font-size: 13px; margin-bottom: 6px; }
+    .review-text { font-size: 14px; color: var(--gray); line-height: 1.6; margin-bottom: 8px; }
+    .review-product {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; color: var(--gray-l);
+      background: var(--cream); padding: 4px 10px;
+      border-radius: 100px; border: 1px solid var(--sand);
+    }
+    .review-product strong { color: var(--brown); font-weight: 600; }
+
     /* ─── ESTADO VACÍO ─── */
     .empty-state {
       text-align: center; padding: 48px 24px;
@@ -568,6 +620,9 @@
         <div class="pstat"><strong>3</strong><span>Compras</span></div>
         <div class="pstat"><strong>14</strong><span>Favoritos</span></div>
       </div>
+      <div class="profile-bio" id="profileBioDisplay">
+        Vendo muebles vintage y de diseño que ya no necesito en casa. Todo en perfecto estado o con detalles mínimos. Envío a toda España 📦
+      </div>
     </div>
 
     <div class="profile-actions">
@@ -587,6 +642,9 @@
       </button>
       <button class="tab-btn" onclick="switchTab('favoritos')">
         Favoritos <span class="tab-count">14</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('valoraciones')">
+        Valoraciones <span class="tab-count">12</span>
       </button>
       <button class="tab-btn" onclick="switchTab('ajustes')">
         Ajustes
@@ -836,6 +894,116 @@
       </div>
     </div>
 
+    <!-- ══════════ VALORACIONES ══════════ -->
+    <div class="tab-panel" id="panel-valoraciones">
+
+      <!-- Resumen de puntuación -->
+      <div class="reviews-summary">
+        <div class="review-big">
+          <div class="review-big-score">4.8</div>
+          <div class="review-big-stars">★★★★★</div>
+          <div class="review-big-count">12 valoraciones</div>
+        </div>
+        <div class="review-bars">
+          <div class="review-bar-row">
+            <span class="review-bar-label">5★</span>
+            <div class="review-bar-track"><div class="review-bar-fill" style="width:75%"></div></div>
+            <span class="review-bar-n">9</span>
+          </div>
+          <div class="review-bar-row">
+            <span class="review-bar-label">4★</span>
+            <div class="review-bar-track"><div class="review-bar-fill" style="width:17%"></div></div>
+            <span class="review-bar-n">2</span>
+          </div>
+          <div class="review-bar-row">
+            <span class="review-bar-label">3★</span>
+            <div class="review-bar-track"><div class="review-bar-fill" style="width:8%"></div></div>
+            <span class="review-bar-n">1</span>
+          </div>
+          <div class="review-bar-row">
+            <span class="review-bar-label">2★</span>
+            <div class="review-bar-track"><div class="review-bar-fill" style="width:0%"></div></div>
+            <span class="review-bar-n">0</span>
+          </div>
+          <div class="review-bar-row">
+            <span class="review-bar-label">1★</span>
+            <div class="review-bar-track"><div class="review-bar-fill" style="width:0%"></div></div>
+            <span class="review-bar-n">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de reseñas -->
+      <div class="reviews-list">
+
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-avatar">A</div>
+            <div>
+              <div class="review-buyer">Ana M.</div>
+              <div class="review-date">Hace 3 días</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">Muy contenta con la silla escandinava. Llegó en perfecto estado y el embalaje era excepcional. La vendedora respondió rápido a todas mis preguntas. 100% recomendable.</div>
+          <span class="review-product">🛒 <strong>Silla escandinava roble macizo</strong></span>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-avatar">C</div>
+            <div>
+              <div class="review-buyer">Carlos R.</div>
+              <div class="review-date">Hace 1 semana</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">El espejo vintage es precioso, exactamente igual que en las fotos. Trato muy amable y envío rápido. Repetiría sin duda.</div>
+          <span class="review-product">🛒 <strong>Espejo vintage redondo 80cm dorado</strong></span>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-avatar">P</div>
+            <div>
+              <div class="review-buyer">Pedro S.</div>
+              <div class="review-date">Hace 2 semanas</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★<span style="color:var(--sand)">★</span></div>
+          <div class="review-text">El aparador llegó bien protegido. Hay un pequeño arañazo que no aparecía en las fotos, pero en general estoy satisfecho con la compra y con la atención.</div>
+          <span class="review-product">🛒 <strong>Aparador industrial acero negro 160cm</strong></span>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-avatar">L</div>
+            <div>
+              <div class="review-buyer">Laura G.</div>
+              <div class="review-date">Hace 1 mes</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">Segunda compra y repito. Todo perfecto como siempre, artículo bien descrito, comunicación fluida y entrega sin problemas. ¡Gracias!</div>
+          <span class="review-product">🛒 <strong>Mesa comedor extensible 140–180cm roble</strong></span>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-avatar">M</div>
+            <div>
+              <div class="review-buyer">Miguel T.</div>
+              <div class="review-date">Hace 2 meses</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">La lámpara es perfecta para mi salón. La vendedora fue muy atenta y facilitó la recogida en un horario flexible. Artículo tal como se describía.</div>
+          <span class="review-product">🛒 <strong>Lámpara de pie arco dorado 180cm</strong></span>
+        </div>
+
+      </div>
+    </div>
+
     <!-- ══════════ AJUSTES ══════════ -->
     <div class="tab-panel" id="panel-ajustes">
       <div class="settings-sections">
@@ -869,8 +1037,12 @@
                 <input type="tel" value="+34 612 345 678" />
               </div>
             </div>
+            <div class="field">
+              <label class="field-label">Descripción pública <span class="hint">Cuéntale a los compradores quién eres</span></label>
+              <textarea id="bioInput" style="width:100%; padding:11px 14px; border:1.5px solid var(--sand); border-radius:10px; font-size:14px; font-family:inherit; color:var(--brown); outline:none; resize:vertical; min-height:80px; transition:border-color 0.2s; background:var(--white);" placeholder="Ej: Vendo muebles de calidad que ya no necesito. Respondo rápido y cuido mucho los artículos." onfocus="this.style.borderColor='var(--terra)'" onblur="this.style.borderColor='var(--sand)'">Vendo muebles vintage y de diseño que ya no necesito en casa. Todo en perfecto estado o con detalles mínimos. Envío a toda España 📦</textarea>
+            </div>
             <div class="save-row">
-              <button class="btn-save" onclick="showToast('Datos guardados correctamente')">Guardar cambios</button>
+              <button class="btn-save" onclick="saveBio()">Guardar cambios</button>
             </div>
           </div>
         </div>
@@ -1088,6 +1260,14 @@
     e.preventDefault();
     btn.closest('.fav-card').remove();
     showToast('Eliminado de favoritos');
+  }
+
+  /* ─── BIO ─── */
+  function saveBio() {
+    const text = document.getElementById('bioInput').value.trim();
+    const display = document.getElementById('profileBioDisplay');
+    if (display) display.textContent = text || '';
+    showToast('Datos guardados correctamente');
   }
 
   /* ─── REFERIDOS ─── */
