@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registra tu tienda — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:   #1a0d07;
+      --terra:   #c96a38;
+      --terra-l: #e07a44;
+      --cream:   #fdf6ee;
+      --sand:    #ede3d5;
+      --gray:    #7a726b;
+      --gray-l:  #a09890;
+      --white:   #ffffff;
+      --green:   #2d7a4f;
+      --green-l: #e8f5ee;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--brown); min-height: 100vh; display: flex; overflow: hidden; }
+
+    /* ─── LADO IZQUIERDO ─── */
+    .left {
+      flex: 1; background: var(--brown);
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 48px; position: relative; overflow: hidden;
+    }
+    .left::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 30% 70%, rgba(201,106,56,0.2) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 80% 20%, rgba(201,106,56,0.08) 0%, transparent 60%);
+    }
+    .logo { font-size: 22px; font-weight: 800; color: #fff; text-decoration: none; position: relative; z-index: 1; }
+    .logo em { font-style: normal; color: var(--terra); }
+
+    .left-headline { position: relative; z-index: 1; }
+    .left-headline h1 { font-size: 38px; font-weight: 800; color: #fff; line-height: 1.15; letter-spacing: -1px; margin-bottom: 16px; }
+    .left-headline h1 em { font-style: normal; color: var(--terra); }
+    .left-headline p { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 340px; }
+
+    .perks { display: flex; flex-direction: column; gap: 14px; position: relative; z-index: 1; }
+    .perk { display: flex; gap: 12px; align-items: flex-start; }
+    .perk-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(201,106,56,0.2); display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+    .perk-text h4 { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .perk-text p  { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.4; }
+
+    /* ─── LADO DERECHO ─── */
+    .right {
+      width: 480px; flex-shrink: 0; background: var(--cream);
+      display: flex; align-items: center; justify-content: center;
+      padding: 40px 48px; overflow-y: auto;
+    }
+    .form-box { width: 100%; max-width: 360px; }
+
+    /* ─── PROGRESO ─── */
+    .progress-wrap { margin-bottom: 28px; }
+    .progress-steps { display: flex; align-items: center; gap: 0; margin-bottom: 8px; }
+    .prog-step {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800;
+      background: var(--sand); color: var(--gray-l); border: 2px solid var(--sand);
+      transition: all 0.3s;
+    }
+    .prog-step.done   { background: var(--green); color: #fff; border-color: var(--green); }
+    .prog-step.active { background: var(--brown); color: #fff; border-color: var(--brown); }
+    .prog-line { flex: 1; height: 2px; background: var(--sand); transition: background 0.3s; }
+    .prog-line.done { background: var(--green); }
+    .prog-labels { display: flex; justify-content: space-between; font-size: 10px; font-weight: 700; color: var(--gray-l); text-transform: uppercase; letter-spacing: 0.5px; }
+    .prog-labels span.active { color: var(--brown); }
+    .prog-labels span.done  { color: var(--green); }
+
+    /* ─── FORMULARIO ─── */
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .step-title { font-size: 24px; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 4px; }
+    .step-sub   { font-size: 13px; color: var(--gray); margin-bottom: 24px; line-height: 1.5; }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray-l); margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 12px 14px;
+      border: 1.5px solid var(--sand); border-radius: 10px;
+      font-size: 14px; font-family: inherit; color: var(--brown);
+      background: var(--white); outline: none; transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--brown); }
+    .form-group input.error, .form-group select.error, .form-group textarea.error { border-color: #dc2626; }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-group .field-hint { font-size: 11px; color: var(--gray-l); margin-top: 4px; }
+
+    .char-count { font-size: 11px; color: var(--gray-l); text-align: right; margin-top: 3px; }
+
+    /* Password */
+    .pw-wrap { position: relative; }
+    .pw-wrap input { padding-right: 44px; }
+    .pw-toggle { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px; }
+
+    /* Fuerza contraseña */
+    .pw-strength { height: 4px; border-radius: 2px; margin-top: 6px; background: var(--sand); overflow: hidden; }
+    .pw-strength-fill { height: 100%; border-radius: 2px; width: 0; transition: width 0.3s, background 0.3s; }
+
+    /* Términos */
+    .terms-check { display: flex; gap: 10px; align-items: flex-start; font-size: 12px; color: var(--gray); line-height: 1.5; margin-bottom: 20px; }
+    .terms-check input { width: 15px; height: 15px; margin-top: 2px; accent-color: var(--terra); flex-shrink: 0; }
+    .terms-check a { color: var(--terra); }
+
+    /* Error genérico */
+    .form-error {
+      background: #fdeaea; color: #dc2626; border-radius: 8px;
+      padding: 10px 12px; font-size: 12px; font-weight: 600;
+      margin-bottom: 14px; display: none;
+    }
+    .form-error.show { display: block; }
+
+    /* Botones */
+    .btn-next {
+      width: 100%; padding: 14px; border-radius: 10px; border: none;
+      background: var(--terra); color: #fff;
+      font-size: 15px; font-weight: 800; font-family: inherit;
+      cursor: pointer; transition: background 0.15s, transform 0.1s;
+      margin-top: 4px;
+    }
+    .btn-next:hover { background: #b85e30; }
+    .btn-back {
+      width: 100%; padding: 12px; border-radius: 10px;
+      border: 1.5px solid var(--sand); background: var(--white);
+      font-size: 13px; font-weight: 700; font-family: inherit;
+      color: var(--gray); cursor: pointer; margin-top: 8px;
+    }
+    .btn-back:hover { border-color: var(--brown); color: var(--brown); }
+
+    /* Separador */
+    .divider { display: flex; align-items: center; gap: 10px; margin: 18px 0; }
+    .divider hr { flex: 1; border: none; border-top: 1px solid var(--sand); }
+    .divider span { font-size: 11px; color: var(--gray-l); font-weight: 600; }
+
+    /* ─── PASO 3 — ÉXITO ─── */
+    .success-icon {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--green-l); margin: 0 auto 20px;
+      display: flex; align-items: center; justify-content: center;
+      animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes popIn { from{transform:scale(0.5);opacity:0} to{transform:scale(1);opacity:1} }
+    .check-svg { width: 40px; height: 40px; }
+    .check-path {
+      stroke: var(--green); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; fill: none;
+      stroke-dasharray: 50; stroke-dashoffset: 50;
+      animation: drawCheck 0.45s 0.3s ease forwards;
+    }
+    @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+
+    .success-title { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 8px; letter-spacing: -0.5px; }
+    .success-sub   { font-size: 13px; color: var(--gray); text-align: center; line-height: 1.6; margin-bottom: 24px; }
+
+    .info-box {
+      background: #fff; border: 1px solid var(--sand); border-radius: 12px; padding: 16px;
+      margin-bottom: 20px;
+    }
+    .info-box-row { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--gray); margin-bottom: 10px; line-height: 1.5; }
+    .info-box-row:last-child { margin-bottom: 0; }
+    .info-box-row strong { color: var(--brown); }
+
+    .btn-primary-full {
+      display: block; width: 100%; padding: 14px; text-align: center;
+      background: var(--terra); color: #fff; border: none; border-radius: 10px;
+      font-size: 14px; font-weight: 800; font-family: inherit; cursor: pointer;
+      text-decoration: none; transition: background 0.15s; margin-bottom: 10px;
+    }
+    .btn-primary-full:hover { background: #b85e30; }
+    .btn-ghost-full {
+      display: block; width: 100%; padding: 12px; text-align: center;
+      color: var(--gray); font-size: 13px; font-weight: 600; text-decoration: none;
+    }
+    .btn-ghost-full:hover { color: var(--brown); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 720px) {
+      body { flex-direction: column; overflow: auto; }
+      .left { padding: 32px 24px; flex: none; min-height: 220px; }
+      .left-headline h1 { font-size: 28px; }
+      .left-headline p, .perks { display: none; }
+      .right { width: 100%; padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── IZQUIERDA ─── -->
+<div class="left">
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+
+  <div class="left-headline">
+    <h1>Tu tienda,<br/><em>tu escaparate</em><br/>en toda España.</h1>
+    <p>Miles de compradores buscan muebles únicos cada día. Ponles tu catálogo delante en menos de 24 horas.</p>
+  </div>
+
+  <div class="perks">
+    <div class="perk">
+      <div class="perk-icon">🛡️</div>
+      <div class="perk-text">
+        <h4>Pagos protegidos</h4>
+        <p>Cobras solo cuando el comprador confirma la recepción.</p>
+      </div>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">📊</div>
+      <div class="perk-text">
+        <h4>Panel propio</h4>
+        <p>Gestiona pedidos, mensajes y estadísticas desde un solo lugar.</p>
+      </div>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">⭐</div>
+      <div class="perk-text">
+        <h4>Construye reputación</h4>
+        <p>Las valoraciones de compradores impulsan tu visibilidad.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DERECHA ─── -->
+<div class="right">
+  <div class="form-box">
+
+    <!-- Progreso -->
+    <div class="progress-wrap">
+      <div class="progress-steps">
+        <div class="prog-step active" id="ps1">1</div>
+        <div class="prog-line" id="pl1"></div>
+        <div class="prog-step" id="ps2">2</div>
+        <div class="prog-line" id="pl2"></div>
+        <div class="prog-step" id="ps3">3</div>
+      </div>
+      <div class="prog-labels">
+        <span class="active" id="pl-lbl1">Tu tienda</span>
+        <span id="pl-lbl2">Cuenta</span>
+        <span id="pl-lbl3">Listo</span>
+      </div>
+    </div>
+
+    <!-- ── PASO 1: DATOS DE TIENDA ── -->
+    <div class="step active" id="step1">
+      <div class="step-title">Cuéntanos tu tienda</div>
+      <div class="step-sub">Esta información aparecerá en tu perfil público dentro de Mueblista.</div>
+
+      <div class="form-error" id="err1">Completa todos los campos obligatorios.</div>
+
+      <div class="form-group">
+        <label>Nombre de la tienda *</label>
+        <input type="text" id="storeName" placeholder="Ej. Muebles García" maxlength="40" />
+      </div>
+      <div class="form-group">
+        <label>Categoría principal *</label>
+        <select id="storeCategory">
+          <option value="">Selecciona una categoría</option>
+          <option>Sofás y sillones</option>
+          <option>Sillas y taburetes</option>
+          <option>Camas y cabeceros</option>
+          <option>Mesas y escritorios</option>
+          <option>Armarios y cómodas</option>
+          <option>Iluminación</option>
+          <option>Decoración y espejos</option>
+          <option>Mobiliario industrial/vintage</option>
+          <option>Todo tipo de muebles</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Comunidad autónoma *</label>
+        <select id="storeComunidad">
+          <option value="">Selecciona tu comunidad</option>
+          <option>Andalucía</option>
+          <option>Aragón</option>
+          <option>Asturias</option>
+          <option>Baleares</option>
+          <option>Canarias</option>
+          <option>Cantabria</option>
+          <option>Castilla-La Mancha</option>
+          <option>Castilla y León</option>
+          <option>Cataluña</option>
+          <option>Comunidad de Madrid</option>
+          <option>Comunitat Valenciana</option>
+          <option>Extremadura</option>
+          <option>Galicia</option>
+          <option>La Rioja</option>
+          <option>Murcia</option>
+          <option>Navarra</option>
+          <option>País Vasco</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Descripción breve *</label>
+        <textarea id="storeDesc" placeholder="Cuéntale a los compradores qué tipo de muebles vendes, qué te hace especial…" maxlength="200" oninput="updateCharCount(this)"></textarea>
+        <div class="char-count"><span id="charCount">0</span> / 200</div>
+      </div>
+
+      <button class="btn-next" onclick="goStep(2)">Continuar →</button>
+    </div>
+
+    <!-- ── PASO 2: CUENTA ── -->
+    <div class="step" id="step2">
+      <div class="step-title">Crea tu cuenta</div>
+      <div class="step-sub">Usarás este email y contraseña para entrar al panel de tu tienda.</div>
+
+      <div class="form-error" id="err2">Revisa los campos marcados.</div>
+
+      <div class="form-group">
+        <label>Email de la tienda *</label>
+        <input type="email" id="storeEmail" placeholder="hola@tutienda.es" />
+      </div>
+      <div class="form-group">
+        <label>Contraseña *</label>
+        <div class="pw-wrap">
+          <input type="password" id="storePw" placeholder="Mínimo 8 caracteres" oninput="checkPw(this)" />
+          <button type="button" class="pw-toggle" onclick="togglePw('storePw', this)">👁</button>
+        </div>
+        <div class="pw-strength"><div class="pw-strength-fill" id="pwFill"></div></div>
+      </div>
+      <div class="form-group">
+        <label>Confirmar contraseña *</label>
+        <div class="pw-wrap">
+          <input type="password" id="storePw2" placeholder="Repite la contraseña" />
+          <button type="button" class="pw-toggle" onclick="togglePw('storePw2', this)">👁</button>
+        </div>
+      </div>
+
+      <div class="terms-check">
+        <input type="checkbox" id="termsCheck" />
+        <label for="termsCheck">Acepto los <a href="terminos.html" target="_blank">Términos y condiciones</a> y la <a href="privacidad.html" target="_blank">Política de privacidad</a> de Mueblista.</label>
+      </div>
+
+      <button class="btn-next" onclick="goStep(3)">Enviar solicitud →</button>
+      <button class="btn-back" onclick="goStep(1)">← Volver</button>
+    </div>
+
+    <!-- ── PASO 3: ÉXITO ── -->
+    <div class="step" id="step3">
+      <div class="success-icon">
+        <svg class="check-svg" viewBox="0 0 40 40">
+          <path class="check-path" d="M10 21 L18 29 L30 13" />
+        </svg>
+      </div>
+      <div class="success-title">¡Solicitud enviada!</div>
+      <div class="success-sub">Hemos recibido los datos de tu tienda. Nuestro equipo los revisará y te enviaremos el acceso en un máximo de 24 horas.</div>
+
+      <div class="info-box">
+        <div class="info-box-row">📧 <span>Recibirás un <strong>email de confirmación</strong> en la dirección que has indicado.</span></div>
+        <div class="info-box-row">✅ <span>Una vez aprobada, podrás <strong>publicar tus primeros artículos</strong> desde el panel.</span></div>
+        <div class="info-box-row">💬 <span>Si tienes dudas, escríbenos a <strong>hola@mueblista.es</strong>.</span></div>
+      </div>
+
+      <a href="panel.html" class="btn-primary-full">Ver el panel (demo) →</a>
+      <a href="como-funciona.html" class="btn-ghost-full">Cómo funciona para vendedores</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let currentStep = 1;
+
+  function goStep(n) {
+    if (n === 2 && !validateStep1()) return;
+    if (n === 3 && !validateStep2()) return;
+
+    document.getElementById('step' + currentStep).classList.remove('active');
+    currentStep = n;
+    document.getElementById('step' + currentStep).classList.add('active');
+    updateProgress(n);
+  }
+
+  function updateProgress(n) {
+    for (let i = 1; i <= 3; i++) {
+      const ps = document.getElementById('ps' + i);
+      const lbl = document.getElementById('pl-lbl' + i);
+      ps.classList.remove('active', 'done');
+      lbl.classList.remove('active', 'done');
+      if (i < n)  { ps.classList.add('done'); ps.textContent = '✓'; lbl.classList.add('done'); }
+      if (i === n) { ps.classList.add('active'); lbl.classList.add('active'); }
+    }
+    for (let i = 1; i <= 2; i++) {
+      const pl = document.getElementById('pl' + i);
+      pl.classList.toggle('done', i < n);
+    }
+  }
+
+  function validateStep1() {
+    const name   = document.getElementById('storeName').value.trim();
+    const cat    = document.getElementById('storeCategory').value;
+    const com    = document.getElementById('storeComunidad').value;
+    const desc   = document.getElementById('storeDesc').value.trim();
+    const err    = document.getElementById('err1');
+    let ok = true;
+    [document.getElementById('storeName'), document.getElementById('storeCategory'),
+     document.getElementById('storeComunidad'), document.getElementById('storeDesc')].forEach(el => el.classList.remove('error'));
+    if (!name)  { document.getElementById('storeName').classList.add('error'); ok = false; }
+    if (!cat)   { document.getElementById('storeCategory').classList.add('error'); ok = false; }
+    if (!com)   { document.getElementById('storeComunidad').classList.add('error'); ok = false; }
+    if (!desc)  { document.getElementById('storeDesc').classList.add('error'); ok = false; }
+    err.classList.toggle('show', !ok);
+    return ok;
+  }
+
+  function validateStep2() {
+    const email  = document.getElementById('storeEmail').value.trim();
+    const pw     = document.getElementById('storePw').value;
+    const pw2    = document.getElementById('storePw2').value;
+    const terms  = document.getElementById('termsCheck').checked;
+    const err    = document.getElementById('err2');
+    let msg = '';
+    [document.getElementById('storeEmail'), document.getElementById('storePw'),
+     document.getElementById('storePw2')].forEach(el => el.classList.remove('error'));
+
+    if (!email || !email.includes('@')) { document.getElementById('storeEmail').classList.add('error'); msg = 'Introduce un email válido.'; }
+    else if (pw.length < 8)             { document.getElementById('storePw').classList.add('error');    msg = 'La contraseña debe tener al menos 8 caracteres.'; }
+    else if (pw !== pw2)                { document.getElementById('storePw2').classList.add('error');   msg = 'Las contraseñas no coinciden.'; }
+    else if (!terms)                    { msg = 'Debes aceptar los términos para continuar.'; }
+
+    if (msg) { err.textContent = msg; err.classList.add('show'); return false; }
+    err.classList.remove('show');
+    return true;
+  }
+
+  function updateCharCount(el) {
+    document.getElementById('charCount').textContent = el.value.length;
+  }
+
+  function checkPw(input) {
+    const v = input.value;
+    let strength = 0;
+    if (v.length >= 8) strength++;
+    if (/[A-Z]/.test(v)) strength++;
+    if (/[0-9]/.test(v)) strength++;
+    if (/[^a-zA-Z0-9]/.test(v)) strength++;
+    const fill = document.getElementById('pwFill');
+    const colors = ['', '#dc2626', '#f59e0b', '#2d7a4f', '#2d7a4f'];
+    const widths  = ['0%', '25%', '50%', '75%', '100%'];
+    fill.style.width      = widths[strength];
+    fill.style.background = colors[strength];
+  }
+
+  function togglePw(id, btn) {
+    const input = document.getElementById(id);
+    const hidden = input.type === 'password';
+    input.type = hidden ? 'text' : 'password';
+    btn.textContent = hidden ? '🙈' : '👁';
+  }
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

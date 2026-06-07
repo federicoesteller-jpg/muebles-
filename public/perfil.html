@@ -388,6 +388,58 @@
     }
     .confirm-ok:hover { background: #256640; }
 
+    /* Modal de valoración */
+    .rating-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(26,13,7,0.55); backdrop-filter: blur(4px);
+      z-index: 600; align-items: center; justify-content: center;
+    }
+    .rating-overlay.open { display: flex; }
+    .rating-modal {
+      background: var(--white); border-radius: 20px; padding: 28px;
+      width: 420px; max-width: 95vw;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+      animation: cfIn 0.2s ease;
+    }
+    .rating-modal h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.4px; }
+    .rating-modal .r-sub { font-size: 13px; color: var(--gray); margin-bottom: 16px; }
+    .rating-product-row {
+      display: flex; gap: 10px; align-items: center;
+      background: var(--cream); border-radius: 10px; padding: 10px 12px; margin-bottom: 16px;
+    }
+    .rating-product-row img { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; background: #f0f0f0; }
+    .rating-product-name { font-size: 12px; font-weight: 700; }
+    .rating-product-store { font-size: 11px; color: var(--gray); }
+    /* Estrellas interactivas */
+    .stars-input { display: flex; gap: 6px; justify-content: center; margin: 16px 0 6px; }
+    .star-btn { font-size: 36px; cursor: pointer; line-height: 1; filter: grayscale(1) opacity(0.3); transition: filter 0.1s, transform 0.1s; }
+    .star-btn.lit { filter: none; }
+    .star-btn:hover { transform: scale(1.15); }
+    .star-label { text-align: center; font-size: 13px; font-weight: 700; color: var(--gray); height: 18px; margin-bottom: 14px; }
+    /* Textarea */
+    .rating-textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--sand);
+      border-radius: 10px; font-size: 13px; font-family: inherit; color: var(--brown);
+      resize: none; min-height: 80px; outline: none; transition: border-color 0.2s;
+      margin-bottom: 4px;
+    }
+    .rating-textarea:focus { border-color: var(--brown); }
+    .rating-char { font-size: 11px; color: var(--gray-l); text-align: right; margin-bottom: 16px; }
+    /* Botones */
+    .rating-btns { display: flex; gap: 10px; }
+    .rating-cancel {
+      flex: 1; padding: 12px; border-radius: 10px;
+      border: 1.5px solid var(--sand); font-size: 13px; font-weight: 700;
+      font-family: inherit; background: var(--white); color: var(--gray); cursor: pointer;
+    }
+    .rating-submit {
+      flex: 2; padding: 12px; border-radius: 10px; border: none;
+      background: var(--terra); color: #fff;
+      font-size: 13px; font-weight: 800; font-family: inherit; cursor: pointer; transition: background 0.15s;
+    }
+    .rating-submit:hover { background: #b85e30; }
+    .rating-submit:disabled { background: var(--sand); color: var(--gray-l); cursor: not-allowed; }
+
     .order-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; flex-shrink: 0; }
     .obtn {
       padding: 7px 14px; border-radius: 8px;
@@ -956,7 +1008,7 @@
             </div>
           </div>
           <div class="order-actions">
-            <button class="obtn primary" onclick="openRatingModal('Vintage Home', 'Silla vintage cuero negro patas doradas')">⭐ Valorar</button>
+            <button class="obtn primary" onclick="openRatingModal('Vintage Home','Silla vintage cuero negro patas doradas',this,'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=80&q=80')">⭐ Valorar</button>
           </div>
         </div>
 
@@ -1456,13 +1508,79 @@
       card.querySelectorAll('.otl-step').forEach(s => { s.classList.remove('active'); s.classList.add('done'); s.querySelector('.otl-dot').textContent = '✓'; });
       card.querySelectorAll('.otl-line').forEach(l => l.classList.add('done'));
       const actions = card.querySelector('.order-actions');
-      actions.innerHTML = '<button class="obtn primary" onclick="openRatingModal(\'\', \'\')">⭐ Valorar al vendedor</button>';
+      const img = card.querySelector('.order-img img')?.src || '';
+      const title = card.querySelector('.order-title')?.textContent || '';
+      const storeText = card.querySelector('.order-seller')?.textContent.split('·')[0].replace('Vendido por','').trim() || '';
+      actions.innerHTML = `<button class="obtn primary" onclick="openRatingModal('${storeText}','${title}',this,'${img}')">⭐ Valorar al vendedor</button>`;
     }
     showToast('¡Recepción confirmada! El pago ha sido liberado al vendedor.');
   }
 
-  function openRatingModal(store, product) {
-    showToast('Abriendo formulario de valoración…');
+  /* ─── MODAL VALORACIÓN ─── */
+  const STAR_LABELS = ['', 'Muy malo', 'Regular', 'Bien', 'Muy bien', '¡Perfecto!'];
+  let _ratingStars = 0;
+  let _ratingOrderBtn = null;
+
+  function openRatingModal(store, product, btn, imgSrc) {
+    _ratingStars = 0;
+    _ratingOrderBtn = btn || null;
+    document.getElementById('ratingStoreName').textContent  = store  || '—';
+    document.getElementById('ratingProductName').textContent = product || '—';
+    document.getElementById('ratingProductImg').src = imgSrc || '';
+    document.getElementById('ratingComment').value = '';
+    document.getElementById('ratingCharCount').textContent = '0 / 300';
+    document.querySelectorAll('.star-btn').forEach(s => s.classList.remove('lit'));
+    document.getElementById('starLabel').textContent = '';
+    document.getElementById('ratingSubmitBtn').disabled = true;
+    document.getElementById('ratingOverlay').classList.add('open');
+  }
+  function closeRatingModal(e) {
+    if (!e || e.target === document.getElementById('ratingOverlay'))
+      document.getElementById('ratingOverlay').classList.remove('open');
+  }
+  function setStars(n) {
+    _ratingStars = n;
+    document.querySelectorAll('.star-btn').forEach((s, i) => s.classList.toggle('lit', i < n));
+    document.getElementById('starLabel').textContent = STAR_LABELS[n] || '';
+    document.getElementById('ratingSubmitBtn').disabled = (n === 0);
+  }
+  function hoverStars(n) {
+    document.querySelectorAll('.star-btn').forEach((s, i) => s.classList.toggle('lit', i < n));
+    document.getElementById('starLabel').textContent = STAR_LABELS[n] || '';
+  }
+  function leaveStars() {
+    document.querySelectorAll('.star-btn').forEach((s, i) => s.classList.toggle('lit', i < _ratingStars));
+    document.getElementById('starLabel').textContent = STAR_LABELS[_ratingStars] || '';
+  }
+  function updateRatingChar(el) {
+    document.getElementById('ratingCharCount').textContent = el.value.length + ' / 300';
+  }
+  function submitRating() {
+    if (_ratingStars === 0) return;
+    document.getElementById('ratingOverlay').classList.remove('open');
+    /* Actualizar el botón del pedido */
+    if (_ratingOrderBtn) {
+      const actions = _ratingOrderBtn.closest('.order-actions');
+      const stars = '★'.repeat(_ratingStars) + '☆'.repeat(5 - _ratingStars);
+      actions.innerHTML = '<span style="font-size:13px;color:#f5a623;font-weight:700">' + stars + ' Valorado</span>';
+    }
+    /* Añadir la reseña al tab de valoraciones */
+    const comment = document.getElementById('ratingComment').value.trim();
+    const store   = document.getElementById('ratingStoreName').textContent;
+    const product = document.getElementById('ratingProductName').textContent;
+    const starsHtml = '★'.repeat(_ratingStars) + '<span style="color:var(--sand)">★</span>'.repeat(5 - _ratingStars);
+    const newReview = `<div class="review-card" style="animation:cfIn 0.3s ease">
+      <div class="review-header">
+        <div class="review-avatar">T</div>
+        <div><div class="review-buyer">Tú</div><div class="review-date">Hoy</div></div>
+      </div>
+      <div class="review-stars">${starsHtml}</div>
+      ${comment ? `<div class="review-text">${comment}</div>` : ''}
+      <span class="review-product">🛒 <strong>${product}</strong> · ${store}</span>
+    </div>`;
+    const list = document.querySelector('.reviews-list');
+    if (list) list.insertAdjacentHTML('afterbegin', newReview);
+    showToast('¡Valoración enviada! Gracias por tu opinión.');
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -1493,6 +1611,35 @@
     setTimeout(() => t.classList.remove('show'), 2800);
   }
 </script>
+<!-- ─── MODAL VALORACIÓN ─── -->
+<div class="rating-overlay" id="ratingOverlay" onclick="closeRatingModal(event)">
+  <div class="rating-modal">
+    <h3>Valora tu compra</h3>
+    <p class="r-sub">Tu opinión ayuda a otros compradores y al vendedor a mejorar.</p>
+    <div class="rating-product-row">
+      <img id="ratingProductImg" src="" alt="" />
+      <div>
+        <div class="rating-product-name" id="ratingProductName">—</div>
+        <div class="rating-product-store" id="ratingStoreName">—</div>
+      </div>
+    </div>
+    <div class="stars-input">
+      <span class="star-btn" onmouseenter="hoverStars(1)" onmouseleave="leaveStars()" onclick="setStars(1)">★</span>
+      <span class="star-btn" onmouseenter="hoverStars(2)" onmouseleave="leaveStars()" onclick="setStars(2)">★</span>
+      <span class="star-btn" onmouseenter="hoverStars(3)" onmouseleave="leaveStars()" onclick="setStars(3)">★</span>
+      <span class="star-btn" onmouseenter="hoverStars(4)" onmouseleave="leaveStars()" onclick="setStars(4)">★</span>
+      <span class="star-btn" onmouseenter="hoverStars(5)" onmouseleave="leaveStars()" onclick="setStars(5)">★</span>
+    </div>
+    <div class="star-label" id="starLabel"></div>
+    <textarea class="rating-textarea" id="ratingComment" placeholder="Cuéntanos cómo fue la experiencia… (opcional)" maxlength="300" oninput="updateRatingChar(this)"></textarea>
+    <div class="rating-char" id="ratingCharCount">0 / 300</div>
+    <div class="rating-btns">
+      <button class="rating-cancel" onclick="closeRatingModal()">Cancelar</button>
+      <button class="rating-submit" id="ratingSubmitBtn" onclick="submitRating()" disabled>Enviar valoración ★</button>
+    </div>
+  </div>
+</div>
+
 <!-- ─── MODAL CONFIRMAR RECEPCIÓN ─── -->
 <div class="confirm-overlay" id="confirmOverlay" onclick="closeConfirmModal(event)">
   <div class="confirm-modal">
