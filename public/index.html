@@ -7,14 +7,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --brown:  #1a0d07;
-      --terra:  #c96a38;
-      --cream:  #fafafa;
-      --sand:   #e8e0d8;
-      --gray:   #717171;
-      --gray-l: #a0a0a0;
-      --white:  #ffffff;
-      --green:  #2d7a4f;
+      --brown:   #1a0d07;
+      --terra:   #c96a38;
+      --terra-l: #e07a44;
+      --cream:   #fafafa;
+      --sand:    #e8e0d8;
+      --sand-l:  #f5f0e8;
+      --gray:    #717171;
+      --gray-l:  #a0a0a0;
+      --white:   #ffffff;
+      --green:   #2d7a4f;
+      --green-l: #e8f5ee;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -56,8 +59,6 @@
     }
     .nav-btn-ghost { color: var(--gray); background: transparent; }
     .nav-btn-ghost:hover { color: var(--brown); background: #f5f5f5; }
-    .nav-btn-dark { color: var(--white); background: var(--brown); }
-    .nav-btn-dark:hover { background: #2d1a0e; }
     .nav-btn-sell { color: var(--white); background: var(--terra); }
     .nav-btn-sell:hover { background: #b85e30; }
 
@@ -75,6 +76,14 @@
       font-size: 9px; font-weight: 800;
       display: flex; align-items: center; justify-content: center;
       border: 2px solid var(--white);
+    }
+
+    .nav-fav-link { position: relative; }
+    .nav-fav-badge {
+      display: none; position: absolute; top: -5px; right: -4px;
+      background: var(--terra); color: #fff;
+      font-size: 9px; font-weight: 800; min-width: 16px; height: 16px;
+      border-radius: 8px; align-items: center; justify-content: center; padding: 0 3px;
     }
 
     /* ─── CATEGORÍAS ─── */
@@ -101,7 +110,7 @@
     .cat-label { font-size: 11px; font-weight: 600; color: var(--gray); }
     .cat.active .cat-label { color: var(--brown); }
 
-    /* ─── HERO COMPACTO ─── */
+    /* ─── HERO ─── */
     .hero {
       background: var(--brown);
       padding: 32px 24px;
@@ -136,7 +145,7 @@
     }
     .hero-search button:hover { background: #b85e30; }
 
-    /* ─── FILTROS AL ESTILO VINTED ─── */
+    /* ─── FILTROS ─── */
     .filters {
       background: var(--white);
       border-bottom: 1px solid #ebebeb;
@@ -181,14 +190,14 @@
     .results-count { font-size: 14px; font-weight: 600; color: var(--brown); }
     .results-count span { color: var(--gray); font-weight: 400; }
 
-    /* ─── GRID VINTED ─── */
+    /* ─── GRID ─── */
     .grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 12px;
     }
 
-    /* ─── CARD AL ESTILO VINTED ─── */
+    /* ─── CARD ─── */
     .card {
       background: var(--white);
       border-radius: 8px;
@@ -203,7 +212,6 @@
     }
     .card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
 
-    /* Imagen vertical como Vinted */
     .card-img {
       width: 100%;
       aspect-ratio: 3 / 4;
@@ -219,7 +227,6 @@
     }
     .card:hover .card-img img { transform: scale(1.04); }
 
-    /* Favorito — aparece en hover */
     .card-fav {
       position: absolute; top: 8px; right: 8px;
       width: 30px; height: 30px;
@@ -233,7 +240,6 @@
     .card:hover .card-fav { opacity: 1; }
     .card-fav.saved { opacity: 1; color: #e05050; }
 
-    /* Badge tipo/estado */
     .card-badge {
       position: absolute; top: 8px; left: 8px;
       font-size: 10px; font-weight: 700;
@@ -243,7 +249,6 @@
     }
     .card-badge.new { background: #1a0d07; color: #fff; }
 
-    /* Info bajo imagen — muy compacta como Vinted */
     .card-body { padding: 8px 10px 10px; }
 
     .card-store {
@@ -265,7 +270,7 @@
     .card-price { font-size: 14px; font-weight: 700; color: var(--brown); }
     .card-price-incl { font-size: 10px; color: var(--gray-l); }
 
-    /* ─── SECCIÓN DESTACADOS / SEPARADORES ─── */
+    /* ─── SECCIÓN SEPARADORES ─── */
     .section-label {
       font-size: 18px; font-weight: 800; letter-spacing: -0.5px;
       margin-bottom: 14px; margin-top: 32px;
@@ -346,7 +351,7 @@
 
 <!-- ─── NAV ─── -->
 <nav>
-  <a href="#" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
   <div class="nav-search">
     <span>🔍</span>
     <input type="text" placeholder="Busca sofás, mesas, sillas..." />
@@ -354,25 +359,25 @@
   <div class="nav-right">
     <a href="panel-login.html" class="nav-btn nav-btn-ghost">Para tiendas</a>
     <a href="notificaciones.html" class="bell-btn" title="Notificaciones">🔔<span class="bell-badge">5</span></a>
+    <a href="favoritos.html" class="nav-btn nav-btn-ghost nav-fav-link">♡ Favoritos<span class="nav-fav-badge">0</span></a>
     <a href="login.html" class="nav-btn nav-btn-ghost">Iniciar sesión</a>
-    <a href="login.html#register" class="nav-btn nav-btn-ghost">Registrarse</a>
     <a href="publicar.html" class="nav-btn nav-btn-sell">+ Vender</a>
   </div>
 </nav>
 
 <!-- ─── CATEGORÍAS ─── -->
 <div class="cats">
-  <a href="#" class="cat active" onclick="setCat(this)"><div class="cat-icon">✨</div><span class="cat-label">Todo</span></a>
-  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🛋️</div><span class="cat-label">Sofás</span></a>
-  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🪑</div><span class="cat-label">Sillas</span></a>
-  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🛏️</div><span class="cat-label">Camas</span></a>
-  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🍽️</div><span class="cat-label">Mesas</span></a>
-  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🗄️</div><span class="cat-label">Armarios</span></a>
-  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">💡</div><span class="cat-label">Lámparas</span></a>
-  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🪞</div><span class="cat-label">Espejos</span></a>
-  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">📦</div><span class="cat-label">Estanterías</span></a>
-  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🌿</div><span class="cat-label">Decoración</span></a>
-  <a href="#" class="cat" onclick="setCat(this)"><div class="cat-icon">🛁</div><span class="cat-label">Baño</span></a>
+  <a href="#" class="cat active" onclick="setCat(event, this)"><div class="cat-icon">✨</div><span class="cat-label">Todo</span></a>
+  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🛋️</div><span class="cat-label">Sofás</span></a>
+  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🪑</div><span class="cat-label">Sillas</span></a>
+  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🛏️</div><span class="cat-label">Camas</span></a>
+  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🍽️</div><span class="cat-label">Mesas</span></a>
+  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🗄️</div><span class="cat-label">Armarios</span></a>
+  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">💡</div><span class="cat-label">Lámparas</span></a>
+  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🪞</div><span class="cat-label">Espejos</span></a>
+  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">📦</div><span class="cat-label">Estanterías</span></a>
+  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🌿</div><span class="cat-label">Decoración</span></a>
+  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🛁</div><span class="cat-label">Baño</span></a>
 </div>
 
 <!-- ─── HERO ─── -->
@@ -448,7 +453,8 @@
   <!-- GRID PRINCIPAL -->
   <div class="grid">
 
-    <a href="producto.html" class="card reveal d1">
+    <a href="producto.html" class="card reveal d1"
+       data-fav-id="sofa-chester-madrid" data-price="380" data-category="sofa" data-condition="muy-bueno">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80" alt="Sofá Chester" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -461,7 +467,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d2">
+    <a href="producto.html" class="card reveal d2"
+       data-fav-id="silla-escandinava-barcelona" data-price="95" data-category="silla" data-condition="nuevo">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=400&q=80" alt="Silla escandinava" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -475,7 +482,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d3">
+    <a href="producto.html" class="card reveal d3"
+       data-fav-id="espejo-vintage-valencia" data-price="60" data-category="espejo" data-condition="bueno">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80" alt="Espejo vintage" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -488,7 +496,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d4">
+    <a href="producto.html" class="card reveal d4"
+       data-fav-id="cabecero-madera-madrid" data-price="140" data-category="cama" data-condition="muy-bueno">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=400&q=80" alt="Cabecero" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -501,7 +510,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d5">
+    <a href="producto.html" class="card reveal d5"
+       data-fav-id="lampara-arco-sevilla" data-price="189" data-category="lampara" data-condition="nuevo">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=400&q=80" alt="Lámpara arco" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -515,7 +525,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d1">
+    <a href="producto.html" class="card reveal d1"
+       data-fav-id="aparador-industrial-madrid" data-price="290" data-category="aparador" data-condition="bueno">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=400&q=80" alt="Aparador" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -528,7 +539,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d2">
+    <a href="producto.html" class="card reveal d2"
+       data-fav-id="estanteria-pino-valencia" data-price="75" data-category="estanteria" data-condition="muy-bueno">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1524758631624-e2822b8eb346?auto=format&fit=crop&w=400&q=80" alt="Estantería" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -541,7 +553,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d3">
+    <a href="producto.html" class="card reveal d3"
+       data-fav-id="mesa-comedor-roble-barcelona" data-price="320" data-category="mesa" data-condition="nuevo">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=400&q=80" alt="Mesa comedor" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -555,7 +568,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d4">
+    <a href="producto.html" class="card reveal d4"
+       data-fav-id="silla-cuero-madrid" data-price="45" data-category="silla" data-condition="bueno">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=400&q=80" alt="Silla cuero" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -568,7 +582,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d5">
+    <a href="producto.html" class="card reveal d5"
+       data-fav-id="sofa-azul-petroleo-valencia" data-price="220" data-category="sofa" data-condition="muy-bueno">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80" alt="Sofá azul" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -581,7 +596,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d1">
+    <a href="producto.html" class="card reveal d1"
+       data-fav-id="espejo-ovalado-sevilla" data-price="35" data-category="espejo" data-condition="como-nuevo">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80" alt="Espejo ovalado" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -594,7 +610,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d2">
+    <a href="producto.html" class="card reveal d2"
+       data-fav-id="mesa-escritorio-barcelona" data-price="180" data-category="mesa" data-condition="nuevo">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1595526051466-1d34a44b0a7a?auto=format&fit=crop&w=400&q=80" alt="Mesa escritorio" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -608,7 +625,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d3">
+    <a href="producto.html" class="card reveal d3"
+       data-fav-id="comoda-vintage-madrid" data-price="160" data-category="comoda" data-condition="bueno">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1538688525198-d56c8a066311?auto=format&fit=crop&w=400&q=80" alt="Cómoda vintage" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -621,7 +639,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d4">
+    <a href="producto.html" class="card reveal d4"
+       data-fav-id="macetero-ceramica-valencia" data-price="28" data-category="decoracion" data-condition="como-nuevo">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=400&q=80" alt="Macetero cerámica" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -634,7 +653,8 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card reveal d5">
+    <a href="producto.html" class="card reveal d5"
+       data-fav-id="lampara-sobremesa-sevilla" data-price="55" data-category="lampara" data-condition="como-nuevo">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1513506003901-1e6a35294bf6?auto=format&fit=crop&w=400&q=80" alt="Lámpara sobremesa" loading="lazy" />
         <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -676,9 +696,9 @@
 
 <!-- ─── FOOTER ─── -->
 <footer>
-  <a href="#" class="footer-logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
   <div class="footer-links">
-    <a href="#">Catálogo</a>
+    <a href="tienda.html">Catálogo</a>
     <a href="panel-login.html">Soy una tienda</a>
     <a href="como-funciona.html">Cómo funciona</a>
     <a href="sostenibilidad.html">Sostenibilidad</a>
@@ -689,7 +709,6 @@
     <a href="lotes.html">Venta en conjunto</a>
     <a href="recordatorios.html">Recordatorios</a>
     <a href="referidos.html">Referidos</a>
-    <a href="#">Ayuda</a>
     <a href="terminos.html">Aviso legal</a>
     <a href="privacidad.html">Privacidad</a>
     <a href="cookies.html">Cookies</a>
@@ -698,6 +717,7 @@
   <div class="footer-copy">© 2026 Mueblista</div>
 </footer>
 
+<script src="favoritos.js"></script>
 <script>
   const obs = new IntersectionObserver(e => {
     e.forEach(el => { if (el.isIntersecting) { el.target.classList.add('visible'); obs.unobserve(el.target); }});
@@ -705,10 +725,20 @@
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
   function toggleFav(el) {
-    const on = el.textContent === '♥';
-    el.textContent = on ? '♡' : '♥';
-    el.style.color = on ? '' : '#e05050';
-    el.classList.toggle('saved', !on);
+    const card = el.closest('[data-fav-id]');
+    if (!card) return;
+    const id = card.dataset.favId;
+    const data = {
+      title: card.querySelector('.card-title')?.textContent?.trim() || '',
+      price: card.dataset.price || '',
+      city: (card.querySelector('.card-store')?.textContent?.split('·')[1] || '').trim(),
+      img: card.querySelector('img')?.src || '',
+      href: card.href || 'producto.html'
+    };
+    const saved = mFavToggle(id, data);
+    el.textContent = saved ? '♥' : '♡';
+    el.style.color = saved ? '#e05050' : '';
+    el.classList.toggle('saved', saved);
   }
 
   function setFilter(el) {
@@ -716,11 +746,22 @@
     el.classList.add('active');
   }
 
-  function setCat(el) {
-    event.preventDefault();
+  function setCat(e, el) {
+    e.preventDefault();
     document.querySelectorAll('.cat').forEach(c => c.classList.remove('active'));
     el.classList.add('active');
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-fav-id]').forEach(card => {
+      const btn = card.querySelector('.card-fav');
+      if (btn && mFavIs(card.dataset.favId)) {
+        btn.textContent = '♥';
+        btn.style.color = '#e05050';
+        btn.classList.add('saved');
+      }
+    });
+  });
 </script>
 <script src="cookie-banner.js"></script>
 </body>

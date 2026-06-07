@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mis favoritos — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:   #1a0d07;
+      --terra:   #c96a38;
+      --terra-l: #e07a44;
+      --cream:   #fdf6ee;
+      --sand:    #ede3d5;
+      --sand-l:  #f7f0e6;
+      --gray:    #7a726b;
+      --gray-l:  #a09890;
+      --white:   #ffffff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); min-height: 100vh; }
+
+    /* ─── NAV ─── */
+    nav { position: sticky; top: 0; z-index: 1000; height: 62px; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; background: rgba(253,246,238,0.95); backdrop-filter: blur(18px); border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .logo { font-size: 19px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .nav-search { display: flex; align-items: center; background: var(--white); border: 1.5px solid var(--sand); border-radius: 100px; width: 340px; overflow: hidden; transition: border-color 0.2s; }
+    .nav-search:focus-within { border-color: var(--terra); }
+    .nav-search input { border: none; outline: none; padding: 9px 16px; font-size: 13px; font-family: inherit; flex: 1; background: transparent; }
+    .nav-search button { background: var(--terra); border: none; color: #fff; padding: 8px 14px; cursor: pointer; margin: 3px; border-radius: 100px; font-size: 14px; }
+    .nav-actions { display: flex; gap: 10px; align-items: center; }
+    .nav-link { font-size: 13px; font-weight: 600; color: var(--gray); text-decoration: none; padding: 8px 14px; border-radius: 100px; transition: all 0.2s; }
+    .nav-link:hover { color: var(--terra); }
+    .nav-link.active { color: var(--terra); background: #fef5ec; }
+    .btn-sell { font-size: 13px; font-weight: 700; color: #fff; text-decoration: none; background: var(--terra); padding: 9px 18px; border-radius: 100px; }
+    .nav-fav-link { position: relative; }
+    .nav-fav-badge { display: none; position: absolute; top: -5px; right: -4px; background: var(--terra); color: #fff; font-size: 9px; font-weight: 800; min-width: 16px; height: 16px; border-radius: 8px; align-items: center; justify-content: center; padding: 0 3px; }
+
+    /* ─── PAGE ─── */
+    .page { max-width: 1100px; margin: 0 auto; padding: 36px 32px 72px; }
+
+    /* ─── HEADER ─── */
+    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 12px; }
+    .page-header h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.6px; display: flex; align-items: center; gap: 10px; }
+    .count-badge { display: inline-flex; align-items: center; justify-content: center; background: var(--terra); color: #fff; font-size: 13px; font-weight: 800; min-width: 28px; height: 28px; border-radius: 14px; padding: 0 8px; }
+    .btn-clear { padding: 9px 16px; border-radius: 8px; background: transparent; border: 1.5px solid var(--sand); font-size: 13px; font-weight: 600; color: var(--gray); cursor: pointer; font-family: inherit; transition: all .15s; }
+    .btn-clear:hover { border-color: #d94040; color: #d94040; }
+
+    /* ─── GRID ─── */
+    .fav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+
+    /* ─── CARD ─── */
+    .fav-card { background: var(--white); border: 1px solid var(--sand); border-radius: 16px; overflow: hidden; transition: transform .25s cubic-bezier(.34,1.4,.64,1), box-shadow .25s; }
+    .fav-card:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(26,13,7,.1); }
+    .fav-img { position: relative; aspect-ratio: 3/4; overflow: hidden; background: var(--sand-l); display: flex; align-items: center; justify-content: center; }
+    .fav-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .25s; }
+    .fav-card:hover .fav-img img { transform: scale(1.04); }
+    .fav-img-empty { font-size: 48px; opacity: .4; }
+    .fav-remove { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; background: rgba(255,255,255,0.92); border-radius: 50%; border: none; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; color: var(--gray); }
+    .fav-remove:hover { background: #d94040; color: #fff; }
+    .fav-body { padding: 14px; }
+    .fav-price { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 3px; }
+    .fav-title { font-size: 12px; color: var(--gray); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fav-city { font-size: 11px; color: var(--gray-l); margin-bottom: 4px; }
+    .fav-date { font-size: 10px; color: var(--gray-l); margin-bottom: 12px; }
+    .fav-link { display: block; text-align: center; padding: 9px; border-radius: 8px; background: var(--terra); color: #fff; font-size: 13px; font-weight: 700; text-decoration: none; transition: background .15s; }
+    .fav-link:hover { background: var(--terra-l); }
+
+    /* ─── EMPTY ─── */
+    .empty-state { text-align: center; padding: 80px 24px; }
+    .empty-icon { font-size: 72px; margin-bottom: 16px; opacity: .3; }
+    .empty-state h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .empty-state p { font-size: 15px; color: var(--gray); margin-bottom: 28px; line-height: 1.6; }
+    .btn-explore { display: inline-block; padding: 13px 28px; border-radius: 10px; background: var(--terra); color: #fff; font-size: 15px; font-weight: 700; text-decoration: none; transition: background .15s; }
+    .btn-explore:hover { background: var(--terra-l); }
+
+    @media (max-width: 640px) {
+      .page { padding: 24px 16px 48px; }
+      nav { padding: 0 16px; }
+      .nav-search { width: 160px; }
+      .fav-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .page-header h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <div class="nav-search">
+    <input type="text" placeholder="Busca sofás, mesas, sillas..." />
+    <button>🔍</button>
+  </div>
+  <div class="nav-actions">
+    <a href="perfil.html" class="nav-link">Mi perfil</a>
+    <a href="favoritos.html" class="nav-link nav-fav-link active">♡ Favoritos<span class="nav-fav-badge">0</span></a>
+    <a href="publicar.html" class="btn-sell">+ Vender</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <h1>♡ Mis favoritos <span class="count-badge" id="favCount" style="display:none">0</span></h1>
+    <button class="btn-clear" id="clearBtn" onclick="clearAll()" style="display:none">Vaciar lista</button>
+  </div>
+
+  <div class="empty-state" id="emptyState" style="display:none">
+    <div class="empty-icon">♡</div>
+    <h2>Aún no tienes favoritos</h2>
+    <p>Guarda los artículos que más te gusten<br>pulsando el corazón ♡ en cualquier artículo.</p>
+    <a href="index.html" class="btn-explore">Explorar catálogo →</a>
+  </div>
+
+  <div class="fav-grid" id="favGrid"></div>
+
+</div>
+
+<script src="favoritos.js"></script>
+<script>
+  function formatDate(ts) {
+    if (!ts) return '';
+    const d = new Date(ts);
+    const now = new Date();
+    const diffMin = Math.floor((now - d) / 60000);
+    if (diffMin < 1) return 'Ahora mismo';
+    if (diffMin < 60) return `Hace ${diffMin} min`;
+    const diffH = Math.floor(diffMin / 60);
+    if (diffH < 24) return `Hace ${diffH}h`;
+    return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+  }
+
+  function renderFavorites() {
+    const favs = mFavGet();
+    const grid = document.getElementById('favGrid');
+    const empty = document.getElementById('emptyState');
+    const countEl = document.getElementById('favCount');
+    const clearBtn = document.getElementById('clearBtn');
+
+    if (favs.length === 0) {
+      grid.innerHTML = '';
+      grid.style.display = 'none';
+      empty.style.display = 'block';
+      countEl.style.display = 'none';
+      clearBtn.style.display = 'none';
+    } else {
+      empty.style.display = 'none';
+      grid.style.display = 'grid';
+      countEl.style.display = 'inline-flex';
+      countEl.textContent = favs.length;
+      clearBtn.style.display = 'inline-block';
+
+      grid.innerHTML = favs.map(f => `
+        <div class="fav-card">
+          <div class="fav-img">
+            ${f.img
+              ? `<img src="${f.img}" alt="${f.title || ''}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div class="fav-img-empty" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;">🪑</div>`
+              : `<div class="fav-img-empty">🪑</div>`
+            }
+            <button class="fav-remove" onclick="removeFav('${f.id}')" title="Quitar de favoritos">✕</button>
+          </div>
+          <div class="fav-body">
+            <div class="fav-price">${f.price} €</div>
+            <div class="fav-title">${f.title || '—'}</div>
+            <div class="fav-city">📍 ${f.city || '—'}</div>
+            <div class="fav-date">${formatDate(f.savedAt)}</div>
+            <a href="${f.href || 'producto.html'}" class="fav-link">Ver artículo →</a>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  function removeFav(id) {
+    mFavRemove(id);
+    renderFavorites();
+  }
+
+  function clearAll() {
+    if (!confirm('¿Vaciar toda la lista de favoritos?')) return;
+    localStorage.removeItem('mueblista_favorites');
+    mFavUpdateBadges();
+    renderFavorites();
+  }
+
+  renderFavorites();
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

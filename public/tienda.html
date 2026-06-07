@@ -412,6 +412,120 @@
     .reveal.visible { opacity: 1; transform: none; }
     .d1{transition-delay:.05s} .d2{transition-delay:.1s} .d3{transition-delay:.15s}
     .d4{transition-delay:.2s}  .d5{transition-delay:.25s} .d6{transition-delay:.3s}
+
+    /* ─── FAVORITOS NAV ─── */
+    .nav-fav-link { position: relative; }
+    .nav-fav-badge {
+      display: none; position: absolute; top: -5px; right: -4px;
+      background: var(--terra); color: #fff;
+      font-size: 9px; font-weight: 800;
+      min-width: 16px; height: 16px; border-radius: 8px;
+      align-items: center; justify-content: center; padding: 0 3px;
+    }
+
+    /* ─── FILTROS AVANZADOS ─── */
+    .filters-bar { margin-bottom: 24px; display: flex; flex-direction: column; gap: 10px; }
+
+    .filters-top { display: flex; gap: 10px; align-items: center; }
+
+    .filter-search-wrap {
+      flex: 1; display: flex; align-items: center; gap: 8px;
+      background: var(--white); border: 1.5px solid var(--sand);
+      border-radius: 10px; padding: 0 14px; transition: border-color .2s;
+    }
+    .filter-search-wrap:focus-within { border-color: var(--terra); }
+    .filter-search-icon { font-size: 13px; color: var(--gray-l); flex-shrink: 0; }
+    .filter-search-wrap input {
+      flex: 1; border: none; outline: none; padding: 10px 0;
+      font-size: 13px; font-family: inherit; color: var(--brown); background: transparent;
+    }
+    .filter-search-wrap input::placeholder { color: var(--gray-l); }
+    .filter-search-clear {
+      background: none; border: none; font-size: 13px; color: var(--gray-l);
+      cursor: pointer; padding: 0; line-height: 1; transition: color .15s;
+    }
+    .filter-search-clear:hover { color: var(--brown); }
+
+    .filter-sort-wrap select {
+      padding: 10px 32px 10px 14px; border: 1.5px solid var(--sand); border-radius: 10px;
+      font-size: 13px; font-weight: 600; font-family: inherit; color: var(--gray);
+      background: var(--white); outline: none; cursor: pointer; transition: border-color .2s;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23a09890' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+    }
+    .filter-sort-wrap select:focus { border-color: var(--terra); }
+
+    .filters-chips { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+    .fchip {
+      padding: 7px 14px; border-radius: 100px;
+      border: 1.5px solid var(--sand); background: var(--white);
+      font-size: 13px; font-weight: 600; color: var(--gray);
+      cursor: pointer; font-family: inherit; transition: all .15s; white-space: nowrap;
+    }
+    .fchip:hover { border-color: var(--terra); color: var(--terra); }
+    .fchip.active { border-color: var(--terra); background: var(--terra); color: #fff; }
+
+    .fchip-sep { width: 1px; height: 22px; background: var(--sand); flex-shrink: 0; }
+
+    .fchip-select {
+      display: flex; align-items: center;
+      border: 1.5px solid var(--sand); border-radius: 100px;
+      background: var(--white); padding: 0 14px; transition: border-color .2s;
+    }
+    .fchip-select:focus-within { border-color: var(--terra); }
+    .fchip-select select {
+      border: none; outline: none; padding: 7px 20px 7px 0;
+      font-size: 13px; font-weight: 600; font-family: inherit; color: var(--gray);
+      background: transparent; cursor: pointer; appearance: none; min-width: 130px;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23a09890' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 0 center;
+    }
+    .fchip-select.is-active { border-color: var(--terra); background: #fef5ec; }
+    .fchip-select.is-active select { color: var(--terra); }
+
+    .fchip-price { gap: 6px; padding: 0 12px; }
+    .price-prefix { font-size: 13px; font-weight: 700; color: var(--gray-l); }
+    .price-sep { font-size: 13px; color: var(--gray-l); }
+    .fchip-price input {
+      border: none; outline: none; width: 54px; padding: 7px 0;
+      font-size: 13px; font-weight: 600; font-family: inherit;
+      color: var(--brown); background: transparent; text-align: center;
+    }
+    .fchip-price input::placeholder { color: var(--gray-l); font-weight: 400; }
+    .fchip-price.is-active { border-color: var(--terra); background: #fef5ec; }
+
+    .results-count { margin-left: auto; font-size: 13px; color: var(--gray-l); white-space: nowrap; flex-shrink: 0; }
+
+    .active-filters {
+      display: none; align-items: center; gap: 8px; flex-wrap: wrap;
+      padding: 10px 14px; background: #fef5ec;
+      border: 1px solid #f5d5b0; border-radius: 10px;
+    }
+    .active-filters.show { display: flex; }
+    .active-filters-label { font-size: 12px; font-weight: 700; color: var(--gray); flex-shrink: 0; }
+    .active-filter-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--white); border: 1px solid #f5d5b0;
+      border-radius: 100px; padding: 3px 10px;
+      font-size: 12px; font-weight: 600; color: var(--terra);
+    }
+    .active-filter-tag button {
+      background: none; border: none; font-size: 11px;
+      color: var(--terra); cursor: pointer; padding: 0; line-height: 1;
+    }
+    .clear-all-btn {
+      margin-left: auto; font-size: 12px; font-weight: 600; color: var(--gray);
+      background: none; border: none; cursor: pointer; font-family: inherit;
+      padding: 0; transition: color .15s; white-space: nowrap;
+    }
+    .clear-all-btn:hover { color: #d94040; }
+
+    .no-results { display: none; text-align: center; padding: 48px 24px; color: var(--gray); }
+    .no-results.show { display: block; }
+    .no-results-icon { font-size: 48px; margin-bottom: 12px; opacity: .4; }
+    .no-results h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--brown); }
   </style>
 </head>
 <body>
@@ -425,6 +539,7 @@
   </div>
   <div class="nav-actions">
     <a href="perfil.html" class="nav-link">Mi perfil</a>
+    <a href="favoritos.html" class="nav-link nav-fav-link" title="Mis favoritos">♡<span class="nav-fav-badge">0</span></a>
     <a href="publicar.html" class="btn-sell">+ Vender</a>
   </div>
 </nav>
@@ -502,34 +617,80 @@
 
     <!-- TAB: CATÁLOGO -->
     <div id="tab-catalog">
-      <div class="catalog-filters">
-        <button class="filter-chip active" onclick="setFilter(this)">Todos</button>
-        <button class="filter-chip" onclick="setFilter(this)">Segunda mano</button>
-        <button class="filter-chip" onclick="setFilter(this)">Nuevos</button>
-        <div class="filter-chip">
-          <select>
-            <option>Categoría</option>
-            <option>Sofás</option>
-            <option>Sillas</option>
-            <option>Mesas</option>
-            <option>Armarios</option>
-            <option>Lámparas</option>
-          </select>
+      <!-- ─── FILTROS AVANZADOS ─── -->
+      <div class="filters-bar">
+
+        <!-- Fila 1: Búsqueda + Ordenar -->
+        <div class="filters-top">
+          <div class="filter-search-wrap">
+            <span class="filter-search-icon">🔍</span>
+            <input type="text" id="filterSearch" placeholder="Buscar en esta tienda..." oninput="applyFilters()" />
+            <button class="filter-search-clear" id="clearSearchBtn" onclick="clearSearch()" style="display:none">✕</button>
+          </div>
+          <div class="filter-sort-wrap">
+            <select id="filterSort" onchange="applyFilters()">
+              <option value="">Ordenar: relevancia</option>
+              <option value="price-asc">Precio: menor a mayor</option>
+              <option value="price-desc">Precio: mayor a menor</option>
+            </select>
+          </div>
         </div>
-        <div class="filter-chip">
-          <select>
-            <option>Precio</option>
-            <option>Menos de 100 €</option>
-            <option>100 – 300 €</option>
-            <option>Más de 300 €</option>
-          </select>
+
+        <!-- Fila 2: Chips estado + Categoría + Precio -->
+        <div class="filters-chips">
+          <button class="fchip active" data-condition="" onclick="setConditionFilter(this, '')">Todos</button>
+          <button class="fchip" data-condition="segunda-mano" onclick="setConditionFilter(this, 'segunda-mano')">Segunda mano</button>
+          <button class="fchip" data-condition="nuevo" onclick="setConditionFilter(this, 'nuevo')">Nuevo</button>
+
+          <div class="fchip-sep"></div>
+
+          <div class="fchip-select" id="categoryWrap">
+            <select id="filterCategory" onchange="applyFilters()">
+              <option value="">Todas las categorías</option>
+              <option value="sofa">Sofás y sillones</option>
+              <option value="silla">Sillas</option>
+              <option value="cama">Camas</option>
+              <option value="armario">Armarios y cómodas</option>
+              <option value="espejo">Espejos</option>
+              <option value="lampara">Lámparas</option>
+            </select>
+          </div>
+
+          <div class="fchip-select fchip-price" id="priceWrap">
+            <span class="price-prefix">€</span>
+            <input type="number" id="filterPriceMin" placeholder="Mín" min="0" oninput="applyFilters()" />
+            <span class="price-sep">–</span>
+            <input type="number" id="filterPriceMax" placeholder="Máx" min="0" oninput="applyFilters()" />
+          </div>
+
+          <span class="results-count" id="resultsCount">6 artículos</span>
         </div>
-        <span class="results-info">14 artículos</span>
+
+        <!-- Fila 3: Tags de filtros activos -->
+        <div class="active-filters" id="activeFiltersRow">
+          <span class="active-filters-label">Filtros activos:</span>
+          <div id="activeFilterTags" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+          <button class="clear-all-btn" onclick="clearAllFilters()">Limpiar todo ✕</button>
+        </div>
+
+      </div>
+
+      <!-- Sin resultados -->
+      <div class="no-results" id="noResults">
+        <div class="no-results-icon">🔍</div>
+        <h3>Sin resultados</h3>
+        <p>Prueba con otros filtros o <button onclick="clearAllFilters()" style="background:none;border:none;color:var(--terra);font-weight:700;cursor:pointer;font-family:inherit;font-size:14px;padding:0">limpia los filtros</button></p>
       </div>
 
       <div class="product-grid">
 
-        <a href="producto.html" class="card reveal d1">
+        <a href="producto.html" class="card reveal d1"
+           data-fav-id="sofa-chester"
+           data-fav-title="Sofá Chester 3 plazas cuero marrón"
+           data-fav-price="380"
+           data-fav-img="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80"
+           data-fav-city="Madrid"
+           data-price="380" data-category="sofa" data-condition="muy-bueno">
           <div class="card-img">
             <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80" alt="Sofá Chester" loading="lazy" />
             <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -542,7 +703,13 @@
           </div>
         </a>
 
-        <a href="producto.html" class="card reveal d2">
+        <a href="producto.html" class="card reveal d2"
+           data-fav-id="cabecero-madera"
+           data-fav-title="Cabecero madera maciza 150cm"
+           data-fav-price="140"
+           data-fav-img="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=400&q=80"
+           data-fav-city="Madrid"
+           data-price="140" data-category="cama" data-condition="muy-bueno">
           <div class="card-img">
             <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=400&q=80" alt="Cabecero" loading="lazy" />
             <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -555,7 +722,13 @@
           </div>
         </a>
 
-        <a href="producto.html" class="card reveal d3">
+        <a href="producto.html" class="card reveal d3"
+           data-fav-id="espejo-vintage"
+           data-fav-title="Espejo vintage redondo 80cm"
+           data-fav-price="60"
+           data-fav-img="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80"
+           data-fav-city="Valencia"
+           data-price="60" data-category="espejo" data-condition="bueno">
           <div class="card-img">
             <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80" alt="Espejo" loading="lazy" />
             <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -568,7 +741,13 @@
           </div>
         </a>
 
-        <a href="producto.html" class="card reveal d4">
+        <a href="producto.html" class="card reveal d4"
+           data-fav-id="aparador-industrial"
+           data-fav-title="Aparador industrial acero negro"
+           data-fav-price="290"
+           data-fav-img="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=400&q=80"
+           data-fav-city="Madrid"
+           data-price="290" data-category="armario" data-condition="bueno">
           <div class="card-img">
             <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=400&q=80" alt="Aparador" loading="lazy" />
             <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -581,7 +760,13 @@
           </div>
         </a>
 
-        <a href="producto.html" class="card reveal d5">
+        <a href="producto.html" class="card reveal d5"
+           data-fav-id="silla-vintage"
+           data-fav-title="Silla vintage cuero negro"
+           data-fav-price="95"
+           data-fav-img="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=400&q=80"
+           data-fav-city="Barcelona"
+           data-price="95" data-category="silla" data-condition="nuevo">
           <div class="card-img">
             <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=400&q=80" alt="Silla" loading="lazy" />
             <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -594,7 +779,13 @@
           </div>
         </a>
 
-        <a href="producto.html" class="card reveal d6">
+        <a href="producto.html" class="card reveal d6"
+           data-fav-id="lampara-arco"
+           data-fav-title="Lámpara pie arco dorado 180cm"
+           data-fav-price="189"
+           data-fav-img="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=400&q=80"
+           data-fav-city="Sevilla"
+           data-price="189" data-category="lampara" data-condition="nuevo">
           <div class="card-img">
             <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=400&q=80" alt="Lámpara" loading="lazy" />
             <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">♡</button>
@@ -828,10 +1019,125 @@
     el.classList.add('active');
   }
 
-  // Filtros
-  function setFilter(el) {
-    el.closest('.catalog-filters').querySelectorAll('button.filter-chip').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
+  // ─── FILTROS AVANZADOS ───
+  let activeCondition = '';
+
+  function setConditionFilter(btn, condition) {
+    activeCondition = condition;
+    document.querySelectorAll('.fchip[data-condition]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const searchText = document.getElementById('filterSearch').value.toLowerCase().trim();
+    const category   = document.getElementById('filterCategory').value;
+    const priceMin   = parseFloat(document.getElementById('filterPriceMin').value) || 0;
+    const priceMax   = parseFloat(document.getElementById('filterPriceMax').value) || Infinity;
+    const sortVal    = document.getElementById('filterSort').value;
+
+    const cards = Array.from(document.querySelectorAll('.product-grid .card'));
+    let visible = 0;
+
+    cards.forEach(card => {
+      const price     = parseFloat(card.dataset.price || 0);
+      const cat       = card.dataset.category || '';
+      const cond      = card.dataset.condition || '';
+      const titleText = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
+      let show = true;
+
+      if (activeCondition === 'segunda-mano' && cond === 'nuevo') show = false;
+      if (activeCondition === 'nuevo'         && cond !== 'nuevo') show = false;
+      if (category && cat !== category) show = false;
+      if (priceMin > 0 && price < priceMin) show = false;
+      if (isFinite(priceMax) && price > priceMax) show = false;
+      if (searchText && !titleText.includes(searchText)) show = false;
+
+      card.style.display = show ? '' : 'none';
+      card.dataset.visible = show ? '1' : '0';
+      if (show) visible++;
+    });
+
+    // Ordenar
+    if (sortVal) {
+      const grid = document.querySelector('.product-grid');
+      const vis  = cards.filter(c => c.dataset.visible === '1');
+      const hid  = cards.filter(c => c.dataset.visible === '0');
+      vis.sort((a, b) => {
+        const pa = parseFloat(a.dataset.price || 0);
+        const pb = parseFloat(b.dataset.price || 0);
+        return sortVal === 'price-asc' ? pa - pb : pb - pa;
+      });
+      [...vis, ...hid].forEach(c => grid.appendChild(c));
+    }
+
+    // Contador
+    document.getElementById('resultsCount').textContent =
+      `${visible} artículo${visible !== 1 ? 's' : ''}`;
+
+    // Sin resultados
+    document.getElementById('noResults').classList.toggle('show', visible === 0);
+
+    // Highlight selects activos
+    document.getElementById('categoryWrap').classList.toggle('is-active', !!category);
+    const hasPriceFilter = priceMin > 0 || isFinite(priceMax);
+    document.getElementById('priceWrap').classList.toggle('is-active', hasPriceFilter);
+
+    // Botón limpiar búsqueda
+    document.getElementById('clearSearchBtn').style.display = searchText ? 'block' : 'none';
+
+    // Tags de filtros activos
+    const tags = [];
+    if (activeCondition === 'segunda-mano') tags.push({ label: 'Segunda mano', type: 'condition' });
+    if (activeCondition === 'nuevo')         tags.push({ label: 'Nuevo', type: 'condition' });
+    if (category) {
+      const sel = document.getElementById('filterCategory');
+      tags.push({ label: sel.options[sel.selectedIndex].text, type: 'category' });
+    }
+    if (priceMin > 0)      tags.push({ label: `Desde ${priceMin} €`, type: 'priceMin' });
+    if (isFinite(priceMax)) tags.push({ label: `Hasta ${priceMax} €`, type: 'priceMax' });
+    if (searchText)         tags.push({ label: `"${searchText}"`, type: 'search' });
+
+    const tagsEl  = document.getElementById('activeFilterTags');
+    const tagsRow = document.getElementById('activeFiltersRow');
+    tagsEl.innerHTML = tags.map(t =>
+      `<span class="active-filter-tag">${t.label}<button onclick="clearTag('${t.type}')">✕</button></span>`
+    ).join('');
+    tagsRow.classList.toggle('show', tags.length > 0);
+  }
+
+  function clearTag(type) {
+    if (type === 'condition') {
+      activeCondition = '';
+      document.querySelectorAll('.fchip[data-condition]').forEach(b => b.classList.remove('active'));
+      document.querySelector('.fchip[data-condition=""]').classList.add('active');
+    } else if (type === 'category') {
+      document.getElementById('filterCategory').value = '';
+    } else if (type === 'priceMin') {
+      document.getElementById('filterPriceMin').value = '';
+    } else if (type === 'priceMax') {
+      document.getElementById('filterPriceMax').value = '';
+    } else if (type === 'search') {
+      document.getElementById('filterSearch').value = '';
+    }
+    applyFilters();
+  }
+
+  function clearSearch() {
+    document.getElementById('filterSearch').value = '';
+    applyFilters();
+  }
+
+  function clearAllFilters() {
+    document.getElementById('filterSearch').value = '';
+    document.getElementById('filterCategory').value = '';
+    document.getElementById('filterPriceMin').value = '';
+    document.getElementById('filterPriceMax').value = '';
+    document.getElementById('filterSort').value = '';
+    activeCondition = '';
+    document.querySelectorAll('.fchip[data-condition]').forEach(b => b.classList.remove('active'));
+    document.querySelector('.fchip[data-condition=""]').classList.add('active');
+    applyFilters();
   }
 
   // Seguir
@@ -841,12 +1147,35 @@
   }
 
   // Favoritos
-  function toggleFav(el) {
-    const active = el.textContent === '♥';
-    el.textContent = active ? '♡' : '♥';
-    el.style.color = active ? '' : '#e05050';
+  function toggleFav(btn) {
+    const card = btn.closest('[data-fav-id]');
+    if (!card) return;
+    const id = card.dataset.favId;
+    const added = mFavToggle(id, {
+      title: card.dataset.favTitle,
+      price: card.dataset.favPrice,
+      img: card.dataset.favImg,
+      city: card.dataset.favCity || '',
+      href: card.getAttribute('href') || 'producto.html',
+    });
+    btn.textContent = added ? '♥' : '♡';
+    btn.style.color = added ? '#e05050' : '';
+    btn.style.transform = 'scale(1.3)';
+    setTimeout(() => btn.style.transform = '', 200);
   }
+
+  // Restaurar corazones al cargar
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-fav-id]').forEach(card => {
+      const btn = card.querySelector('.card-fav, .card-fav-sm');
+      if (btn && mFavIs(card.dataset.favId)) {
+        btn.textContent = '♥';
+        btn.style.color = '#e05050';
+      }
+    });
+  });
 </script>
+<script src="favoritos.js"></script>
 <script src="cookie-banner.js"></script>
 </body>
 </html>

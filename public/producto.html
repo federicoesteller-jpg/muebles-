@@ -593,6 +593,150 @@
     .footer-links { display: flex; gap: 20px; }
     .footer-links a { font-size: 12px; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; }
     .footer-links a:hover { color: var(--terra-l); }
+
+    /* ─── FAVORITOS NAV ─── */
+    .nav-fav-link { position: relative; }
+    .nav-fav-badge {
+      display: none; position: absolute; top: -5px; right: -4px;
+      background: var(--terra); color: #fff;
+      font-size: 9px; font-weight: 800;
+      min-width: 16px; height: 16px; border-radius: 8px;
+      align-items: center; justify-content: center; padding: 0 3px;
+    }
+
+    /* ─── SISTEMA DE OFERTAS ─── */
+    .offers-tag {
+      display: none;
+      align-items: center;
+      gap: 5px;
+      background: #fef5ec; border: 1px solid #f5d5b0;
+      color: var(--terra); font-size: 12px; font-weight: 700;
+      padding: 4px 12px; border-radius: 100px;
+      margin-bottom: 12px;
+    }
+    .offers-tag.show { display: inline-flex; }
+
+    .btn-offer {
+      display: none;
+      align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 14px; border-radius: 12px;
+      background: transparent; color: var(--terra);
+      font-size: 15px; font-weight: 700; font-family: inherit;
+      border: 2px solid var(--terra); cursor: pointer;
+      transition: all 0.2s; margin-top: 10px;
+    }
+    .btn-offer.show { display: flex; }
+    .btn-offer:hover { background: #fef5ec; }
+
+    .offer-panel {
+      margin-top: 12px; border-radius: 16px; overflow: hidden;
+      max-height: 0; border: 1.5px solid transparent;
+      transition: max-height 0.4s ease, border-color 0.2s;
+    }
+    .offer-panel.open { max-height: 600px; border-color: var(--terra); }
+    .offer-panel-inner { padding: 20px; }
+
+    .offer-panel-title {
+      font-size: 15px; font-weight: 800;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .offer-price-wrap { position: relative; margin-bottom: 6px; }
+    .offer-price-symbol {
+      position: absolute; left: 14px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px; font-weight: 700;
+      color: var(--brown); pointer-events: none;
+    }
+    .offer-price-input {
+      width: 100%; padding: 12px 14px 12px 36px;
+      border: 1.5px solid var(--sand); border-radius: 10px;
+      font-size: 20px; font-weight: 700; font-family: inherit;
+      color: var(--brown); outline: none; transition: border-color 0.2s;
+    }
+    .offer-price-input:focus { border-color: var(--terra); }
+    .offer-price-input.error { border-color: #d94040; }
+    .offer-price-hint { font-size: 11px; color: var(--gray-l); margin-bottom: 12px; }
+
+    .offer-msg {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid var(--sand); border-radius: 10px;
+      font-size: 13px; font-family: inherit; color: var(--brown);
+      outline: none; resize: none; transition: border-color 0.2s;
+      min-height: 68px; margin-bottom: 14px;
+    }
+    .offer-msg:focus { border-color: var(--terra); }
+
+    .offer-actions { display: flex; gap: 10px; }
+    .btn-offer-send {
+      flex: 1; padding: 12px; border-radius: 10px;
+      background: var(--terra); color: #fff;
+      border: none; font-size: 14px; font-weight: 700;
+      font-family: inherit; cursor: pointer; transition: background 0.15s;
+    }
+    .btn-offer-send:hover { background: #b85e30; }
+    .btn-offer-cancel {
+      padding: 12px 18px; border-radius: 10px;
+      background: transparent; color: var(--gray);
+      border: 1.5px solid var(--sand);
+      font-size: 14px; font-weight: 600;
+      font-family: inherit; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-offer-cancel:hover { border-color: var(--gray); color: var(--brown); }
+
+    .offer-state { display: none; }
+    .offer-state.show { display: block; }
+
+    .offer-state-box {
+      border-radius: 12px; padding: 18px; text-align: center;
+    }
+    .offer-state-icon { font-size: 32px; margin-bottom: 8px; }
+    .offer-state-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+    .offer-state-sub {
+      font-size: 13px; color: var(--gray);
+      margin-bottom: 14px; line-height: 1.5;
+    }
+    .offer-amounts {
+      display: flex; gap: 8px; justify-content: center;
+      margin-bottom: 14px; flex-wrap: wrap;
+    }
+    .offer-amount-chip {
+      background: var(--white); border: 1px solid var(--sand);
+      border-radius: 10px; padding: 8px 14px;
+      font-size: 11px; font-weight: 600; color: var(--gray);
+      text-align: center;
+    }
+    .offer-amount-chip strong {
+      display: block; font-size: 16px; font-weight: 800;
+      color: var(--brown);
+    }
+
+    .state-pending  { background: #fffbea; border: 1px solid #ffe599; }
+    .state-accepted { background: var(--green-l); border: 1px solid #c3e0cf; }
+    .state-rejected { background: #fdeaea; border: 1px solid #f0baba; }
+    .state-counter  { background: #f0f4ff; border: 1px solid #c0ccf5; }
+
+    .offer-info-note {
+      font-size: 11px; color: var(--gray-l); text-align: center;
+      margin-top: 12px; padding-top: 12px;
+      border-top: 1px solid var(--sand); line-height: 1.5;
+    }
+
+    .demo-hint {
+      margin-top: 12px; padding: 10px 12px;
+      background: var(--sand-l); border-radius: 10px;
+      font-size: 11px; color: var(--gray-l); text-align: center;
+      border: 1px dashed var(--sand);
+    }
+    .demo-btns { display: flex; gap: 6px; justify-content: center; margin-top: 8px; flex-wrap: wrap; }
+    .demo-btn {
+      padding: 5px 12px; border-radius: 6px;
+      border: 1px solid var(--sand); background: var(--white);
+      font-size: 11px; font-weight: 600; cursor: pointer;
+      font-family: inherit; color: var(--gray); transition: all 0.1s;
+    }
+    .demo-btn:hover { background: var(--sand); color: var(--brown); }
   </style>
 </head>
 <body>
@@ -606,6 +750,7 @@
   </div>
   <div class="nav-actions">
     <a href="perfil.html" class="nav-link">Mi perfil</a>
+    <a href="favoritos.html" class="nav-link nav-fav-link" title="Mis favoritos">♡<span class="nav-fav-badge">0</span></a>
     <a href="publicar.html" class="btn-sell">+ Vender</a>
   </div>
 </nav>
@@ -628,7 +773,7 @@
       <div class="gallery-main" id="mainImg">
         <img id="mainPhoto" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85" alt="Sofá Chester" />
         <span class="gallery-badge">Muy bueno</span>
-        <button class="gallery-fav" onclick="toggleFav(this)">♡</button>
+        <button class="gallery-fav" id="mainFavBtn" onclick="toggleFav(this)">♡</button>
         <div class="gallery-nav">
           <div class="gallery-dot active"></div>
           <div class="gallery-dot"></div>
@@ -743,6 +888,8 @@
         </div>
       </div>
 
+      <div class="offers-tag" id="offersTag">💬 Admite ofertas</div>
+
       <div class="product-title">Sofá Chester 3 plazas cuero marrón</div>
 
       <div class="product-dims">
@@ -763,6 +910,110 @@
 
       <button class="btn-primary">💳 Comprar ahora — 380 €</button>
       <a href="chat.html" class="btn-secondary" style="text-decoration:none">💬 Contactar con la tienda</a>
+
+      <!-- BOTÓN OFERTA (solo visible si ADMITE_OFERTAS = true) -->
+      <button class="btn-offer" id="offerBtn" onclick="openOffer()">🤝 Hacer una oferta</button>
+
+      <!-- PANEL DE OFERTA -->
+      <div class="offer-panel" id="offerPanel">
+        <div class="offer-panel-inner">
+
+          <!-- Estado: formulario inicial -->
+          <div class="offer-state show" id="stateIdle">
+            <div class="offer-panel-title">🤝 Hacer una oferta</div>
+            <label style="font-size:12px; font-weight:700; display:block; margin-bottom:6px;">
+              Tu oferta <span style="color:var(--terra)">*</span>
+            </label>
+            <div class="offer-price-wrap">
+              <span class="offer-price-symbol">€</span>
+              <input type="number" class="offer-price-input" id="offerInput" placeholder="0" min="1" />
+            </div>
+            <div class="offer-price-hint" id="offerHint">Precio de venta: <strong>380 €</strong> · La oferta mínima recomendada es el 70% del precio</div>
+            <label style="font-size:12px; font-weight:700; display:block; margin:12px 0 6px;">
+              Mensaje al vendedor <span style="font-weight:400; color:var(--gray-l)">(opcional)</span>
+            </label>
+            <textarea class="offer-msg" id="offerMsg" placeholder="Ej: Hola, me interesa mucho el sofá. ¿Aceptarías 320 €?"></textarea>
+            <div class="offer-actions">
+              <button class="btn-offer-cancel" onclick="closeOffer()">Cancelar</button>
+              <button class="btn-offer-send" onclick="sendOffer()">Enviar oferta →</button>
+            </div>
+            <div class="offer-info-note">El vendedor tiene <strong>48 horas</strong> para aceptar, rechazar o hacer una contraoferta.</div>
+          </div>
+
+          <!-- Estado: enviada / pendiente -->
+          <div class="offer-state" id="stateSent">
+            <div class="offer-state-box state-pending">
+              <div class="offer-state-icon">⏳</div>
+              <div class="offer-state-title">Oferta enviada</div>
+              <div class="offer-state-sub">Tu oferta está pendiente de respuesta del vendedor. Te notificaremos en cuanto responda.</div>
+              <div class="offer-amounts">
+                <div class="offer-amount-chip">Tu oferta<strong id="sentAmount">—</strong></div>
+                <div class="offer-amount-chip">Precio original<strong>380 €</strong></div>
+              </div>
+              <button class="btn-offer-cancel" onclick="cancelOffer()" style="width:100%">Retirar oferta</button>
+            </div>
+            <div class="demo-hint">
+              🧪 <strong>Demo —</strong> Simula la respuesta del vendedor:
+              <div class="demo-btns">
+                <button class="demo-btn" onclick="simResponse('accepted')">✅ Acepta</button>
+                <button class="demo-btn" onclick="simResponse('rejected')">✗ Rechaza</button>
+                <button class="demo-btn" onclick="simResponse('counter')">↩ Contraoferta</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Estado: aceptada -->
+          <div class="offer-state" id="stateAccepted">
+            <div class="offer-state-box state-accepted">
+              <div class="offer-state-icon">✅</div>
+              <div class="offer-state-title">¡Oferta aceptada!</div>
+              <div class="offer-state-sub">El vendedor ha aceptado tu oferta. Completa la compra antes de que expire la reserva (24 h).</div>
+              <div class="offer-amounts">
+                <div class="offer-amount-chip">Precio acordado<strong id="acceptedAmount" style="color:var(--green)">—</strong></div>
+              </div>
+              <button class="btn-offer-send" style="width:100%; background:var(--green)">
+                💳 Comprar por <span id="acceptedAmountBtn">—</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Estado: rechazada -->
+          <div class="offer-state" id="stateRejected">
+            <div class="offer-state-box state-rejected">
+              <div class="offer-state-icon">✕</div>
+              <div class="offer-state-title">Oferta rechazada</div>
+              <div class="offer-state-sub">El vendedor no ha aceptado tu oferta. Puedes intentarlo con un precio diferente.</div>
+              <div class="offer-amounts">
+                <div class="offer-amount-chip">Tu oferta rechazada<strong id="rejectedAmount">—</strong></div>
+              </div>
+              <div class="offer-actions">
+                <button class="btn-offer-cancel" onclick="closeOffer()">Cerrar</button>
+                <button class="btn-offer-send" onclick="retryOffer()">Intentar de nuevo</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Estado: contraoferta del vendedor -->
+          <div class="offer-state" id="stateCounter">
+            <div class="offer-state-box state-counter">
+              <div class="offer-state-icon">💬</div>
+              <div class="offer-state-title">Contraoferta del vendedor</div>
+              <div class="offer-state-sub">El vendedor no puede aceptar tu precio, pero te propone uno alternativo.</div>
+              <div class="offer-amounts">
+                <div class="offer-amount-chip">Contraoferta<strong id="counterAmount" style="color:#3355cc">—</strong></div>
+                <div class="offer-amount-chip">Tu oferta<strong id="counterYours">—</strong></div>
+                <div class="offer-amount-chip">Precio original<strong>380 €</strong></div>
+              </div>
+              <div class="offer-actions">
+                <button class="btn-offer-cancel" onclick="rejectCounter()">Rechazar</button>
+                <button class="btn-offer-send" onclick="acceptCounter()">Aceptar <span id="counterAmountBtn">—</span></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
 
     <!-- Protección -->
@@ -813,7 +1064,12 @@
   <h2>También te puede gustar</h2>
   <div class="related-grid">
 
-    <a href="producto.html" class="card">
+    <a href="producto.html" class="card"
+       data-fav-id="silla-escandinava"
+       data-fav-title="Silla escandinava roble"
+       data-fav-price="95"
+       data-fav-img="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=400&q=80"
+       data-fav-city="Barcelona">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=400&q=80" alt="Silla escandinava" loading="lazy" />
         <button class="card-fav-sm" onclick="event.preventDefault(); toggleFav(this)">♡</button>
@@ -825,7 +1081,12 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card">
+    <a href="producto.html" class="card"
+       data-fav-id="sofa-azul-petroleo"
+       data-fav-title="Sofá 2 plazas azul petróleo"
+       data-fav-price="220"
+       data-fav-img="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80"
+       data-fav-city="Madrid">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80" alt="Sofá azul" loading="lazy" />
         <button class="card-fav-sm" onclick="event.preventDefault(); toggleFav(this)">♡</button>
@@ -837,7 +1098,12 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card">
+    <a href="producto.html" class="card"
+       data-fav-id="espejo-vintage"
+       data-fav-title="Espejo vintage redondo 80cm"
+       data-fav-price="60"
+       data-fav-img="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80"
+       data-fav-city="Valencia">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80" alt="Espejo vintage" loading="lazy" />
         <button class="card-fav-sm" onclick="event.preventDefault(); toggleFav(this)">♡</button>
@@ -849,7 +1115,12 @@
       </div>
     </a>
 
-    <a href="producto.html" class="card">
+    <a href="producto.html" class="card"
+       data-fav-id="aparador-industrial"
+       data-fav-title="Aparador industrial negro"
+       data-fav-price="290"
+       data-fav-img="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=400&q=80"
+       data-fav-city="Madrid">
       <div class="card-img">
         <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=400&q=80" alt="Aparador industrial" loading="lazy" />
         <button class="card-fav-sm" onclick="event.preventDefault(); toggleFav(this)">♡</button>
@@ -884,12 +1155,130 @@
 </footer>
 
 <script>
+  /* ─── SISTEMA DE OFERTAS ─── */
+  // Cambiar a false para productos que no admiten ofertas
+  const ADMITE_OFERTAS = true;
+  const PRECIO_VENTA = 380;
+
+  if (ADMITE_OFERTAS) {
+    document.getElementById('offersTag').classList.add('show');
+    document.getElementById('offerBtn').classList.add('show');
+  }
+
+  let offerAmount = 0;
+
+  function openOffer() {
+    document.getElementById('offerPanel').classList.add('open');
+    setTimeout(() => document.getElementById('offerInput').focus(), 350);
+    showOfferState('Idle');
+  }
+
+  function closeOffer() {
+    document.getElementById('offerPanel').classList.remove('open');
+  }
+
+  function showOfferState(name) {
+    ['Idle','Sent','Accepted','Rejected','Counter'].forEach(s => {
+      document.getElementById('state' + s).classList.remove('show');
+    });
+    document.getElementById('state' + name).classList.add('show');
+  }
+
+  function sendOffer() {
+    const input = document.getElementById('offerInput');
+    const val = parseFloat(input.value);
+    if (!val || val < 1) {
+      input.classList.add('error');
+      input.addEventListener('input', () => input.classList.remove('error'), { once: true });
+      return;
+    }
+    offerAmount = val;
+    document.getElementById('sentAmount').textContent = val + ' €';
+    showOfferState('Sent');
+  }
+
+  function cancelOffer() {
+    document.getElementById('offerInput').value = '';
+    document.getElementById('offerMsg').value = '';
+    showOfferState('Idle');
+  }
+
+  function simResponse(type) {
+    if (type === 'accepted') {
+      document.getElementById('acceptedAmount').textContent = offerAmount + ' €';
+      document.getElementById('acceptedAmountBtn').textContent = offerAmount + ' €';
+      showOfferState('Accepted');
+    } else if (type === 'rejected') {
+      document.getElementById('rejectedAmount').textContent = offerAmount + ' €';
+      showOfferState('Rejected');
+    } else if (type === 'counter') {
+      const counter = Math.round((offerAmount + PRECIO_VENTA) / 2 / 5) * 5;
+      document.getElementById('counterAmount').textContent = counter + ' €';
+      document.getElementById('counterAmountBtn').textContent = counter + ' €';
+      document.getElementById('counterYours').textContent = offerAmount + ' €';
+      showOfferState('Counter');
+    }
+  }
+
+  function retryOffer() {
+    document.getElementById('offerInput').value = '';
+    showOfferState('Idle');
+    setTimeout(() => document.getElementById('offerInput').focus(), 50);
+  }
+
+  function acceptCounter() {
+    const val = document.getElementById('counterAmount').textContent;
+    document.getElementById('acceptedAmount').textContent = val;
+    document.getElementById('acceptedAmountBtn').textContent = val;
+    showOfferState('Accepted');
+  }
+
+  function rejectCounter() {
+    showOfferState('Idle');
+  }
+
+  const MAIN_FAV_ID = 'sofa-chester';
+  const MAIN_FAV_DATA = {
+    title: 'Sofá Chester 3 plazas cuero marrón',
+    price: '380',
+    img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80',
+    city: 'Madrid',
+    href: 'producto.html',
+  };
+
   function toggleFav(el) {
     event.stopPropagation();
-    const active = el.textContent === '♥';
-    el.textContent = active ? '♡' : '♥';
-    el.style.color = active ? '' : '#e05050';
+    const card = el.closest('[data-fav-id]');
+    let id, data;
+    if (card) {
+      id = card.dataset.favId;
+      data = { title: card.dataset.favTitle, price: card.dataset.favPrice, img: card.dataset.favImg, city: card.dataset.favCity || '', href: card.getAttribute('href') || 'producto.html' };
+    } else {
+      id = MAIN_FAV_ID;
+      data = MAIN_FAV_DATA;
+    }
+    const added = mFavToggle(id, data);
+    el.textContent = added ? '♥' : '♡';
+    el.style.color = added ? '#e05050' : '';
+    el.style.transform = 'scale(1.2)';
+    setTimeout(() => el.style.transform = '', 200);
   }
+
+  // Restaurar estados al cargar
+  document.addEventListener('DOMContentLoaded', () => {
+    const mainBtn = document.getElementById('mainFavBtn');
+    if (mainBtn && mFavIs(MAIN_FAV_ID)) {
+      mainBtn.textContent = '♥';
+      mainBtn.style.color = '#e05050';
+    }
+    document.querySelectorAll('[data-fav-id]').forEach(card => {
+      const btn = card.querySelector('.card-fav-sm');
+      if (btn && mFavIs(card.dataset.favId)) {
+        btn.textContent = '♥';
+        btn.style.color = '#e05050';
+      }
+    });
+  });
 
   function showTab(id, el) {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -906,6 +1295,7 @@
     document.querySelectorAll('.gallery-dot')[idx].classList.add('active');
   }
 </script>
+<script src="favoritos.js"></script>
 <script src="cookie-banner.js"></script>
 </body>
 </html>
