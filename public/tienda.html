@@ -287,18 +287,6 @@
       letter-spacing: 0.8px; color: var(--gray-l); margin-bottom: 16px;
     }
 
-    /* Info tienda */
-    .info-row {
-      display: flex; gap: 10px; align-items: flex-start;
-      margin-bottom: 14px; font-size: 13px;
-    }
-    .info-row:last-child { margin-bottom: 0; }
-    .info-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-    .info-text { color: var(--gray); line-height: 1.5; }
-    .info-text strong { color: var(--brown); display: block; margin-bottom: 1px; }
-    .info-text a { color: var(--terra); text-decoration: none; }
-    .info-text a:hover { text-decoration: underline; }
-
     /* Mapa placeholder */
     .map-placeholder {
       width: 100%; height: 160px;
@@ -904,39 +892,6 @@
       <a href="#" class="btn-directions">🗺️ Cómo llegar</a>
     </div>
 
-    <!-- Contacto -->
-    <div class="sidebar-card reveal">
-      <div class="sidebar-title">Contacto</div>
-      <div class="info-row">
-        <span class="info-icon">📍</span>
-        <div class="info-text">
-          <strong>Dirección</strong>
-          Calle Manuela Malasaña 22, Madrid
-        </div>
-      </div>
-      <div class="info-row">
-        <span class="info-icon">📞</span>
-        <div class="info-text">
-          <strong>Teléfono</strong>
-          <a href="tel:+34600000000">+34 600 000 000</a>
-        </div>
-      </div>
-      <div class="info-row">
-        <span class="info-icon">✉️</span>
-        <div class="info-text">
-          <strong>Email</strong>
-          <a href="mailto:hola@vintagehomemadrid.es">hola@vintagehomemadrid.es</a>
-        </div>
-      </div>
-      <div class="info-row">
-        <span class="info-icon">🌐</span>
-        <div class="info-text">
-          <strong>Web propia</strong>
-          <a href="#">vintagehomemadrid.es</a>
-        </div>
-      </div>
-    </div>
-
     <!-- Horario rápido -->
     <div class="sidebar-card reveal">
       <div class="sidebar-title">Horario</div>
@@ -1210,7 +1165,6 @@
       avatarBg: 'linear-gradient(140deg,#3d2b1a,#6b4226)',
       city: 'Madrid', location: 'Lavapiés, Madrid',
       address: 'Calle Embajadores 18, Lavapiés, Madrid',
-      phone: '+34 600 111 222', email: 'hola@ferroantiguomadrid.es', web: 'ferroantiguomadrid.es',
       rating: 4.9, reviews: 47, sales: 38, since: '2023', response: '< 1 h',
       about: [
         'Ferro Antiguo es una tienda especializada en mobiliario industrial y vintage de los años 50 al 70. Llevamos más de 5 años rescatando piezas únicas de talleres y fábricas de toda España.',
@@ -1227,7 +1181,6 @@
       avatarBg: 'linear-gradient(140deg,#5c3d2e,#9e6647)',
       city: 'Madrid', location: 'Malasaña, Madrid',
       address: 'Calle Manuela Malasaña 22, Madrid',
-      phone: '+34 600 222 333', email: 'hola@vintagehomemadrid.es', web: 'vintagehomemadrid.es',
       rating: 4.6, reviews: 31, sales: 24, since: '2024', response: '< 3 h',
       about: [
         'Vintage Home Madrid es una tienda especializada en muebles y decoración de estilo vintage y mid-century. Llevamos más de 10 años buscando piezas únicas por toda Europa para traerlas a Madrid.',
@@ -1243,7 +1196,6 @@
       avatarBg: 'linear-gradient(140deg,#1e3d2f,#2d7a4f)',
       city: 'Barcelona', location: 'Eixample, Barcelona',
       address: 'Carrer del Consell de Cent 145, Barcelona',
-      phone: '+34 600 333 444', email: 'hola@mueblesroca.es', web: 'mueblesroca.es',
       rating: 4.8, reviews: 52, sales: 52, since: '2022', response: '< 2 h',
       about: [
         'Muebles Roca nació en 2022 con una misión clara: ofrecer mobiliario de diseño escandinavo a precios justos. Cada pieza está fabricada con madera de roble y pino certificados FSC.',
@@ -1256,11 +1208,10 @@
       ]
     },
     'el-baul': {
-      name: 'El Baúl', emoji: '���',
+      name: 'El Baúl', emoji: '🧺',
       avatarBg: 'linear-gradient(140deg,#7a3b1e,#c96a38)',
       city: 'Valencia', location: 'Ruzafa, Valencia',
       address: 'Carrer de la Llibertat 8, Ruzafa, Valencia',
-      phone: '+34 600 444 555', email: 'hola@elbaul.es', web: 'elbaul.es',
       rating: 4.5, reviews: 28, sales: 31, since: '2023', response: '< 4 h',
       about: [
         'El Baúl es un proyecto valenciano de amor por los muebles con historia. Recorremos mercadillos y rastros del Levante en busca de piezas únicas que merezcan una segunda vida.',
@@ -1278,7 +1229,6 @@
       avatarBg: 'linear-gradient(140deg,#7a5a1a,#c4922a)',
       city: 'Sevilla', location: 'Triana, Sevilla',
       address: 'Calle Castilla 48, Triana, Sevilla',
-      phone: '+34 600 555 666', email: 'hola@luzdeco.es', web: 'luzdeco.es',
       rating: 4.7, reviews: 19, sales: 18, since: '2024', response: '< 5 h',
       about: [
         'Luz & Deco nació en Triana, Sevilla, de la pasión de dos artesanos por la luz y la decoración de interiores. Fabricamos lámparas a mano usando cerámica, mimbre y metales nobles.',
@@ -1367,13 +1317,6 @@
     const paras = document.querySelectorAll('#tab-info p');
     if (store.about[0] && paras[0]) paras[0].textContent = store.about[0];
     if (store.about[1] && paras[1]) paras[1].textContent = store.about[1];
-
-    /* contacto */
-    const rows = document.querySelectorAll('.info-row .info-text');
-    if (rows[0]) rows[0].innerHTML = '<strong>Dirección</strong>' + store.address;
-    if (rows[1]) rows[1].innerHTML = '<strong>Teléfono</strong><a href="tel:' + store.phone.replace(/\s/g,'') + '">' + store.phone + '</a>';
-    if (rows[2]) rows[2].innerHTML = '<strong>Email</strong><a href="mailto:' + store.email + '">' + store.email + '</a>';
-    if (rows[3]) rows[3].innerHTML = '<strong>Web propia</strong><a href="#">' + store.web + '</a>';
 
     /* mapa */
     const mapLabel = document.querySelector('.map-label');

@@ -64,31 +64,6 @@
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
 
-    /* ─── OPCIONES DE ENTREGA ─── */
-    .delivery-opts { display: flex; flex-direction: column; gap: 10px; }
-    .delivery-opt {
-      display: flex; align-items: center; gap: 14px;
-      border: 1.5px solid #e0e0e0; border-radius: 12px; padding: 14px 16px;
-      cursor: pointer; transition: border-color 0.15s, background 0.15s;
-    }
-    .delivery-opt:hover { border-color: var(--brown); }
-    .delivery-opt.selected { border-color: var(--brown); background: #fdf8f4; }
-    .delivery-opt input[type="radio"] { accent-color: var(--brown); width: 17px; height: 17px; flex-shrink: 0; }
-    .delivery-icon { font-size: 22px; flex-shrink: 0; }
-    .delivery-info { flex: 1; }
-    .delivery-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
-    .delivery-desc { font-size: 12px; color: var(--gray); }
-    .delivery-price { font-size: 14px; font-weight: 700; color: var(--green); white-space: nowrap; }
-    .delivery-price.paid { color: var(--brown); }
-
-    /* ─── STORE INFO (recogida) ─── */
-    .pickup-info {
-      background: var(--green-l); border-radius: 10px; padding: 12px 14px;
-      font-size: 13px; color: var(--green); display: flex; gap: 10px; align-items: flex-start;
-      margin-top: 12px;
-    }
-    .pickup-info strong { color: #1a4a32; }
-
     /* ─── FORMULARIO DIRECCIÓN ─── */
     .addr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .addr-grid .full { grid-column: 1 / -1; }
@@ -224,38 +199,9 @@
   <!-- ══ COLUMNA IZQUIERDA ══ -->
   <div>
 
-    <!-- 1. ENTREGA -->
+    <!-- 1. DIRECCIÓN -->
     <div class="checkout-section">
-      <div class="section-title"><span class="section-num">1</span> Entrega</div>
-      <div class="delivery-opts">
-        <label class="delivery-opt selected" id="optPickup" onclick="selectDelivery('pickup')">
-          <input type="radio" name="delivery" value="pickup" checked />
-          <span class="delivery-icon">🏪</span>
-          <div class="delivery-info">
-            <div class="delivery-name">Recogida en tienda</div>
-            <div class="delivery-desc" id="pickupDesc">Disponible en 24 h · Sin coste de envío</div>
-          </div>
-          <span class="delivery-price">Gratis</span>
-        </label>
-        <label class="delivery-opt" id="optShipping" onclick="selectDelivery('shipping')">
-          <input type="radio" name="delivery" value="shipping" />
-          <span class="delivery-icon">🚚</span>
-          <div class="delivery-info">
-            <div class="delivery-name">Envío a domicilio</div>
-            <div class="delivery-desc">Estimado 3–5 días laborables</div>
-          </div>
-          <span class="delivery-price paid">+ 24 €</span>
-        </label>
-      </div>
-      <div class="pickup-info" id="pickupInfo">
-        📍 <div><strong id="pickupStoreName">Ferro Antiguo</strong> — <span id="pickupAddress">Calle Embajadores 18, Lavapiés, Madrid</span><br/>
-        Te avisaremos por email cuando esté listo para recoger.</div>
-      </div>
-    </div>
-
-    <!-- 2. DIRECCIÓN (solo envío) -->
-    <div class="checkout-section" id="addressSection" style="display:none">
-      <div class="section-title"><span class="section-num">2</span> Dirección de entrega</div>
+      <div class="section-title"><span class="section-num">1</span> Dirección de entrega</div>
       <div class="addr-grid">
         <div class="form-group full">
           <label>Nombre completo</label>
@@ -284,9 +230,9 @@
       </div>
     </div>
 
-    <!-- 3. PAGO -->
+    <!-- 2. PAGO -->
     <div class="checkout-section">
-      <div class="section-title" id="paymentSectionTitle"><span class="section-num" id="paymentNum">2</span> Pago</div>
+      <div class="section-title"><span class="section-num">2</span> Pago</div>
       <div class="card-logos">
         <div class="card-logo visa">VISA</div>
         <div class="card-logo mc">MC</div>
@@ -344,13 +290,9 @@
           <span>Precio del artículo</span>
           <span id="sumPrice">—</span>
         </div>
-        <div class="price-row" id="shippingRow" style="display:none">
+        <div class="price-row">
           <span>Envío a domicilio</span>
           <span>+ 24 €</span>
-        </div>
-        <div class="price-row free" id="pickupRow">
-          <span>Recogida en tienda</span>
-          <span>Gratis</span>
         </div>
         <div class="price-row">
           <span>Protección Mueblista</span>
@@ -420,7 +362,6 @@
   /* ─── ESTADO ─── */
   let productId = '';
   let currentProduct = null;
-  let deliveryMode = 'pickup'; // 'pickup' | 'shipping'
   const SHIPPING_COST = 24;
 
   function protectionFee(price) {
@@ -429,30 +370,13 @@
 
   function updatePrices() {
     if (!currentProduct) return;
-    const price     = currentProduct.price;
-    const prot      = protectionFee(price);
-    const shipping  = deliveryMode === 'shipping' ? SHIPPING_COST : 0;
-    const total     = price + prot + shipping;
-
+    const price = currentProduct.price;
+    const prot  = protectionFee(price);
+    const total = price + prot + SHIPPING_COST;
     document.getElementById('sumPrice').textContent      = price + ' €';
     document.getElementById('sumProtection').textContent = prot  + ' €';
     document.getElementById('sumTotal').textContent      = total + ' €';
     document.getElementById('btnTotal').textContent      = total + ' €';
-
-    document.getElementById('shippingRow').style.display = deliveryMode === 'shipping' ? '' : 'none';
-    document.getElementById('pickupRow').style.display   = deliveryMode === 'pickup'   ? '' : 'none';
-  }
-
-  function selectDelivery(mode) {
-    deliveryMode = mode;
-    document.getElementById('optPickup').classList.toggle('selected',   mode === 'pickup');
-    document.getElementById('optShipping').classList.toggle('selected', mode === 'shipping');
-    document.getElementById('optPickup').querySelector('input').checked   = mode === 'pickup';
-    document.getElementById('optShipping').querySelector('input').checked = mode === 'shipping';
-    document.getElementById('addressSection').style.display = mode === 'shipping' ? 'block' : 'none';
-    document.getElementById('pickupInfo').style.display     = mode === 'pickup'   ? 'flex'  : 'none';
-    document.getElementById('paymentNum').textContent       = mode === 'shipping' ? '3' : '2';
-    updatePrices();
   }
 
   /* ─── FORMATEO TARJETA ─── */
@@ -480,7 +404,7 @@
     setTimeout(() => {
       const price   = currentProduct?.price || 0;
       const prot    = protectionFee(price);
-      const ship    = deliveryMode === 'shipping' ? SHIPPING_COST : 0;
+      const ship    = SHIPPING_COST;
       const total   = price + prot + ship;
       const orderNum = 'MBL-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
       localStorage.setItem('lastOrder', JSON.stringify({
@@ -492,7 +416,7 @@
         city: currentProduct.city,
         condition: currentProduct.condition,
         price, prot, ship, total,
-        delivery: deliveryMode,
+        delivery: 'shipping',
         orderNum,
       }));
       window.location.href = 'pedido-confirmado.html';
@@ -515,10 +439,7 @@
     document.getElementById('sumImg').alt              = currentProduct.title;
     document.getElementById('sumTitle').textContent    = currentProduct.title;
     document.getElementById('sumStore').textContent    = currentProduct.store + ' · ' + currentProduct.city;
-    document.getElementById('sumCond').textContent     = currentProduct.condition;
-    document.getElementById('pickupStoreName').textContent = currentProduct.store;
-    document.getElementById('pickupAddress').textContent   = currentProduct.address;
-    document.getElementById('pickupDesc').textContent = 'Disponible en 24 h · ' + currentProduct.city;
+    document.getElementById('sumCond').textContent = currentProduct.condition;
     updatePrices();
   });
 </script>
