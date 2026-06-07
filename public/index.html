@@ -169,7 +169,52 @@
     }
     .filter-btn.active select { color: #fff; }
 
+    /* ─── AUTOCOMPLETE CIUDAD ─── */
+    .filter-ciudad { position: relative; padding: 0; overflow: visible; gap: 0; }
+    .ciudad-icon { padding: 0 4px 0 12px; font-size: 12px; pointer-events: none; line-height: 1; }
+    .filter-ciudad input {
+      border: none; outline: none; background: transparent;
+      font-family: inherit; font-size: 13px; font-weight: 500;
+      color: var(--brown); width: 90px; padding: 7px 2px; cursor: pointer;
+    }
+    .filter-ciudad input::placeholder { color: var(--gray); font-weight: 500; }
+    .filter-ciudad.has-value { border-color: var(--brown); }
+    .ciudad-clear {
+      border: none; background: none; cursor: pointer;
+      color: var(--gray-l); padding: 0 10px 0 2px; font-size: 11px; line-height: 1;
+    }
+    .ciudad-clear:hover { color: var(--brown); }
+    .ciudad-dropdown {
+      display: none;
+      position: absolute; top: calc(100% + 6px); left: 0; min-width: 210px;
+      background: var(--white); border: 1px solid #e0e0e0;
+      border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      z-index: 300; max-height: 240px; overflow-y: auto;
+    }
+    .ciudad-dropdown.open { display: block; }
+    .ciudad-option {
+      padding: 10px 14px; font-size: 13px; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; color: var(--brown);
+    }
+    .ciudad-option:hover, .ciudad-option.focused { background: #f5f5f5; }
+    .ciudad-opt-count {
+      margin-left: auto; font-size: 10px; color: var(--gray-l);
+      background: #f0f0f0; padding: 1px 6px; border-radius: 8px;
+    }
+    .ciudad-no-results { padding: 14px; font-size: 13px; color: var(--gray-l); text-align: center; }
+
     .filter-sep { width: 1px; height: 20px; background: #ebebeb; margin: 0 4px; }
+
+    .filter-reset {
+      display: flex; align-items: center; gap: 5px;
+      padding: 7px 14px; border-radius: 100px;
+      border: 1.5px dashed #d0d0d0; background: transparent;
+      font-size: 12px; font-weight: 600; color: var(--gray);
+      cursor: pointer; font-family: inherit; transition: all 0.15s;
+      white-space: nowrap; letter-spacing: 0.1px;
+    }
+    .filter-reset:hover { border-color: var(--terra); color: var(--terra); background: rgba(201,106,56,0.04); }
+
     .sort-wrap { margin-left: auto; }
     .sort-select {
       border: 1px solid #d0d0d0; border-radius: 8px; padding: 7px 12px;
@@ -342,9 +387,50 @@
     .d1{transition-delay:.04s} .d2{transition-delay:.08s} .d3{transition-delay:.12s}
     .d4{transition-delay:.16s} .d5{transition-delay:.20s}
 
+    /* ─── HAMBURGER ─── */
+    .menu-toggle {
+      display: none;
+      flex-shrink: 0; width: 38px; height: 38px;
+      flex-direction: column; gap: 5px;
+      align-items: center; justify-content: center;
+      border: none; background: none; cursor: pointer;
+      border-radius: 8px; padding: 4px;
+    }
+    .menu-toggle:hover { background: #f5f5f5; }
+    .menu-toggle span {
+      display: block; width: 18px; height: 2px;
+      background: var(--brown); border-radius: 2px;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
     @media (max-width: 1100px) { .grid { grid-template-columns: repeat(4,1fr); } .cities-grid { grid-template-columns: repeat(4,1fr); } }
     @media (max-width: 800px)  { .grid { grid-template-columns: repeat(3,1fr); } }
-    @media (max-width: 560px)  { .grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 768px) {
+      nav { padding: 0 16px; gap: 10px; }
+      .nav-search { flex: 1; max-width: none; }
+      .menu-toggle { display: flex; }
+      .nav-right {
+        display: none;
+        position: fixed; top: 58px; left: 0; right: 0;
+        background: var(--white); border-bottom: 1px solid #ebebeb;
+        padding: 12px 16px; flex-direction: column; gap: 8px;
+        z-index: 199; box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      }
+      .nav-right.open { display: flex; }
+      .nav-btn { text-align: center; }
+      .hero-search { flex-direction: column; border-radius: 12px; }
+      .hero-search select { border-right: none; border-bottom: 1px solid #ebebeb; padding: 12px 16px; }
+      .hero-search button { padding: 14px; border-radius: 0 0 12px 12px; }
+      .filters { padding: 10px 16px; }
+      .sort-wrap { margin-left: 0; }
+      footer { flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+    @media (max-width: 560px)  { .grid { grid-template-columns: repeat(2,1fr); } .cities-grid { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width: 400px)  { .grid { grid-template-columns: 1fr; } .cities-grid { grid-template-columns: repeat(2,1fr); } }
   </style>
 </head>
 <body>
@@ -354,30 +440,31 @@
   <a href="index.html" class="logo">Mueble<em>ista</em></a>
   <div class="nav-search">
     <span>🔍</span>
-    <input type="text" placeholder="Busca sofás, mesas, sillas..." />
+    <input id="navSearchInput" type="text" placeholder="Busca sofás, mesas, sillas..." />
   </div>
-  <div class="nav-right">
+  <div class="nav-right" id="navMenu">
     <a href="panel-login.html" class="nav-btn nav-btn-ghost">Para tiendas</a>
     <a href="notificaciones.html" class="bell-btn" title="Notificaciones">🔔<span class="bell-badge">5</span></a>
     <a href="favoritos.html" class="nav-btn nav-btn-ghost nav-fav-link">♡ Favoritos<span class="nav-fav-badge">0</span></a>
     <a href="login.html" class="nav-btn nav-btn-ghost">Iniciar sesión</a>
     <a href="publicar.html" class="nav-btn nav-btn-sell">+ Vender</a>
   </div>
+  <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- ─── CATEGORÍAS ─── -->
 <div class="cats">
-  <a href="#" class="cat active" onclick="setCat(event, this)"><div class="cat-icon">✨</div><span class="cat-label">Todo</span></a>
-  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🛋️</div><span class="cat-label">Sofás</span></a>
-  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🪑</div><span class="cat-label">Sillas</span></a>
-  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🛏️</div><span class="cat-label">Camas</span></a>
-  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🍽️</div><span class="cat-label">Mesas</span></a>
-  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🗄️</div><span class="cat-label">Armarios</span></a>
-  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">💡</div><span class="cat-label">Lámparas</span></a>
-  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🪞</div><span class="cat-label">Espejos</span></a>
-  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">📦</div><span class="cat-label">Estanterías</span></a>
-  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🌿</div><span class="cat-label">Decoración</span></a>
-  <a href="#" class="cat" onclick="setCat(event, this)"><div class="cat-icon">🛁</div><span class="cat-label">Baño</span></a>
+  <a href="#" class="cat active" data-cat="" onclick="setCat(event, this)"><div class="cat-icon">✨</div><span class="cat-label">Todo</span></a>
+  <a href="#" class="cat" data-cat="sofa" onclick="setCat(event, this)"><div class="cat-icon">🛋️</div><span class="cat-label">Sofás</span></a>
+  <a href="#" class="cat" data-cat="silla" onclick="setCat(event, this)"><div class="cat-icon">🪑</div><span class="cat-label">Sillas</span></a>
+  <a href="#" class="cat" data-cat="cama" onclick="setCat(event, this)"><div class="cat-icon">🛏️</div><span class="cat-label">Camas</span></a>
+  <a href="#" class="cat" data-cat="mesa" onclick="setCat(event, this)"><div class="cat-icon">🍽️</div><span class="cat-label">Mesas</span></a>
+  <a href="#" class="cat" data-cat="armario" onclick="setCat(event, this)"><div class="cat-icon">🗄️</div><span class="cat-label">Armarios</span></a>
+  <a href="#" class="cat" data-cat="lampara" onclick="setCat(event, this)"><div class="cat-icon">💡</div><span class="cat-label">Lámparas</span></a>
+  <a href="#" class="cat" data-cat="espejo" onclick="setCat(event, this)"><div class="cat-icon">🪞</div><span class="cat-label">Espejos</span></a>
+  <a href="#" class="cat" data-cat="estanteria" onclick="setCat(event, this)"><div class="cat-icon">📦</div><span class="cat-label">Estanterías</span></a>
+  <a href="#" class="cat" data-cat="decoracion" onclick="setCat(event, this)"><div class="cat-icon">🌿</div><span class="cat-label">Decoración</span></a>
+  <a href="#" class="cat" data-cat="bano" onclick="setCat(event, this)"><div class="cat-icon">🛁</div><span class="cat-label">Baño</span></a>
 </div>
 
 <!-- ─── HERO ─── -->
@@ -385,7 +472,7 @@
   <div class="hero-inner">
     <h1>Muebles únicos, <em>cerca de ti</em></h1>
     <div class="hero-search">
-      <select>
+      <select id="heroCitySelect">
         <option>📍 Toda España</option>
         <option>Madrid</option>
         <option>Barcelona</option>
@@ -393,8 +480,8 @@
         <option>Sevilla</option>
         <option>Bilbao</option>
       </select>
-      <input type="text" placeholder="¿Qué mueble buscas?" />
-      <button>Buscar</button>
+      <input id="heroSearchInput" type="text" placeholder="¿Qué mueble buscas?" />
+      <button onclick="heroSearch()">Buscar</button>
     </div>
   </div>
 </div>
@@ -415,14 +502,11 @@
       <option>Aceptable</option>
     </select>
   </div>
-  <div class="filter-btn">
-    <select>
-      <option>Ciudad</option>
-      <option>Madrid</option>
-      <option>Barcelona</option>
-      <option>Valencia</option>
-      <option>Sevilla</option>
-    </select>
+  <div class="filter-btn filter-ciudad" id="ciudadFilter">
+    <span class="ciudad-icon">📍</span>
+    <input id="ciudadInput" type="text" placeholder="Ciudad" autocomplete="off" />
+    <button class="ciudad-clear" id="ciudadClear" style="display:none" onclick="clearCiudad()">✕</button>
+    <div class="ciudad-dropdown" id="ciudadDropdown"></div>
   </div>
   <div class="filter-btn">
     <select>
@@ -433,6 +517,7 @@
       <option>Más de 400 €</option>
     </select>
   </div>
+  <button class="filter-reset" id="filterReset" onclick="resetAllFilters()" title="Restablecer todos los filtros">↺ Restablecer</button>
   <div class="sort-wrap">
     <select class="sort-select">
       <option>Más recientes</option>
@@ -741,26 +826,320 @@
     el.classList.toggle('saved', saved);
   }
 
+  /* ── estado de filtros activos ── */
+  const state = { cat: '', cond: '', ciudad: '', precio: '', sort: 'recientes', query: '' };
+
+  function applyFilters() {
+    const cards = Array.from(document.querySelectorAll('.grid .card'));
+    let visible = 0;
+    const q = state.query.trim().toLowerCase();
+
+    cards.forEach(card => {
+      const cat   = card.dataset.category || '';
+      const cond  = card.dataset.condition || '';
+      const price = parseFloat(card.dataset.price) || 0;
+      const storeText = card.querySelector('.card-store')?.textContent || '';
+      const cardCity  = storeText.split('·').pop().trim().toLowerCase();
+      const cardTitle = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
+
+      const matchCat   = !state.cat   || cat === state.cat;
+      const matchCond  = !state.cond  || (state.cond === 'segunda-mano' ? cond !== 'nuevo' : cond === state.cond);
+      const matchCiud  = !state.ciudad || cardCity === state.ciudad;
+      const matchPrecio = !state.precio || checkPrice(price, state.precio);
+      const matchQuery = !q || cardTitle.includes(q) || storeText.toLowerCase().includes(q);
+
+      const show = matchCat && matchCond && matchCiud && matchPrecio && matchQuery;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    /* ordenar tarjetas visibles */
+    const grid = document.querySelector('.grid');
+    const sorted = cards.filter(c => c.style.display !== 'none');
+    if (state.sort === 'precio-asc')  sorted.sort((a,b) => (parseFloat(a.dataset.price)||0) - (parseFloat(b.dataset.price)||0));
+    if (state.sort === 'precio-desc') sorted.sort((a,b) => (parseFloat(b.dataset.price)||0) - (parseFloat(a.dataset.price)||0));
+    sorted.forEach(c => grid.appendChild(c));
+
+    /* actualizar contador */
+    const countEl = document.querySelector('.results-count');
+    if (countEl) {
+      const label = state.cat
+        ? document.querySelector(`.cat[data-cat="${state.cat}"] .cat-label`)?.textContent?.toLowerCase() || state.cat
+        : 'toda España';
+      countEl.innerHTML = `${visible} resultado${visible !== 1 ? 's' : ''} <span>en ${label}</span>`;
+    }
+  }
+
+  function checkPrice(price, range) {
+    if (range === 'lt50')   return price < 50;
+    if (range === '50-150') return price >= 50  && price <= 150;
+    if (range === '150-400')return price >= 150 && price <= 400;
+    if (range === 'gt400')  return price > 400;
+    return true;
+  }
+
   function setFilter(el) {
     el.closest('.filters').querySelectorAll('button.filter-btn').forEach(b => b.classList.remove('active'));
     el.classList.add('active');
+    const txt = el.textContent.trim();
+    if (txt === 'Todos')         state.cond = '';
+    else if (txt === 'Segunda mano') state.cond = 'segunda-mano';
+    else if (txt === 'Nuevo')    state.cond = 'nuevo';
+    applyFilters();
   }
 
   function setCat(e, el) {
     e.preventDefault();
     document.querySelectorAll('.cat').forEach(c => c.classList.remove('active'));
     el.classList.add('active');
+    state.cat = el.dataset.cat || '';
+    applyFilters();
   }
 
+  /* filtros select: estado, ciudad, precio, ordenar */
   document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('[data-fav-id]').forEach(card => {
+    const selects = document.querySelectorAll('.filters select');
+    selects.forEach(sel => {
+      sel.addEventListener('change', () => {
+        const opt = sel.value;
+        /* Estado */
+        if (['Nuevo','Como nuevo','Muy bueno','Bueno','Aceptable'].includes(opt)) {
+          const map = { 'Nuevo':'nuevo','Como nuevo':'como-nuevo','Muy bueno':'muy-bueno','Bueno':'bueno','Aceptable':'aceptable' };
+          state.cond = map[opt] || '';
+        }
+        /* Precio */
+        if (opt === 'Menos de 50 €')   state.precio = 'lt50';
+        else if (opt === '50 – 150 €') state.precio = '50-150';
+        else if (opt === '150 – 400 €')state.precio = '150-400';
+        else if (opt === 'Más de 400 €')state.precio = 'gt400';
+        else if (opt === 'Precio')      state.precio = '';
+        else if (opt === 'Estado')      state.cond   = '';
+        /* Ciudad */
+        if (sel.options[0].textContent === 'Ciudad') state.ciudad = opt === 'Ciudad' ? '' : opt.toLowerCase();
+        /* Ordenar */
+        if (opt === 'Precio: menor a mayor') state.sort = 'precio-asc';
+        else if (opt === 'Precio: mayor a menor') state.sort = 'precio-desc';
+        else if (opt === 'Más recientes') state.sort = 'recientes';
+        applyFilters();
+      });
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.grid .card[data-fav-id]').forEach(card => {
+      const id = card.dataset.favId;
+      if (id) card.href = 'producto.html?id=' + id;
       const btn = card.querySelector('.card-fav');
-      if (btn && mFavIs(card.dataset.favId)) {
+      if (btn && mFavIs(id)) {
         btn.textContent = '♥';
         btn.style.color = '#e05050';
         btn.classList.add('saved');
       }
     });
+  });
+
+  /* ── búsqueda y ciudad ── */
+  function heroSearch() {
+    const heroSearchEl = document.getElementById('heroSearchInput');
+    const heroCityEl   = document.getElementById('heroCitySelect');
+    if (heroSearchEl) state.query  = heroSearchEl.value;
+    if (heroCityEl) {
+      const opt = heroCityEl.value;
+      state.ciudad = opt === '📍 Toda España' ? '' : opt.toLowerCase();
+      syncCitySelect(state.ciudad ? opt : 'Ciudad');
+    }
+    applyFilters();
+    document.querySelector('.page-wrap')?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function syncCitySelect(value) {
+    const ciudadInput  = document.getElementById('ciudadInput');
+    const ciudadClear  = document.getElementById('ciudadClear');
+    const ciudadFilter = document.getElementById('ciudadFilter');
+    const isClear = !value || value === 'Ciudad';
+    if (ciudadInput)  ciudadInput.value = isClear ? '' : value;
+    if (ciudadClear)  ciudadClear.style.display = isClear ? 'none' : '';
+    if (ciudadFilter) ciudadFilter.classList.toggle('has-value', !isClear);
+  }
+
+  function clearCiudad() {
+    state.ciudad = '';
+    syncCitySelect('');
+    document.getElementById('ciudadDropdown')?.classList.remove('open');
+    const heroCityEl = document.getElementById('heroCitySelect');
+    if (heroCityEl) heroCityEl.value = '📍 Toda España';
+    applyFilters();
+  }
+
+  function initCiudadFilter() {
+    /* build city map from cards */
+    const cityMap = {};
+    document.querySelectorAll('.grid .card').forEach(card => {
+      const storeText = card.querySelector('.card-store')?.textContent || '';
+      const city = storeText.split('·').pop().trim();
+      if (city) cityMap[city] = (cityMap[city] || 0) + 1;
+    });
+    const cities = Object.entries(cityMap).sort((a, b) => b[1] - a[1]);
+
+    const input    = document.getElementById('ciudadInput');
+    const dropdown = document.getElementById('ciudadDropdown');
+    if (!input || !dropdown) return;
+
+    let focusIdx = -1;
+
+    function getOptions() { return dropdown.querySelectorAll('.ciudad-option'); }
+
+    function renderDropdown(filter) {
+      focusIdx = -1;
+      const q = (filter || '').trim().toLowerCase();
+      const matches = q ? cities.filter(([n]) => n.toLowerCase().includes(q)) : cities;
+      if (!matches.length) {
+        dropdown.innerHTML = '<div class="ciudad-no-results">Sin resultados</div>';
+      } else {
+        dropdown.innerHTML = matches.map(([name, count]) =>
+          `<div class="ciudad-option" data-city="${name.toLowerCase()}" data-name="${name}">
+            📍 ${name}<span class="ciudad-opt-count">${count} producto${count !== 1 ? 's' : ''}</span>
+          </div>`
+        ).join('');
+        getOptions().forEach(opt => {
+          opt.addEventListener('mousedown', e => {
+            e.preventDefault();
+            selectCiudad(opt.dataset.name, opt.dataset.city);
+          });
+        });
+      }
+      dropdown.classList.add('open');
+    }
+
+    function selectCiudad(displayName, cityKey) {
+      state.ciudad = cityKey;
+      syncCitySelect(displayName);
+      dropdown.classList.remove('open');
+      const heroCityEl = document.getElementById('heroCitySelect');
+      if (heroCityEl) {
+        const inHero = Array.from(heroCityEl.options).some(o => o.textContent === displayName);
+        heroCityEl.value = inHero ? displayName : '📍 Toda España';
+      }
+      applyFilters();
+    }
+
+    input.addEventListener('focus', () => renderDropdown(input.value));
+    input.addEventListener('input', () => renderDropdown(input.value));
+
+    input.addEventListener('keydown', e => {
+      const opts = getOptions();
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        focusIdx = Math.min(focusIdx + 1, opts.length - 1);
+        opts.forEach((o, i) => o.classList.toggle('focused', i === focusIdx));
+        opts[focusIdx]?.scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        focusIdx = Math.max(focusIdx - 1, 0);
+        opts.forEach((o, i) => o.classList.toggle('focused', i === focusIdx));
+        opts[focusIdx]?.scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'Enter' && focusIdx >= 0 && opts[focusIdx]) {
+        e.preventDefault();
+        const opt = opts[focusIdx];
+        selectCiudad(opt.dataset.name, opt.dataset.city);
+      } else if (e.key === 'Escape') {
+        dropdown.classList.remove('open');
+        input.blur();
+      }
+    });
+
+    input.addEventListener('blur', () => {
+      setTimeout(() => {
+        dropdown.classList.remove('open');
+        /* reset text to current selection if user didn't pick anything */
+        if (!state.ciudad) input.value = '';
+        else {
+          const current = cities.find(([n]) => n.toLowerCase() === state.ciudad);
+          if (current) input.value = current[0];
+        }
+      }, 160);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initCiudadFilter();
+
+    const navSearchEl  = document.getElementById('navSearchInput');
+    const heroSearchEl = document.getElementById('heroSearchInput');
+    const heroCityEl   = document.getElementById('heroCitySelect');
+
+    if (navSearchEl) {
+      navSearchEl.addEventListener('input', () => { state.query = navSearchEl.value; applyFilters(); });
+    }
+    if (heroSearchEl) {
+      heroSearchEl.addEventListener('input', () => { state.query = heroSearchEl.value; applyFilters(); });
+    }
+    if (heroCityEl) {
+      heroCityEl.addEventListener('change', () => {
+        const opt = heroCityEl.value;
+        state.ciudad = opt === '📍 Toda España' ? '' : opt.toLowerCase();
+        syncCitySelect(state.ciudad ? opt : 'Ciudad');
+        applyFilters();
+      });
+    }
+
+    /* city-card chips → apply city filter and scroll to results */
+    document.querySelectorAll('.city-card').forEach(cityCard => {
+      cityCard.addEventListener('click', e => {
+        e.preventDefault();
+        const name = cityCard.querySelector('.city-name')?.textContent || '';
+        state.ciudad = name.toLowerCase();
+        syncCitySelect(name);
+        if (heroCityEl) heroCityEl.value = name;
+        document.querySelector('.page-wrap')?.scrollIntoView({ behavior: 'smooth' });
+        applyFilters();
+      });
+    });
+  });
+
+  /* ── restablecer filtros ── */
+  function resetAllFilters() {
+    state.cat = ''; state.cond = ''; state.ciudad = '';
+    state.precio = ''; state.sort = 'recientes'; state.query = '';
+
+    /* inputs de búsqueda */
+    const navSearchEl  = document.getElementById('navSearchInput');
+    const heroSearchEl = document.getElementById('heroSearchInput');
+    if (navSearchEl)  navSearchEl.value  = '';
+    if (heroSearchEl) heroSearchEl.value = '';
+
+    /* hero ciudad */
+    const heroCityEl = document.getElementById('heroCitySelect');
+    if (heroCityEl) heroCityEl.value = '📍 Toda España';
+
+    /* autocomplete ciudad */
+    syncCitySelect('');
+    document.getElementById('ciudadDropdown')?.classList.remove('open');
+
+    /* botones condición → "Todos" activo */
+    document.querySelectorAll('.filters button.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.filters button.filter-btn')?.classList.add('active');
+
+    /* selects → primer option */
+    document.querySelectorAll('.filters select, .sort-select').forEach(sel => { sel.selectedIndex = 0; });
+
+    /* categorías → "Todo" activo */
+    document.querySelectorAll('.cat').forEach(c => c.classList.remove('active'));
+    document.querySelector('.cat[data-cat=""]')?.classList.add('active');
+
+    applyFilters();
+  }
+
+  /* ── hamburguesa ── */
+  function toggleMenu() {
+    document.getElementById('navMenu').classList.toggle('open');
+    document.getElementById('menuToggle').classList.toggle('open');
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('nav')) {
+      document.getElementById('navMenu')?.classList.remove('open');
+      document.getElementById('menuToggle')?.classList.remove('open');
+    }
   });
 </script>
 <script src="cookie-banner.js"></script>

@@ -80,10 +80,16 @@
       transition: all 0.3s;
       background: var(--sand); color: var(--gray);
       border: 2px solid var(--sand);
+      position: relative;
     }
 
     .step.active .step-num { background: var(--terra); color: #fff; border-color: var(--terra); }
-    .step.done .step-num { background: var(--green); color: #fff; border-color: var(--green); }
+    .step.done .step-num { background: var(--green); color: transparent; border-color: var(--green); }
+    .step.done .step-num::after {
+      content: '✓'; position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 13px; font-weight: 700;
+    }
 
     .step-label {
       font-size: 12px; font-weight: 600;
@@ -655,7 +661,7 @@
         <span style="font-size:12px; color:var(--gray);">La primera foto será la portada del anuncio</span>
         <a href="guia-fotos.html" target="_blank" style="font-size:12px; font-weight:700; color:var(--terra); text-decoration:none;">📸 ¿Cómo hacer buenas fotos? →</a>
       </div>
-      <div class="photo-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+      <div class="photo-zone" id="dropZone">
         <input type="file" id="fileInput" accept="image/*" multiple />
         <div class="photo-icon">🖼️</div>
         <div class="photo-title">Arrastra las fotos aquí o haz clic para seleccionar</div>
@@ -1027,7 +1033,7 @@
   <h2>¡Artículo publicado!</h2>
   <p>Tu anuncio ya está visible en Mueblista.<br>Te notificaremos cuando alguien se interese.</p>
   <div class="success-actions">
-    <a href="producto.html" class="btn-success btn-success-primary">Ver mi anuncio</a>
+    <a href="panel.html" class="btn-success btn-success-primary">Ver mis anuncios</a>
     <a href="publicar.html" class="btn-success btn-success-ghost">Publicar otro artículo</a>
     <a href="index.html" class="btn-success btn-success-ghost">Ir al catálogo</a>
   </div>
@@ -1122,6 +1128,7 @@
     el.classList.add('selected');
     if (groupId === 'estadoGroup') document.getElementById('estadoError').style.display = 'none';
     saveDraft();
+    if (currentStep === 3) updateSummary();
   }
 
   /* ─── ENTREGA ─── */
@@ -1141,6 +1148,7 @@
       shipDetails.classList.remove('show');
     }
     saveDraft();
+    if (currentStep === 3) updateSummary();
   }
 
   /* ─── FOTOS ─── */
@@ -1425,29 +1433,22 @@
     const loteSection = document.getElementById('loteSection');
     const pageTitle = document.getElementById('pageTitle');
     const card2Title = document.getElementById('card2Title');
+    const isLote = mode === 'lote';
 
-    if (mode === 'lote') {
-      btnL.style.cssText = btnL.style.cssText.replace(/border:[^;]+;/, 'border:2px solid var(--brown);');
-      btnL.style.background = 'var(--brown)';
-      btnL.style.color = '#fff';
-      btnI.style.background = 'var(--white)';
-      btnI.style.color = 'var(--gray)';
-      btnI.style.borderColor = 'var(--sand)';
-      loteSection.style.display = 'block';
-      pageTitle.textContent = 'Publicar lote';
-      card2Title.textContent = 'Detalles del lote';
-      if (loteItemCount === 0) { addLoteItem(); addLoteItem(); }
-    } else {
-      btnI.style.background = 'var(--brown)';
-      btnI.style.color = '#fff';
-      btnI.style.borderColor = 'var(--brown)';
-      btnL.style.background = 'var(--white)';
-      btnL.style.color = 'var(--gray)';
-      btnL.style.borderColor = 'var(--sand)';
-      loteSection.style.display = 'none';
-      pageTitle.textContent = 'Publicar artículo';
-      card2Title.textContent = 'Detalles del artículo';
-    }
+    const activeBtn = isLote ? btnL : btnI;
+    const inactiveBtn = isLote ? btnI : btnL;
+
+    activeBtn.style.background = 'var(--brown)';
+    activeBtn.style.color = '#fff';
+    activeBtn.style.borderColor = 'var(--brown)';
+    inactiveBtn.style.background = 'var(--white)';
+    inactiveBtn.style.color = 'var(--gray)';
+    inactiveBtn.style.borderColor = 'var(--sand)';
+
+    loteSection.style.display = isLote ? 'block' : 'none';
+    pageTitle.textContent = isLote ? 'Publicar lote' : 'Publicar artículo';
+    card2Title.textContent = isLote ? 'Detalles del lote' : 'Detalles del artículo';
+    if (isLote && loteItemCount === 0) { addLoteItem(); addLoteItem(); }
   }
 
   function addLoteItem() {

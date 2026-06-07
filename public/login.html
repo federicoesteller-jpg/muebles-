@@ -432,12 +432,13 @@
         </div>
 
         <div class="check-row">
-          <input type="checkbox" id="checkTerms" />
+          <input type="checkbox" id="checkTerms" onchange="document.getElementById('termsErr').style.display='none'" />
           <label for="checkTerms">
             He leído y acepto los <a href="terminos.html" target="_blank">Términos y condiciones</a>
             y la <a href="privacidad.html" target="_blank">Política de privacidad</a>
           </label>
         </div>
+        <div class="field-error" id="termsErr" style="margin-top:-12px; margin-bottom:12px">Debes aceptar los términos para continuar</div>
 
         <button class="btn-submit" onclick="submitRegister()">Crear cuenta gratis</button>
 
@@ -569,8 +570,7 @@
     } else { pwd2.classList.remove('error'); pwd2Err.style.display = 'none'; }
 
     if (!document.getElementById('checkTerms').checked) {
-      alert('Debes aceptar los Términos y condiciones para continuar.');
-      ok = false;
+      document.getElementById('termsErr').style.display = 'block'; ok = false;
     }
 
     if (!ok) return;
@@ -582,6 +582,13 @@
   function socialLogin(provider) {
     showSuccess(`¡Bienvenido!`, `Has accedido correctamente con ${provider}.`);
   }
+
+  /* ─── ENTER ─── */
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    if (document.getElementById('form-login').classList.contains('active')) submitLogin();
+    else if (document.getElementById('form-register').classList.contains('active')) submitRegister();
+  });
 
   /* ─── MOSTRAR ÉXITO ─── */
   function showSuccess(title, msg) {

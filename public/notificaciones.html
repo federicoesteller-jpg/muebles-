@@ -9,10 +9,12 @@
     :root {
       --brown:  #1a0d07;
       --terra:  #c96a38;
-      --cream:  #fafafa;
-      --sand:   #e8e0d8;
-      --gray:   #717171;
-      --gray-l: #a0a0a0;
+      --terra-l:#e07a44;
+      --cream:  #fdf6ee;
+      --sand:   #ede3d5;
+      --sand-l: #f7f0e6;
+      --gray:   #7a726b;
+      --gray-l: #a09890;
       --white:  #ffffff;
       --green:  #2d7a4f;
       --green-l:#e8f5ee;
@@ -41,6 +43,13 @@
     .nav-btn-ghost:hover { color: var(--brown); background: #f5f5f5; }
     .nav-btn-sell { color: var(--white); background: var(--terra); }
     .nav-btn-sell:hover { background: #b85e30; }
+    .nav-fav-link { position: relative; }
+    .nav-fav-badge {
+      display: none; position: absolute; top: -5px; right: -4px;
+      background: var(--terra); color: #fff; font-size: 9px; font-weight: 800;
+      min-width: 16px; height: 16px; border-radius: 8px;
+      align-items: center; justify-content: center; padding: 0 3px;
+    }
 
     .bell-btn {
       position: relative; width: 38px; height: 38px;
@@ -130,6 +139,7 @@
     }
     .icon-msg     { background: #e8eef8; }
     .icon-sale    { background: var(--green-l); }
+    .icon-offer   { background: #fef3cd; }
     .icon-buy     { background: #f0e8f5; }
     .icon-system  { background: #fdecd8; }
     .icon-ref     { background: #fef3e2; }
@@ -196,9 +206,9 @@
 <nav>
   <a href="index.html" class="logo">Mueble<em>ista</em></a>
   <div class="nav-right">
-    <a href="panel-login.html" class="nav-btn nav-btn-ghost">Para tiendas</a>
-    <a href="notificaciones.html" class="bell-btn active" title="Notificaciones">
-      🔔<span class="bell-badge">5</span>
+    <a href="favoritos.html" class="nav-btn nav-btn-ghost nav-fav-link">♡ Favoritos<span class="nav-fav-badge" id="navFavBadge">0</span></a>
+    <a href="notificaciones.html" class="bell-btn active" title="Notificaciones" id="navBell">
+      🔔<span class="bell-badge" id="navBellBadge">6</span>
     </a>
     <a href="perfil.html" class="nav-btn nav-btn-ghost">Mi perfil</a>
     <a href="publicar.html" class="nav-btn nav-btn-sell">+ Vender</a>
@@ -209,8 +219,9 @@
 <div class="page-wrap">
 
   <div class="page-header">
-    <div>
+    <div style="display:flex;align-items:center;gap:10px">
       <div class="page-title">Notificaciones</div>
+      <span id="unreadCount" style="background:var(--terra);color:#fff;font-size:12px;font-weight:800;padding:3px 10px;border-radius:99px;display:none"></span>
     </div>
     <button class="btn-mark-all" onclick="markAllRead()">Marcar todas como leídas</button>
   </div>
@@ -227,6 +238,18 @@
   <!-- HOY -->
   <div class="notif-group" id="group-hoy">
     <div class="group-label">Hoy</div>
+
+    <div class="notif-card unread" data-cat="ventas" onclick="markRead(this)">
+      <div class="notif-icon icon-offer">💰</div>
+      <div class="notif-body">
+        <div class="notif-title">Nueva oferta recibida</div>
+        <div class="notif-text"><strong>Laura M.</strong> ha propuesto <strong>320 €</strong> por tu <strong>Sofá Chester 3 plazas</strong> (precio original: 380 €). Puedes aceptar, rechazar o negociar desde el chat.</div>
+        <div class="notif-footer">
+          <span class="notif-time">Hace 8 min</span>
+          <a href="chat.html" class="notif-action" onclick="event.stopPropagation()">Ver oferta →</a>
+        </div>
+      </div>
+    </div>
 
     <div class="notif-card unread" data-cat="mensajes" onclick="markRead(this)">
       <div class="notif-icon icon-msg">💬</div>
@@ -264,7 +287,7 @@
       </div>
     </div>
 
-    <div class="notif-card unread" data-cat="ventas" onclick="markRead(this)">
+    <div class="notif-card unread" data-cat="mensajes" onclick="markRead(this)">
       <div class="notif-icon icon-msg">💬</div>
       <div class="notif-body">
         <div class="notif-title">Nuevo mensaje de Pedro S.</div>
@@ -402,6 +425,7 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="favoritos.js"></script>
 <script>
   /* ─── FILTRO ─── */
   function filterNotifs(cat, btn) {
@@ -443,14 +467,31 @@
   /* ─── BADGE ─── */
   function updateBadge() {
     const count = document.querySelectorAll('.notif-card.unread').length;
-    const badge = document.querySelector('.bell-badge');
+    const bellBadge = document.getElementById('navBellBadge');
+    const unreadEl = document.getElementById('unreadCount');
+
     if (count === 0) {
-      badge.style.display = 'none';
+      bellBadge.style.display = 'none';
+      unreadEl.style.display = 'none';
     } else {
-      badge.style.display = 'flex';
-      badge.textContent = count;
+      bellBadge.style.display = 'flex';
+      bellBadge.textContent = count;
+      unreadEl.style.display = 'inline-block';
+      unreadEl.textContent = count + ' sin leer';
     }
   }
+
+  /* ─── INIT ─── */
+  window.addEventListener('DOMContentLoaded', () => {
+    updateBadge();
+    if (typeof mFavGet === 'function') {
+      const n = mFavGet().length;
+      if (n > 0) {
+        const b = document.getElementById('navFavBadge');
+        b.textContent = n; b.style.display = 'inline-flex';
+      }
+    }
+  });
 
   /* ─── TOAST ─── */
   function showToast(msg) {

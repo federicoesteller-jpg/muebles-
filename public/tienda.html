@@ -684,8 +684,8 @@
 
       <div class="product-grid">
 
-        <a href="producto.html" class="card reveal d1"
-           data-fav-id="sofa-chester"
+        <a href="producto.html?id=sofa-chester-madrid" class="card reveal d1"
+           data-fav-id="sofa-chester-madrid"
            data-fav-title="Sofá Chester 3 plazas cuero marrón"
            data-fav-price="380"
            data-fav-img="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80"
@@ -703,8 +703,8 @@
           </div>
         </a>
 
-        <a href="producto.html" class="card reveal d2"
-           data-fav-id="cabecero-madera"
+        <a href="producto.html?id=cabecero-madera-madrid" class="card reveal d2"
+           data-fav-id="cabecero-madera-madrid"
            data-fav-title="Cabecero madera maciza 150cm"
            data-fav-price="140"
            data-fav-img="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=400&q=80"
@@ -722,8 +722,8 @@
           </div>
         </a>
 
-        <a href="producto.html" class="card reveal d3"
-           data-fav-id="espejo-vintage"
+        <a href="producto.html?id=espejo-vintage-valencia" class="card reveal d3"
+           data-fav-id="espejo-vintage-valencia"
            data-fav-title="Espejo vintage redondo 80cm"
            data-fav-price="60"
            data-fav-img="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80"
@@ -741,8 +741,8 @@
           </div>
         </a>
 
-        <a href="producto.html" class="card reveal d4"
-           data-fav-id="aparador-industrial"
+        <a href="producto.html?id=aparador-industrial-madrid" class="card reveal d4"
+           data-fav-id="aparador-industrial-madrid"
            data-fav-title="Aparador industrial acero negro"
            data-fav-price="290"
            data-fav-img="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=400&q=80"
@@ -760,8 +760,8 @@
           </div>
         </a>
 
-        <a href="producto.html" class="card reveal d5"
-           data-fav-id="silla-vintage"
+        <a href="producto.html?id=silla-escandinava-barcelona" class="card reveal d5"
+           data-fav-id="silla-escandinava-barcelona"
            data-fav-title="Silla vintage cuero negro"
            data-fav-price="95"
            data-fav-img="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=400&q=80"
@@ -779,8 +779,8 @@
           </div>
         </a>
 
-        <a href="producto.html" class="card reveal d6"
-           data-fav-id="lampara-arco"
+        <a href="producto.html?id=lampara-arco-sevilla" class="card reveal d6"
+           data-fav-id="lampara-arco-sevilla"
            data-fav-title="Lámpara pie arco dorado 180cm"
            data-fav-price="189"
            data-fav-img="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=400&q=80"
@@ -874,36 +874,15 @@
         </div>
         <div>
           <h3 style="font-size:16px;font-weight:700;margin-bottom:16px">Horario de apertura</h3>
-          <div class="open-badge"><div class="open-dot"></div> Abierto ahora</div>
+          <div class="open-badge" id="infoOpenBadge"><div class="open-dot" id="infoOpenDot"></div> <span id="infoOpenText">Abierto ahora</span></div>
           <div class="schedule">
-            <div class="schedule-row today">
-              <span class="schedule-day">Viernes (hoy)</span>
-              <span class="schedule-hours">10:00 – 19:30</span>
-            </div>
-            <div class="schedule-row">
-              <span class="schedule-day">Lunes</span>
-              <span class="schedule-hours">10:00 – 19:00</span>
-            </div>
-            <div class="schedule-row">
-              <span class="schedule-day">Martes</span>
-              <span class="schedule-hours">10:00 – 19:00</span>
-            </div>
-            <div class="schedule-row">
-              <span class="schedule-day">Miércoles</span>
-              <span class="schedule-hours">10:00 – 19:00</span>
-            </div>
-            <div class="schedule-row">
-              <span class="schedule-day">Jueves</span>
-              <span class="schedule-hours">10:00 – 19:00</span>
-            </div>
-            <div class="schedule-row">
-              <span class="schedule-day">Sábado</span>
-              <span class="schedule-hours">11:00 – 15:00</span>
-            </div>
-            <div class="schedule-row">
-              <span class="schedule-day">Domingo</span>
-              <span class="schedule-hours" style="color:var(--gray-l)">Cerrado</span>
-            </div>
+            <div class="schedule-row" data-day="1"><span class="schedule-day">Lunes</span><span class="schedule-hours">10:00 – 19:00</span></div>
+            <div class="schedule-row" data-day="2"><span class="schedule-day">Martes</span><span class="schedule-hours">10:00 – 19:00</span></div>
+            <div class="schedule-row" data-day="3"><span class="schedule-day">Miércoles</span><span class="schedule-hours">10:00 – 19:00</span></div>
+            <div class="schedule-row" data-day="4"><span class="schedule-day">Jueves</span><span class="schedule-hours">10:00 – 19:00</span></div>
+            <div class="schedule-row" data-day="5"><span class="schedule-day">Viernes</span><span class="schedule-hours">10:00 – 19:30</span></div>
+            <div class="schedule-row" data-day="6"><span class="schedule-day">Sábado</span><span class="schedule-hours">11:00 – 15:00</span></div>
+            <div class="schedule-row" data-day="0"><span class="schedule-day">Domingo</span><span class="schedule-hours" style="color:var(--gray-l)">Cerrado</span></div>
           </div>
         </div>
       </div>
@@ -960,11 +939,11 @@
     <!-- Horario rápido -->
     <div class="sidebar-card reveal">
       <div class="sidebar-title">Horario</div>
-      <div class="open-badge"><div class="open-dot"></div> Abierto ahora · Cierra a las 19:30</div>
+      <div class="open-badge" id="sidebarOpenBadge"><div class="open-dot" id="sidebarOpenDot"></div> <span id="sidebarOpenText">Abierto ahora</span></div>
       <div class="schedule">
-        <div class="schedule-row today">
-          <span class="schedule-day">Hoy (Viernes)</span>
-          <span class="schedule-hours">10:00 – 19:30</span>
+        <div class="schedule-row" id="sidebarTodayRow">
+          <span class="schedule-day" id="sidebarTodayDay">—</span>
+          <span class="schedule-hours" id="sidebarTodayHours">—</span>
         </div>
         <div class="schedule-row">
           <span class="schedule-day">Lun – Jue</span>
@@ -1003,6 +982,7 @@
   <div class="footer-copy">© 2026 Mueblista</div>
 </footer>
 
+<script src="favoritos.js"></script>
 <script>
   // Reveal
   const obs = new IntersectionObserver(e => {
@@ -1164,8 +1144,59 @@
     setTimeout(() => btn.style.transform = '', 200);
   }
 
+  // Horario dinámico
+  function initOpenStatus() {
+    const DAYS = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+    const HOURS = { 1:[10,19], 2:[10,19], 3:[10,19], 4:[10,19], 5:[10,19.5], 6:[11,15], 0:null };
+    const fmt = h => h % 1 ? Math.floor(h) + ':30' : h + ':00';
+
+    const now = new Date();
+    const dow = now.getDay();
+    const h = now.getHours() + now.getMinutes() / 60;
+    const todayHours = HOURS[dow];
+    const isOpen = todayHours !== null && h >= todayHours[0] && h < todayHours[1];
+
+    // Update both open badges
+    ['sidebar','info'].forEach(prefix => {
+      const badge = document.getElementById(prefix + 'OpenBadge');
+      const dot   = document.getElementById(prefix + 'OpenDot');
+      const text  = document.getElementById(prefix + 'OpenText');
+      if (!badge) return;
+      if (isOpen) {
+        text.textContent = 'Abierto ahora · Cierra a las ' + fmt(todayHours[1]);
+      } else {
+        badge.style.background = '#fdeaea';
+        badge.style.color = '#d94040';
+        dot.style.background = '#d94040';
+        dot.style.animationName = 'none';
+        text.textContent = 'Cerrado ahora';
+      }
+    });
+
+    // Sidebar: update today row
+    const todayRow = document.getElementById('sidebarTodayRow');
+    if (todayRow) {
+      document.getElementById('sidebarTodayDay').textContent = 'Hoy (' + DAYS[dow] + ')';
+      const hoursEl = document.getElementById('sidebarTodayHours');
+      if (todayHours) {
+        hoursEl.textContent = fmt(todayHours[0]) + ' – ' + fmt(todayHours[1]);
+      } else {
+        hoursEl.textContent = 'Cerrado';
+        hoursEl.style.color = 'var(--gray-l)';
+      }
+      todayRow.classList.add('today');
+    }
+
+    // Tab info: highlight today's row
+    document.querySelectorAll('.schedule-row[data-day]').forEach(row => {
+      row.classList.toggle('today', parseInt(row.dataset.day) === dow);
+    });
+  }
+
   // Restaurar corazones al cargar
   document.addEventListener('DOMContentLoaded', () => {
+    mFavUpdateBadges();
+    initOpenStatus();
     document.querySelectorAll('[data-fav-id]').forEach(card => {
       const btn = card.querySelector('.card-fav, .card-fav-sm');
       if (btn && mFavIs(card.dataset.favId)) {
@@ -1175,7 +1206,6 @@
     });
   });
 </script>
-<script src="favoritos.js"></script>
 <script src="cookie-banner.js"></script>
 </body>
 </html>

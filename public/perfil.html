@@ -9,6 +9,7 @@
     :root {
       --brown:  #1a0d07;
       --terra:  #c96a38;
+      --terra-l:#e07a44;
       --cream:  #fdf6ee;
       --sand:   #ede3d5;
       --sand-l: #f7f0e6;
@@ -130,7 +131,7 @@
     .stars { color: #f5a623; font-size: 14px; }
 
     .profile-stats {
-      display: flex; gap: 0;
+      display: flex; gap: 0; margin-top: 14px;
     }
 
     .pstat {
@@ -566,6 +567,15 @@
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
+    .nav-fav-link { position: relative; }
+    .nav-fav-badge {
+      display: none; position: absolute; top: -5px; right: -4px;
+      background: var(--terra); color: #fff;
+      font-size: 9px; font-weight: 800;
+      min-width: 16px; height: 16px; border-radius: 8px;
+      align-items: center; justify-content: center; padding: 0 3px;
+    }
+
     @media (max-width: 700px) {
       .listings-grid { grid-template-columns: repeat(2, 1fr); }
       .favs-grid { grid-template-columns: repeat(2, 1fr); }
@@ -583,6 +593,7 @@
   <div class="nav-right">
     <a href="chat.html" class="nav-btn nav-btn-ghost">💬 Mensajes</a>
     <a href="notificaciones.html" class="bell-btn" title="Notificaciones">🔔<span class="bell-badge">5</span></a>
+    <a href="favoritos.html" class="nav-btn nav-btn-ghost nav-fav-link">♡ Favoritos<span class="nav-fav-badge" id="navFavBadge"></span></a>
     <a href="publicar.html" class="nav-btn nav-btn-sell">+ Vender</a>
   </div>
 </nav>
@@ -641,7 +652,7 @@
         Compras <span class="tab-count">3</span>
       </button>
       <button class="tab-btn" onclick="switchTab('favoritos')">
-        Favoritos <span class="tab-count">14</span>
+        Favoritos <span class="tab-count" id="tabFavCount">0</span>
       </button>
       <button class="tab-btn" onclick="switchTab('valoraciones')">
         Valoraciones <span class="tab-count">12</span>
@@ -865,32 +876,12 @@
 
     <!-- ══════════ FAVORITOS ══════════ -->
     <div class="tab-panel" id="panel-favoritos">
-      <div class="favs-grid">
-
-        <a href="producto.html" class="fav-card">
-          <div class="fav-img"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80" alt="Sofá" loading="lazy" /></div>
-          <button class="fav-del" onclick="removeFav(event,this)" title="Quitar de favoritos">♥</button>
-          <div class="fav-body"><div class="fav-price">220 €</div><div class="fav-title">Sofá 2 plazas azul petróleo</div></div>
-        </a>
-
-        <a href="producto.html" class="fav-card">
-          <div class="fav-img"><img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=400&q=80" alt="Mesa" loading="lazy" /></div>
-          <button class="fav-del" onclick="removeFav(event,this)" title="Quitar de favoritos">♥</button>
-          <div class="fav-body"><div class="fav-price">320 €</div><div class="fav-title">Mesa comedor extensible roble</div></div>
-        </a>
-
-        <a href="producto.html" class="fav-card">
-          <div class="fav-img"><img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=400&q=80" alt="Cabecero" loading="lazy" /></div>
-          <button class="fav-del" onclick="removeFav(event,this)" title="Quitar de favoritos">♥</button>
-          <div class="fav-body"><div class="fav-price">140 €</div><div class="fav-title">Cabecero madera maciza 150cm</div></div>
-        </a>
-
-        <a href="producto.html" class="fav-card">
-          <div class="fav-img"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80" alt="Espejo" loading="lazy" /></div>
-          <button class="fav-del" onclick="removeFav(event,this)" title="Quitar de favoritos">♥</button>
-          <div class="fav-body"><div class="fav-price">35 €</div><div class="fav-title">Espejo ovalado marco dorado</div></div>
-        </a>
-
+      <div class="favs-grid" id="favsGrid"></div>
+      <div class="empty-state" id="favsEmpty" style="display:none">
+        <div class="empty-icon">♡</div>
+        <h3>Aún no tienes favoritos</h3>
+        <p>Guarda los muebles que te gusten y aparecerán aquí.</p>
+        <a href="index.html" class="btn-new">Explorar muebles</a>
       </div>
     </div>
 
@@ -1202,12 +1193,14 @@
 <!-- TOAST -->
 <div class="toast" id="toast">✓ <span id="toastMsg"></span></div>
 
+<script src="favoritos.js"></script>
 <script>
   /* ─── TABS ─── */
   function switchTab(name) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.toggle('active', b.getAttribute('onclick') === `switchTab('${name}')`);
+    });
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.querySelector(`[onclick="switchTab('${name}')"]`).classList.add('active');
     document.getElementById('panel-' + name).classList.add('active');
   }
 
@@ -1256,10 +1249,41 @@
   }
 
   /* ─── FAVORITOS ─── */
-  function removeFav(e, btn) {
+  function removeFav(e, btn, id) {
     e.preventDefault();
+    mFavToggle(id, null);
     btn.closest('.fav-card').remove();
+    const count = document.querySelectorAll('#favsGrid .fav-card').length;
+    document.getElementById('tabFavCount').textContent = count;
+    if (count === 0) {
+      document.getElementById('favsGrid').style.display = 'none';
+      document.getElementById('favsEmpty').style.display = '';
+    }
+    mFavUpdateBadges();
     showToast('Eliminado de favoritos');
+  }
+
+  function renderFavs() {
+    const favs = mFavGet();
+    const grid = document.getElementById('favsGrid');
+    const empty = document.getElementById('favsEmpty');
+    document.getElementById('tabFavCount').textContent = favs.length;
+    if (favs.length === 0) {
+      grid.style.display = 'none';
+      empty.style.display = '';
+      return;
+    }
+    grid.style.display = '';
+    empty.style.display = 'none';
+    grid.innerHTML = favs.map(f => `
+      <a href="${f.href || 'producto.html'}" class="fav-card">
+        <div class="fav-img"><img src="${f.img || ''}" alt="${f.title || ''}" loading="lazy" /></div>
+        <button class="fav-del" onclick="removeFav(event,this,'${f.id}')" title="Quitar de favoritos">♥</button>
+        <div class="fav-body">
+          <div class="fav-price">${f.price ? f.price + ' €' : '—'}</div>
+          <div class="fav-title">${f.title || 'Sin título'}</div>
+        </div>
+      </a>`).join('');
   }
 
   /* ─── BIO ─── */
@@ -1284,6 +1308,11 @@
     }, 2500);
     showToast('Enlace de referido copiado');
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderFavs();
+    mFavUpdateBadges();
+  });
 
   /* ─── TOAST ─── */
   function showToast(msg) {

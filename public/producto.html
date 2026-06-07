@@ -171,8 +171,6 @@
     .thumb.active { border-color: var(--terra); }
     .thumb:hover { border-color: var(--terra); }
 
-    /* Fade entre fotos */
-    .gallery-main img { transition: opacity 0.18s, transform 0.4s; }
     .gallery-main img.fading { opacity: 0; }
 
     /* Flechas prev/next sobre la imagen principal */
@@ -685,7 +683,7 @@
     .footer-links a { font-size: 12px; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; }
     .footer-links a:hover { color: var(--terra-l); }
 
-    /* ─── FAVORITOS NAV ─── */
+    /* ─── FAVORITOS / BELL NAV ─── */
     .nav-fav-link { position: relative; }
     .nav-fav-badge {
       display: none; position: absolute; top: -5px; right: -4px;
@@ -693,6 +691,21 @@
       font-size: 9px; font-weight: 800;
       min-width: 16px; height: 16px; border-radius: 8px;
       align-items: center; justify-content: center; padding: 0 3px;
+    }
+    .bell-btn {
+      position: relative; width: 38px; height: 38px; border-radius: 9px;
+      border: none; background: #f5f5f5; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; transition: background .15s; text-decoration: none; color: var(--brown);
+    }
+    .bell-btn:hover { background: var(--sand); }
+    .bell-badge {
+      position: absolute; top: 4px; right: 4px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--terra); color: #fff;
+      font-size: 9px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid var(--white);
     }
 
     /* ─── SISTEMA DE OFERTAS ─── */
@@ -905,7 +918,8 @@
   </div>
   <div class="nav-actions">
     <a href="perfil.html" class="nav-link">Mi perfil</a>
-    <a href="favoritos.html" class="nav-link nav-fav-link" title="Mis favoritos">♡<span class="nav-fav-badge">0</span></a>
+    <a href="notificaciones.html" class="bell-btn" title="Notificaciones">🔔<span class="bell-badge">5</span></a>
+    <a href="favoritos.html" class="nav-link nav-fav-link" title="Mis favoritos">♡ Favoritos<span class="nav-fav-badge" id="navFavBadge"></span></a>
     <a href="publicar.html" class="btn-sell">+ Vender</a>
   </div>
 </nav>
@@ -914,9 +928,9 @@
 <div class="breadcrumb">
   <a href="index.html">Inicio</a>
   <span style="color:var(--gray-l)">›</span>
-  <a href="#">Sofás</a>
+  <a href="#" id="bcCategory">Sofás</a>
   <span style="color:var(--gray-l)">›</span>
-  <span>Sofá Chester 3 plazas cuero marrón</span>
+  <span id="bcTitle">Sofá Chester 3 plazas cuero marrón</span>
 </div>
 
 <!-- ─── PRODUCTO ─── -->
@@ -927,7 +941,7 @@
     <div class="gallery">
       <div class="gallery-main" id="mainImg" onclick="openLightbox(currentIdx)">
         <img id="mainPhoto" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85" alt="Sofá Chester" />
-        <span class="gallery-badge">Muy bueno</span>
+        <span class="gallery-badge" id="galBadge">Muy bueno</span>
         <button class="gallery-fav" id="mainFavBtn" onclick="event.stopPropagation(); toggleFav(this)">♡</button>
         <button class="gallery-arrow prev" id="galPrev" onclick="event.stopPropagation(); goTo(currentIdx - 1)" disabled>‹</button>
         <button class="gallery-arrow next" id="galNext" onclick="event.stopPropagation(); goTo(currentIdx + 1)">›</button>
@@ -1036,10 +1050,10 @@
 
     <div class="info-main">
       <div class="info-top">
-        <div class="product-price">380 €</div>
+        <div class="product-price" id="productPrice">380 €</div>
         <div class="product-condition-wrap">
-          <div class="product-condition">⭐ Muy bueno</div>
-          <div class="condition-tooltip">
+          <div class="product-condition" id="productCondition">⭐ Muy bueno</div>
+          <div class="condition-tooltip" id="conditionTooltip">
             <strong>Muy bueno</strong>
             Uso moderado con alguna marca mínima e imperceptible. Buen estado general.
           </div>
@@ -1048,9 +1062,9 @@
 
       <div class="offers-tag" id="offersTag">💬 Admite ofertas</div>
 
-      <div class="product-title">Sofá Chester 3 plazas cuero marrón</div>
+      <div class="product-title" id="productTitle">Sofá Chester 3 plazas cuero marrón</div>
 
-      <div class="product-dims">
+      <div class="product-dims" id="productDims">
         <span class="dims-label">Medidas</span>
         <span class="dims-item">↔ <strong>220 cm</strong> ancho</span>
         <span class="dims-sep">·</span>
@@ -1059,7 +1073,7 @@
         <span class="dims-item">↑ <strong>85 cm</strong> alto</span>
       </div>
 
-      <div class="product-meta">
+      <div class="product-meta" id="productMeta">
         <div class="meta-item">📍 <strong>Madrid</strong>, Centro</div>
         <div class="meta-item">👁 <strong>180</strong> visitas</div>
         <div class="meta-item">♡ <strong>24</strong> favoritos</div>
@@ -1103,7 +1117,10 @@
       </div>
 
       <button class="btn-primary" id="buyBtn">💳 Comprar ahora — 380 €</button>
-      <a href="chat.html" class="btn-secondary" style="text-decoration:none">💬 Contactar con la tienda</a>
+      <div style="display:flex; gap:10px; margin-bottom:10px;">
+        <a href="chat.html" class="btn-secondary" style="text-decoration:none; flex:1; margin-bottom:0">💬 Contactar</a>
+        <button class="btn-secondary" id="shareBtn" onclick="shareProd()" style="flex:0 0 auto; padding:14px 16px; margin-bottom:0" title="Compartir">🔗</button>
+      </div>
 
       <!-- BOTÓN OFERTA (solo visible si ADMITE_OFERTAS = true) -->
       <button class="btn-offer" id="offerBtn" onclick="openOffer()">🤝 Hacer una oferta</button>
@@ -1223,29 +1240,20 @@
     <div class="store-card">
       <div class="store-card-title">Vendido por</div>
       <div class="store-info">
-        <div class="store-avatar">🏡</div>
+        <div class="store-avatar" id="storeAvatar">🏡</div>
         <div>
-          <div class="store-name">Vintage Home Madrid</div>
-          <div class="store-location">📍 Malasaña, Madrid</div>
-          <div class="store-rating">
+          <div class="store-name" id="storeName">Vintage Home Madrid</div>
+          <div class="store-location" id="storeLocation">📍 Malasaña, Madrid</div>
+          <div class="store-rating" id="storeRating">
             <span class="stars">★★★★★</span>
             <span>4.9 · 87 valoraciones</span>
           </div>
         </div>
       </div>
-      <div class="store-stats">
-        <div class="store-stat">
-          <strong>14</strong>
-          <span>artículos</span>
-        </div>
-        <div class="store-stat">
-          <strong>98%</strong>
-          <span>positivas</span>
-        </div>
-        <div class="store-stat">
-          <strong>4 años</strong>
-          <span>en Mueblista</span>
-        </div>
+      <div class="store-stats" id="storeStats">
+        <div class="store-stat"><strong>14</strong><span>artículos</span></div>
+        <div class="store-stat"><strong>98%</strong><span>positivas</span></div>
+        <div class="store-stat"><strong>4 años</strong><span>en Mueblista</span></div>
       </div>
       <a href="tienda.html" class="btn-store">Ver tienda completa →</a>
     </div>
@@ -1256,77 +1264,7 @@
 <!-- ─── RELACIONADOS ─── -->
 <div class="related">
   <h2>También te puede gustar</h2>
-  <div class="related-grid">
-
-    <a href="producto.html" class="card"
-       data-fav-id="silla-escandinava"
-       data-fav-title="Silla escandinava roble"
-       data-fav-price="95"
-       data-fav-img="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=400&q=80"
-       data-fav-city="Barcelona">
-      <div class="card-img">
-        <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=400&q=80" alt="Silla escandinava" loading="lazy" />
-        <button class="card-fav-sm" onclick="event.preventDefault(); toggleFav(this)">♡</button>
-      </div>
-      <div class="card-body">
-        <div class="card-price">95 €</div>
-        <div class="card-title">Silla escandinava roble</div>
-        <div class="card-loc">📍 Barcelona</div>
-      </div>
-    </a>
-
-    <a href="producto.html" class="card"
-       data-fav-id="sofa-azul-petroleo"
-       data-fav-title="Sofá 2 plazas azul petróleo"
-       data-fav-price="220"
-       data-fav-img="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80"
-       data-fav-city="Madrid">
-      <div class="card-img">
-        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80" alt="Sofá azul" loading="lazy" />
-        <button class="card-fav-sm" onclick="event.preventDefault(); toggleFav(this)">♡</button>
-      </div>
-      <div class="card-body">
-        <div class="card-price">220 €</div>
-        <div class="card-title">Sofá 2 plazas azul petróleo</div>
-        <div class="card-loc">📍 Madrid</div>
-      </div>
-    </a>
-
-    <a href="producto.html" class="card"
-       data-fav-id="espejo-vintage"
-       data-fav-title="Espejo vintage redondo 80cm"
-       data-fav-price="60"
-       data-fav-img="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80"
-       data-fav-city="Valencia">
-      <div class="card-img">
-        <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80" alt="Espejo vintage" loading="lazy" />
-        <button class="card-fav-sm" onclick="event.preventDefault(); toggleFav(this)">♡</button>
-      </div>
-      <div class="card-body">
-        <div class="card-price">60 €</div>
-        <div class="card-title">Espejo vintage redondo 80cm</div>
-        <div class="card-loc">📍 Valencia</div>
-      </div>
-    </a>
-
-    <a href="producto.html" class="card"
-       data-fav-id="aparador-industrial"
-       data-fav-title="Aparador industrial negro"
-       data-fav-price="290"
-       data-fav-img="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=400&q=80"
-       data-fav-city="Madrid">
-      <div class="card-img">
-        <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=400&q=80" alt="Aparador industrial" loading="lazy" />
-        <button class="card-fav-sm" onclick="event.preventDefault(); toggleFav(this)">♡</button>
-      </div>
-      <div class="card-body">
-        <div class="card-price">290 €</div>
-        <div class="card-title">Aparador industrial negro</div>
-        <div class="card-loc">📍 Madrid</div>
-      </div>
-    </a>
-
-  </div>
+  <div class="related-grid" id="relatedGrid"></div>
 </div>
 
 <!-- ─── FOOTER ─── -->
@@ -1363,19 +1301,132 @@
 </div>
 
 <script>
-  /* ─── SISTEMA DE OFERTAS ─── */
-  const ADMITE_OFERTAS       = true;   // false = oculta el panel de oferta
-  const ADMITE_ENVIO         = true;   // false = solo recogida en tienda
-  const PRECIO_VENTA         = 380;
-  const SHIPPING_COST        = 45;     // coste de envío cuando aplica
-  const SHIPPING_FREE_THRESHOLD = 100; // 0 = sin umbral de envío gratis
+  /* ─── BASE DE DATOS DE PRODUCTOS ─── */
+  const PRODUCTS = {
+    'sofa-chester-madrid':{ title:'Sofá Chester 3 plazas cuero marrón', price:380, shippingCost:45, shippingFreeThreshold:100, admiteOfertas:true, admiteEnvio:true, condition:'Muy bueno', conditionDesc:'Uso moderado con alguna marca mínima e imperceptible. Buen estado general.', category:'Sofás', location:'Madrid, Centro', views:180, favs:24, age:'2 días', dims:'220 cm ancho · 90 cm fondo · 85 cm alto', photos:['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1540574163026-643ea20abb28?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=85'], description:'Sofá Chester de 3 plazas en cuero marrón auténtico. Tapizado artesanal con acabado acolchado en el respaldo y los brazos. Estructura de madera maciza con patas torneadas.\n\nTiene un uso de aproximadamente 3 años pero se ha cuidado con productos específicos para cuero. No presenta rasgaduras ni manchas. El color se mantiene uniforme.\n\nMotivo de venta: cambio de decoración del local. Se puede ver en tienda.', specs:[['Medidas','220 × 90 × 85 cm'],['Material','Cuero auténtico'],['Color','Marrón cognac'],['Plazas','3 plazas'],['Estado','Muy bueno'],['Antigüedad','~3 años'],['Estilo','Clásico / Chester'],['Peso','~65 kg']], store:{emoji:'🏡', name:'Vintage Home Madrid', location:'Malasaña, Madrid', rating:4.9, reviews:87, items:14, pct:98, years:4}},
+    'silla-escandinava-barcelona':{ title:'Silla escandinava roble macizo', price:95, shippingCost:12, shippingFreeThreshold:100, admiteOfertas:false, admiteEnvio:true, condition:'Nuevo', conditionDesc:'Artículo sin ningún uso, en perfectas condiciones.', category:'Sillas', location:'Barcelona, Eixample', views:62, favs:8, age:'5 días', dims:'45 cm ancho · 50 cm fondo · 80 cm alto', photos:['https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=900&q=85'], description:'Silla escandinava de roble macizo sin usar. Diseño nórdico clásico con patas de madera natural y asiento tapizado en tela beige. Fabricación artesanal.\n\nPerfecta para comedor, escritorio o como silla de acento. Se entrega con embalaje original.', specs:[['Medidas','45 × 50 × 80 cm'],['Material','Roble macizo'],['Color','Natural / beige'],['Estado','Nuevo'],['Estilo','Escandinavo'],['Peso','~6 kg']], store:{emoji:'🪑', name:'Muebles Roca', location:'Eixample, Barcelona', rating:4.7, reviews:43, items:22, pct:96, years:2}},
+    'espejo-vintage-valencia':{ title:'Espejo vintage redondo 80cm dorado', price:60, shippingCost:18, shippingFreeThreshold:0, admiteOfertas:true, admiteEnvio:true, condition:'Bueno', conditionDesc:'Artículo con uso pero en buen estado general. Puede tener alguna marca menor.', category:'Espejos', location:'Valencia, Ruzafa', views:95, favs:14, age:'1 semana', dims:'80 cm diámetro', photos:['https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=85'], description:'Espejo redondo vintage con marco dorado envejecido. Diámetro 80cm, perfecto para recibidores o salones. La luna está en perfecto estado sin rayaduras.\n\nEl marco tiene el acabado ligeramente desgastado en algunos puntos, lo que le da el aspecto vintage buscado.', specs:[['Medidas','80 cm diámetro'],['Material','Marco metal dorado'],['Color','Dorado envejecido'],['Estado','Bueno'],['Estilo','Vintage / bohemio'],['Antigüedad','~5 años']], store:{emoji:'🪞', name:'El Baúl', location:'Ruzafa, Valencia', rating:4.6, reviews:31, items:18, pct:94, years:3}},
+    'cabecero-madera-madrid':{ title:'Cabecero madera maciza 150cm', price:140, shippingCost:35, shippingFreeThreshold:150, admiteOfertas:true, admiteEnvio:true, condition:'Muy bueno', conditionDesc:'Uso moderado con alguna marca mínima e imperceptible.', category:'Camas', location:'Madrid, Chamberí', views:73, favs:11, age:'3 días', dims:'150 cm ancho · 120 cm alto', photos:['https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=900&q=85'], description:'Cabecero de madera maciza para cama de 150cm. Acabado en roble con barniz mate. Diseño sencillo y elegante.\n\nEn muy buen estado. Se vende por cambio de dormitorio. Herraje de instalación incluido.', specs:[['Medidas','150 × 120 cm'],['Material','Madera maciza roble'],['Color','Natural mate'],['Estado','Muy bueno'],['Para cama','150 cm'],['Peso','~18 kg']], store:{emoji:'🪵', name:'Ferro Antiguo', location:'Chamberí, Madrid', rating:4.8, reviews:56, items:9, pct:97, years:5}},
+    'lampara-arco-sevilla':{ title:'Lámpara de pie arco dorado 180cm', price:189, shippingCost:22, shippingFreeThreshold:200, admiteOfertas:false, admiteEnvio:true, condition:'Nuevo', conditionDesc:'Artículo sin ningún uso, en perfectas condiciones.', category:'Lámparas', location:'Sevilla, Triana', views:44, favs:7, age:'4 días', dims:'180 cm alto · 40 cm pantalla', photos:['https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1513506003901-1e6a35294bf6?auto=format&fit=crop&w=900&q=85'], description:'Lámpara de pie con brazo arco en color dorado. Altura 180cm, ideal para iluminar zonas de lectura. Pantalla de lino blanco.\n\nSin estrenar. Se compró pero no encajó en el espacio. Incluye bombilla LED E27.', specs:[['Medidas','180 cm alto'],['Material','Metal dorado / lino'],['Color','Dorado / blanco'],['Estado','Nuevo'],['Casquillo','E27'],['Cable','2 metros']], store:{emoji:'💡', name:'Luz & Deco', location:'Triana, Sevilla', rating:4.5, reviews:29, items:31, pct:93, years:2}},
+    'aparador-industrial-madrid':{ title:'Aparador industrial acero negro 160cm', price:290, shippingCost:55, shippingFreeThreshold:0, admiteOfertas:true, admiteEnvio:true, condition:'Bueno', conditionDesc:'Artículo con uso pero en buen estado general.', category:'Aparadores', location:'Madrid, Centro', views:112, favs:19, age:'1 semana', dims:'160 cm ancho · 45 cm fondo · 80 cm alto', photos:['https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=85'], description:'Aparador de estilo industrial con estructura de acero negro mate y estantes de madera de pino. Ideal para salón o comedor.\n\n160cm de ancho con amplio espacio de almacenaje.', specs:[['Medidas','160 × 45 × 80 cm'],['Material','Acero y pino'],['Color','Negro / natural'],['Estado','Bueno'],['Cajones','2'],['Estilo','Industrial']], store:{emoji:'🪵', name:'Ferro Antiguo', location:'Chamberí, Madrid', rating:4.8, reviews:56, items:9, pct:97, years:5}},
+    'estanteria-pino-valencia':{ title:'Estantería madera pino 5 niveles', price:75, shippingCost:20, shippingFreeThreshold:100, admiteOfertas:false, admiteEnvio:true, condition:'Muy bueno', conditionDesc:'Uso moderado con alguna marca mínima e imperceptible.', category:'Estanterías', location:'Valencia, El Carmen', views:38, favs:5, age:'10 días', dims:'80 cm ancho · 30 cm fondo · 180 cm alto', photos:['https://images.unsplash.com/photo-1524758631624-e2822b8eb346?auto=format&fit=crop&w=900&q=85'], description:'Estantería de madera de pino con 5 estantes regulables. Acabado barnizado claro. Estructura sólida en muy buen estado.\n\nPerfecta para libros, plantas o decoración. Se puede desmontar fácilmente.', specs:[['Medidas','80 × 30 × 180 cm'],['Material','Madera pino'],['Color','Natural barnizado'],['Estado','Muy bueno'],['Estantes','5 regulables'],['Peso','~14 kg']], store:{emoji:'🪞', name:'El Baúl', location:'El Carmen, Valencia', rating:4.6, reviews:31, items:18, pct:94, years:3}},
+    'mesa-comedor-roble-barcelona':{ title:'Mesa comedor extensible 140–180cm roble', price:320, shippingCost:65, shippingFreeThreshold:0, admiteOfertas:true, admiteEnvio:true, condition:'Nuevo', conditionDesc:'Artículo sin ningún uso, en perfectas condiciones.', category:'Mesas', location:'Barcelona, Gràcia', views:156, favs:22, age:'2 días', dims:'140–180 cm ancho · 90 cm fondo · 76 cm alto', photos:['https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1595526051466-1d34a44b0a7a?auto=format&fit=crop&w=900&q=85'], description:'Mesa de comedor extensible en roble natural. Mide 140cm compacta y se extiende hasta 180cm para 6–8 comensales.\n\nSin estrenar. Se compró para el piso nuevo pero no cabe en el espacio.', specs:[['Medidas','140–180 × 90 × 76 cm'],['Material','Roble natural'],['Color','Natural claro'],['Estado','Nuevo'],['Capacidad','6–8 personas'],['Peso','~40 kg']], store:{emoji:'🪑', name:'Muebles Roca', location:'Gràcia, Barcelona', rating:4.7, reviews:43, items:22, pct:96, years:2}},
+    'silla-cuero-madrid':{ title:'Silla vintage cuero negro patas doradas', price:45, shippingCost:10, shippingFreeThreshold:50, admiteOfertas:true, admiteEnvio:true, condition:'Bueno', conditionDesc:'Artículo con uso pero en buen estado general.', category:'Sillas', location:'Madrid, Lavapiés', views:29, favs:4, age:'2 semanas', dims:'46 cm ancho · 52 cm fondo · 82 cm alto', photos:['https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=900&q=85'], description:'Silla vintage con asiento y respaldo en cuero negro y patas de metal dorado. Estilo retro muy elegante.\n\nEn buen estado con uso normal. Desgaste mínimo en el borde del asiento, no apreciable a simple vista.', specs:[['Medidas','46 × 52 × 82 cm'],['Material','Cuero / metal'],['Color','Negro / dorado'],['Estado','Bueno'],['Estilo','Vintage / retro'],['Peso','~6 kg']], store:{emoji:'🏡', name:'Vintage Home Madrid', location:'Lavapiés, Madrid', rating:4.9, reviews:87, items:14, pct:98, years:4}},
+    'sofa-azul-petroleo-valencia':{ title:'Sofá 2 plazas azul petróleo', price:220, shippingCost:40, shippingFreeThreshold:250, admiteOfertas:true, admiteEnvio:true, condition:'Muy bueno', conditionDesc:'Uso moderado con alguna marca mínima e imperceptible.', category:'Sofás', location:'Valencia, Benimaclet', views:88, favs:16, age:'5 días', dims:'160 cm ancho · 85 cm fondo · 78 cm alto', photos:['https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85'], description:'Sofá de 2 plazas en tela terciopelo azul petróleo. Estructura de madera y patas metálicas en color champán.\n\nEn muy buen estado, apenas usado. Se vende por mudanza.', specs:[['Medidas','160 × 85 × 78 cm'],['Material','Terciopelo / metal'],['Color','Azul petróleo'],['Plazas','2 plazas'],['Estado','Muy bueno'],['Peso','~32 kg']], store:{emoji:'🪞', name:'El Baúl', location:'Benimaclet, Valencia', rating:4.6, reviews:31, items:18, pct:94, years:3}},
+    'espejo-ovalado-sevilla':{ title:'Espejo ovalado marco dorado baño', price:35, shippingCost:15, shippingFreeThreshold:50, admiteOfertas:false, admiteEnvio:true, condition:'Como nuevo', conditionDesc:'Uso muy ligero, prácticamente sin señales de uso.', category:'Espejos', location:'Sevilla, Centro', views:42, favs:6, age:'1 semana', dims:'50 cm ancho · 70 cm alto', photos:['https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=85'], description:'Espejo ovalado con marco dorado fino. Ideal para baño o recibidor. Luna sin ningún defecto, marco en perfecto estado.', specs:[['Medidas','50 × 70 cm'],['Material','Marco metal dorado'],['Color','Dorado'],['Estado','Como nuevo'],['Instalación','Colgante']], store:{emoji:'💡', name:'Luz & Deco', location:'Centro, Sevilla', rating:4.5, reviews:29, items:31, pct:93, years:2}},
+    'mesa-escritorio-barcelona':{ title:'Mesa escritorio industrial 140cm', price:180, shippingCost:30, shippingFreeThreshold:200, admiteOfertas:true, admiteEnvio:true, condition:'Nuevo', conditionDesc:'Artículo sin ningún uso, en perfectas condiciones.', category:'Mesas', location:'Barcelona, Poblenou', views:67, favs:10, age:'3 días', dims:'140 cm ancho · 70 cm fondo · 75 cm alto', photos:['https://images.unsplash.com/photo-1595526051466-1d34a44b0a7a?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=900&q=85'], description:'Mesa de escritorio de estilo industrial. Tablero de madera con acabado mate y estructura de acero negro. 140cm de ancho.\n\nSin usar. Perfecta para home office o estudio.', specs:[['Medidas','140 × 70 × 75 cm'],['Material','Madera / acero'],['Color','Natural / negro'],['Estado','Nuevo'],['Estilo','Industrial'],['Peso','~22 kg']], store:{emoji:'🪑', name:'Muebles Roca', location:'Poblenou, Barcelona', rating:4.7, reviews:43, items:22, pct:96, years:2}},
+    'comoda-vintage-madrid':{ title:'Cómoda vintage 4 cajones madera', price:160, shippingCost:35, shippingFreeThreshold:0, admiteOfertas:true, admiteEnvio:true, condition:'Bueno', conditionDesc:'Artículo con uso pero en buen estado general.', category:'Cómodas', location:'Madrid, Malasaña', views:84, favs:13, age:'4 días', dims:'90 cm ancho · 45 cm fondo · 100 cm alto', photos:['https://images.unsplash.com/photo-1538688525198-d56c8a066311?auto=format&fit=crop&w=900&q=85'], description:'Cómoda vintage de madera maciza con 4 cajones. Acabado pintado blanco roto con ligero efecto envejecido. Los cajones abren perfectamente.\n\nAlguna marca menor de uso en la parte superior.', specs:[['Medidas','90 × 45 × 100 cm'],['Material','Madera maciza'],['Color','Blanco envejecido'],['Estado','Bueno'],['Cajones','4'],['Estilo','Vintage / provenzal']], store:{emoji:'🪵', name:'Ferro Antiguo', location:'Malasaña, Madrid', rating:4.8, reviews:56, items:9, pct:97, years:5}},
+    'macetero-ceramica-valencia':{ title:'Macetero cerámica artesanal grande', price:28, shippingCost:8, shippingFreeThreshold:30, admiteOfertas:false, admiteEnvio:true, condition:'Como nuevo', conditionDesc:'Uso muy ligero, prácticamente sin señales de uso.', category:'Decoración', location:'Valencia, Ruzafa', views:31, favs:5, age:'2 semanas', dims:'30 cm diámetro · 35 cm alto', photos:['https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=85'], description:'Macetero de cerámica artesanal en tono terracota. Fabricado a mano con acabado esmaltado interior.\n\nEn excelente estado, apenas usado. Ideal para plantas de interior grandes.', specs:[['Medidas','30 cm diámetro · 35 cm alto'],['Material','Cerámica artesanal'],['Color','Terracota'],['Estado','Como nuevo'],['Uso','Interior / exterior']], store:{emoji:'🪞', name:'El Baúl', location:'Ruzafa, Valencia', rating:4.6, reviews:31, items:18, pct:94, years:3}},
+    'lampara-sobremesa-sevilla':{ title:'Lámpara sobremesa cerámica azul', price:55, shippingCost:12, shippingFreeThreshold:60, admiteOfertas:false, admiteEnvio:true, condition:'Como nuevo', conditionDesc:'Uso muy ligero, prácticamente sin señales de uso.', category:'Lámparas', location:'Sevilla, Nervión', views:48, favs:9, age:'1 semana', dims:'25 cm diámetro · 45 cm alto', photos:['https://images.unsplash.com/photo-1513506003901-1e6a35294bf6?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85'], description:'Lámpara de sobremesa con base de cerámica artesanal en tono azul turquesa y pantalla de lino beige. Casquillo E14.\n\nEn excelente estado. Se cambia de decoración. Incluye bombilla.', specs:[['Medidas','25 cm diámetro · 45 cm alto'],['Material','Cerámica / lino'],['Color','Azul turquesa'],['Estado','Como nuevo'],['Casquillo','E14'],['Cable','1,8 metros']], store:{emoji:'💡', name:'Luz & Deco', location:'Nervión, Sevilla', rating:4.5, reviews:29, items:31, pct:93, years:2}},
+  };
 
-  if (ADMITE_OFERTAS) {
-    document.getElementById('offersTag').classList.add('show');
-    document.getElementById('offerBtn').classList.add('show');
-  }
+  /* ─── SISTEMA DE OFERTAS ─── */
+  let ADMITE_OFERTAS = true;
+  let ADMITE_ENVIO = true;
+  let PRECIO_VENTA = 380;
+  let SHIPPING_COST = 45;
+  let SHIPPING_FREE_THRESHOLD = 100;
 
   let offerAmount = 0;
+  let MAIN_FAV_ID = 'sofa-chester-madrid';
+  let MAIN_FAV_DATA = {};
+
+  /* ─── INIT PRODUCTO DINÁMICO ─── */
+  function initProduct() {
+    const id = new URLSearchParams(location.search).get('id') || 'sofa-chester-madrid';
+    const p = PRODUCTS[id] || PRODUCTS['sofa-chester-madrid'];
+    const realId = PRODUCTS[id] ? id : 'sofa-chester-madrid';
+
+    // Globals
+    ADMITE_OFERTAS = p.admiteOfertas;
+    ADMITE_ENVIO   = p.admiteEnvio;
+    PRECIO_VENTA   = p.price;
+    SHIPPING_COST  = p.shippingCost;
+    SHIPPING_FREE_THRESHOLD = p.shippingFreeThreshold;
+    MAIN_FAV_ID    = realId;
+    MAIN_FAV_DATA  = { title: p.title, price: String(p.price), img: p.photos[0], city: p.location.split(',')[0].trim(), href: 'producto.html?id=' + realId };
+
+    // Título + breadcrumb
+    document.title = p.title + ' — Mueblista';
+    document.getElementById('bcCategory').textContent = p.category;
+    document.getElementById('bcTitle').textContent = p.title;
+
+    // Galería
+    photos = p.photos.map(src => ({ src, thumb: src.replace('w=900','w=200').replace('q=85','q=70') }));
+    document.getElementById('mainPhoto').src = photos[0].src;
+    document.querySelector('.gallery-thumbs').innerHTML = photos.map((ph, i) =>
+      `<div class="thumb${i===0?' active':''}" onclick="goTo(${i})"><img src="${ph.thumb}" alt="Vista ${i+1}" /></div>`).join('');
+    document.getElementById('galDots').innerHTML = photos.map((_, i) =>
+      `<div class="gallery-dot${i===0?' active':''}"></div>`).join('');
+    document.getElementById('galCounter').textContent = '1 / ' + photos.length;
+    document.getElementById('galPrev').disabled = true;
+    document.getElementById('galNext').disabled = photos.length <= 1;
+    currentIdx = 0;
+
+    // Badge, precio, condición
+    document.getElementById('galBadge').textContent = p.condition;
+    document.getElementById('productPrice').textContent = p.price + ' €';
+    document.getElementById('productCondition').textContent = '⭐ ' + p.condition;
+    document.getElementById('conditionTooltip').innerHTML = `<strong>${p.condition}</strong>${p.conditionDesc}`;
+
+    // Ofertas
+    document.getElementById('offersTag').classList.toggle('show', p.admiteOfertas);
+    document.getElementById('offerBtn').classList.toggle('show', p.admiteOfertas);
+    document.getElementById('offerHint').innerHTML = `Precio de venta: <strong>${p.price} €</strong> · La oferta mínima recomendada es el 70% del precio`;
+
+    // Título, dims, meta
+    document.getElementById('productTitle').textContent = p.title;
+    document.getElementById('productDims').innerHTML = `<span class="dims-label">Medidas</span> <span style="color:var(--brown);font-weight:600">${p.dims}</span>`;
+    document.getElementById('productMeta').innerHTML = `
+      <div class="meta-item">📍 <strong>${p.location}</strong></div>
+      <div class="meta-item">👁 <strong>${p.views}</strong> visitas</div>
+      <div class="meta-item">♡ <strong>${p.favs}</strong> favoritos</div>
+      <div class="meta-item">🕐 Hace <strong>${p.age}</strong></div>`;
+
+    // Botón comprar
+    document.getElementById('buyBtn').textContent = '💳 Comprar ahora — ' + p.price + ' €';
+
+    // Tabs
+    document.getElementById('desc').innerHTML = '<div class="description">' +
+      p.description.split('\n\n').map(t => `<p>${t}</p>`).join('') + '</div>';
+    document.getElementById('specs').innerHTML = '<div class="specs-grid">' +
+      p.specs.map(([l,v]) => `<div class="spec-item"><div class="spec-label">${l}</div><div class="spec-value">${v}</div></div>`).join('') + '</div>';
+
+    // Tienda
+    const s = p.store;
+    const stars = '★'.repeat(Math.round(s.rating)) + '☆'.repeat(5 - Math.round(s.rating));
+    document.getElementById('storeAvatar').textContent = s.emoji;
+    document.getElementById('storeName').textContent = s.name;
+    document.getElementById('storeLocation').textContent = '📍 ' + s.location;
+    document.getElementById('storeRating').innerHTML = `<span class="stars">${stars}</span><span>${s.rating} · ${s.reviews} valoraciones</span>`;
+    document.getElementById('storeStats').innerHTML = `
+      <div class="store-stat"><strong>${s.items}</strong><span>artículos</span></div>
+      <div class="store-stat"><strong>${s.pct}%</strong><span>positivas</span></div>
+      <div class="store-stat"><strong>${s.years} años</strong><span>en Mueblista</span></div>`;
+
+    initDelivery();
+
+    // Relacionados: 4 productos distintos al actual, orden aleatorio
+    const relIds = Object.keys(PRODUCTS).filter(k => k !== realId).sort(() => 0.5 - Math.random()).slice(0, 4);
+    document.getElementById('relatedGrid').innerHTML = relIds.map(rid => {
+      const rp = PRODUCTS[rid];
+      const thumb = rp.photos[0].replace('w=900', 'w=400').replace('q=85', 'q=80');
+      const city  = rp.location.split(',')[0].trim();
+      return `<a href="producto.html?id=${rid}" class="card"
+          data-fav-id="${rid}" data-fav-title="${rp.title}"
+          data-fav-price="${rp.price}" data-fav-img="${thumb}" data-fav-city="${city}">
+        <div class="card-img">
+          <img src="${thumb}" alt="${rp.title}" loading="lazy" />
+          <button class="card-fav-sm" onclick="event.preventDefault(); toggleFav(this)">♡</button>
+        </div>
+        <div class="card-body">
+          <div class="card-price">${rp.price} €</div>
+          <div class="card-title">${rp.title}</div>
+          <div class="card-loc">📍 ${city}</div>
+        </div>
+      </a>`;
+    }).join('');
+  }
 
   function openOffer() {
     document.getElementById('offerPanel').classList.add('open');
@@ -1495,17 +1546,6 @@
     }
   }
 
-  initDelivery();
-
-  const MAIN_FAV_ID = 'sofa-chester';
-  const MAIN_FAV_DATA = {
-    title: 'Sofá Chester 3 plazas cuero marrón',
-    price: '380',
-    img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80',
-    city: 'Madrid',
-    href: 'producto.html',
-  };
-
   function toggleFav(el) {
     event.stopPropagation();
     const card = el.closest('[data-fav-id]');
@@ -1525,6 +1565,9 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    initProduct();
+    if (typeof mFavBadge === 'function') mFavBadge('navFavBadge');
+
     // Restaurar favoritos
     const mainBtn = document.getElementById('mainFavBtn');
     if (mainBtn && mFavIs(MAIN_FAV_ID)) {
@@ -1557,12 +1600,7 @@
   }
 
   /* ─── GALERÍA ─── */
-  const photos = [
-    { src: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85', thumb: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=200&q=70' },
-    { src: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=900&q=85', thumb: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=200&q=70' },
-    { src: 'https://images.unsplash.com/photo-1540574163026-643ea20abb28?auto=format&fit=crop&w=900&q=85', thumb: 'https://images.unsplash.com/photo-1540574163026-643ea20abb28?auto=format&fit=crop&w=200&q=70' },
-    { src: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=85', thumb: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=200&q=70' },
-  ];
+  let photos = [];
   let currentIdx = 0;
 
   function goTo(idx) {
@@ -1629,11 +1667,28 @@
   }
 
   document.addEventListener('keydown', e => {
-    if (!document.getElementById('lightbox').classList.contains('open')) return;
-    if (e.key === 'Escape') closeLightbox();
-    else if (e.key === 'ArrowLeft') lbGo(currentIdx - 1);
-    else if (e.key === 'ArrowRight') lbGo(currentIdx + 1);
+    if (document.getElementById('lightbox').classList.contains('open')) {
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowLeft')  lbGo(currentIdx - 1);
+      else if (e.key === 'ArrowRight') lbGo(currentIdx + 1);
+    } else if (e.key === 'Escape') {
+      closeOffer();
+    }
   });
+
+  function shareProd() {
+    const btn = document.getElementById('shareBtn');
+    if (navigator.share) {
+      navigator.share({ title: document.title, url: location.href });
+    } else {
+      navigator.clipboard?.writeText(location.href).then(() => {
+        btn.textContent = '✓';
+        btn.style.borderColor = 'var(--green)';
+        btn.style.color = 'var(--green)';
+        setTimeout(() => { btn.textContent = '🔗'; btn.style.borderColor = ''; btn.style.color = ''; }, 2000);
+      });
+    }
+  }
 </script>
 <script src="favoritos.js"></script>
 <script src="cookie-banner.js"></script>
