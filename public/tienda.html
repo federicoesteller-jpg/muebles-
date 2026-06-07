@@ -287,40 +287,6 @@
       letter-spacing: 0.8px; color: var(--gray-l); margin-bottom: 16px;
     }
 
-    /* Mapa placeholder */
-    .map-placeholder {
-      width: 100%; height: 160px;
-      background: linear-gradient(140deg, #e8e0d0, #d8d0c0);
-      border-radius: 12px;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 6px; cursor: pointer;
-      transition: opacity 0.2s;
-      margin-bottom: 12px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .map-placeholder::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0z' fill='none'/%3E%3Cpath d='M0 20h40M20 0v40' stroke='%23c8b89888' stroke-width='0.5'/%3E%3C/svg%3E");
-      background-size: 40px 40px;
-    }
-
-    .map-pin { font-size: 32px; position: relative; }
-    .map-label { font-size: 12px; font-weight: 600; color: var(--gray); position: relative; }
-
-    .btn-directions {
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-      width: 100%; padding: 10px; border-radius: 10px;
-      background: var(--sand-l); border: 1px solid var(--sand);
-      font-size: 13px; font-weight: 700; font-family: inherit;
-      color: var(--brown); cursor: pointer; transition: all 0.2s;
-      text-decoration: none;
-    }
-    .btn-directions:hover { background: var(--sand); }
-
     /* Valoraciones */
     .rating-big {
       display: flex; align-items: center; gap: 16px;
@@ -882,16 +848,6 @@
   <!-- Sidebar -->
   <div class="sidebar">
 
-    <!-- Ubicación -->
-    <div class="sidebar-card reveal">
-      <div class="sidebar-title">Ubicación</div>
-      <div class="map-placeholder">
-        <div class="map-pin">📍</div>
-        <div class="map-label">Malasaña, Madrid</div>
-      </div>
-      <a href="#" class="btn-directions">🗺️ Cómo llegar</a>
-    </div>
-
     <!-- Horario rápido -->
     <div class="sidebar-card reveal">
       <div class="sidebar-title">Horario</div>
@@ -1164,7 +1120,6 @@
       name: 'Ferro Antiguo', emoji: '🔩',
       avatarBg: 'linear-gradient(140deg,#3d2b1a,#6b4226)',
       city: 'Madrid', location: 'Lavapiés, Madrid',
-      address: 'Calle Embajadores 18, Lavapiés, Madrid',
       rating: 4.9, reviews: 47, sales: 38, since: '2023', response: '< 1 h',
       about: [
         'Ferro Antiguo es una tienda especializada en mobiliario industrial y vintage de los años 50 al 70. Llevamos más de 5 años rescatando piezas únicas de talleres y fábricas de toda España.',
@@ -1180,7 +1135,6 @@
       name: 'Vintage Home', emoji: '🏠',
       avatarBg: 'linear-gradient(140deg,#5c3d2e,#9e6647)',
       city: 'Madrid', location: 'Malasaña, Madrid',
-      address: 'Calle Manuela Malasaña 22, Madrid',
       rating: 4.6, reviews: 31, sales: 24, since: '2024', response: '< 3 h',
       about: [
         'Vintage Home Madrid es una tienda especializada en muebles y decoración de estilo vintage y mid-century. Llevamos más de 10 años buscando piezas únicas por toda Europa para traerlas a Madrid.',
@@ -1195,7 +1149,6 @@
       name: 'Muebles Roca', emoji: '🪑',
       avatarBg: 'linear-gradient(140deg,#1e3d2f,#2d7a4f)',
       city: 'Barcelona', location: 'Eixample, Barcelona',
-      address: 'Carrer del Consell de Cent 145, Barcelona',
       rating: 4.8, reviews: 52, sales: 52, since: '2022', response: '< 2 h',
       about: [
         'Muebles Roca nació en 2022 con una misión clara: ofrecer mobiliario de diseño escandinavo a precios justos. Cada pieza está fabricada con madera de roble y pino certificados FSC.',
@@ -1211,7 +1164,6 @@
       name: 'El Baúl', emoji: '🧺',
       avatarBg: 'linear-gradient(140deg,#7a3b1e,#c96a38)',
       city: 'Valencia', location: 'Ruzafa, Valencia',
-      address: 'Carrer de la Llibertat 8, Ruzafa, Valencia',
       rating: 4.5, reviews: 28, sales: 31, since: '2023', response: '< 4 h',
       about: [
         'El Baúl es un proyecto valenciano de amor por los muebles con historia. Recorremos mercadillos y rastros del Levante en busca de piezas únicas que merezcan una segunda vida.',
@@ -1228,7 +1180,6 @@
       name: 'Luz & Deco', emoji: '💡',
       avatarBg: 'linear-gradient(140deg,#7a5a1a,#c4922a)',
       city: 'Sevilla', location: 'Triana, Sevilla',
-      address: 'Calle Castilla 48, Triana, Sevilla',
       rating: 4.7, reviews: 19, sales: 18, since: '2024', response: '< 5 h',
       about: [
         'Luz & Deco nació en Triana, Sevilla, de la pasión de dos artesanos por la luz y la decoración de interiores. Fabricamos lámparas a mano usando cerámica, mimbre y metales nobles.',
@@ -1319,8 +1270,6 @@
     if (store.about[1] && paras[1]) paras[1].textContent = store.about[1];
 
     /* mapa */
-    const mapLabel = document.querySelector('.map-label');
-    if (mapLabel) mapLabel.textContent = store.location;
   }
 
   /* DOMContentLoaded */
