@@ -299,7 +299,10 @@
     .card-store {
       font-size: 11px; font-weight: 600; color: var(--gray);
       margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      transition: color 0.15s;
     }
+    .card-store.store-link { cursor: pointer; }
+    .card-store.store-link:hover { color: var(--terra); text-decoration: underline; }
 
     .card-title {
       font-size: 12px; color: #444;
@@ -443,6 +446,7 @@
     <input id="navSearchInput" type="text" placeholder="Busca sofás, mesas, sillas..." />
   </div>
   <div class="nav-right" id="navMenu">
+    <a href="tiendas.html" class="nav-btn nav-btn-ghost">Tiendas</a>
     <a href="panel-login.html" class="nav-btn nav-btn-ghost">Para tiendas</a>
     <a href="notificaciones.html" class="bell-btn" title="Notificaciones">🔔<span class="bell-badge">5</span></a>
     <a href="favoritos.html" class="nav-btn nav-btn-ghost nav-fav-link">♡ Favoritos<span class="nav-fav-badge">0</span></a>
@@ -921,6 +925,29 @@
         else if (opt === 'Precio: mayor a menor') state.sort = 'precio-desc';
         else if (opt === 'Más recientes') state.sort = 'recientes';
         applyFilters();
+      });
+    });
+  });
+
+  /* mapa tienda → página (añadir aquí cuando haya más páginas de tienda) */
+  const STORE_PAGES = {
+    'ferro antiguo': 'tienda.html',
+    'vintage home':  'tienda.html',
+    'muebles roca':  'tienda.html',
+    'el baúl':       'tienda.html',
+    'luz & deco':    'tienda.html',
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    /* hacer clickables los nombres de tienda */
+    document.querySelectorAll('.grid .card-store').forEach(storeEl => {
+      const storeName = storeEl.textContent.split('·')[0].trim().toLowerCase();
+      const page = STORE_PAGES[storeName] || 'tiendas.html';
+      storeEl.classList.add('store-link');
+      storeEl.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = page;
       });
     });
   });

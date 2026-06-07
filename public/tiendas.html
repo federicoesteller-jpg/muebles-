@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tiendas verificadas — Mueblista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brown:   #1a0d07;
+      --terra:   #c96a38;
+      --terra-l: #e07a44;
+      --cream:   #fafafa;
+      --sand:    #e8e0d8;
+      --sand-l:  #f5f0e8;
+      --gray:    #717171;
+      --gray-l:  #a0a0a0;
+      --white:   #ffffff;
+      --green:   #2d7a4f;
+      --green-l: #e8f5ee;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: var(--white); border-bottom: 1px solid #ebebeb;
+      height: 58px; padding: 0 24px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+    .nav-btn {
+      font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px;
+      text-decoration: none; transition: all 0.15s; white-space: nowrap;
+    }
+    .nav-btn-ghost { color: var(--gray); background: transparent; }
+    .nav-btn-ghost:hover { color: var(--brown); background: #f5f5f5; }
+    .nav-btn-ghost.active { color: var(--brown); font-weight: 700; }
+    .nav-btn-sell { color: var(--white); background: var(--terra); }
+    .nav-btn-sell:hover { background: #b85e30; }
+    .bell-btn {
+      position: relative; width: 38px; height: 38px; border-radius: 9px;
+      background: #f5f5f5; display: flex; align-items: center; justify-content: center;
+      font-size: 17px; text-decoration: none; color: var(--brown); transition: background .15s;
+    }
+    .bell-btn:hover { background: var(--sand); }
+    .bell-badge {
+      position: absolute; top: 4px; right: 4px; width: 16px; height: 16px; border-radius: 50%;
+      background: var(--terra); color: #fff; font-size: 9px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; border: 2px solid var(--white);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: var(--brown); padding: 48px 24px;
+      text-align: center;
+    }
+    .hero-inner { max-width: 600px; margin: 0 auto; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      color: #e8a87a; background: rgba(201,106,56,0.15);
+      border: 1px solid rgba(201,106,56,0.25); padding: 5px 12px; border-radius: 100px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 32px; font-weight: 800; color: #fff;
+      letter-spacing: -1px; margin-bottom: 12px; line-height: 1.15;
+    }
+    .hero h1 em { font-style: normal; color: var(--terra-l); }
+    .hero p { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 28px; }
+    .hero-stats {
+      display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-num { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .hero-stat-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+    /* ─── TOOLBAR ─── */
+    .toolbar {
+      background: var(--white); border-bottom: 1px solid #ebebeb;
+      padding: 12px 24px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+      position: sticky; top: 58px; z-index: 100;
+    }
+    .stores-search {
+      display: flex; align-items: center; gap: 8px;
+      background: #f5f5f5; border: 1.5px solid #ebebeb;
+      border-radius: 8px; padding: 0 14px; flex: 1; max-width: 300px;
+      transition: border-color 0.2s;
+    }
+    .stores-search:focus-within { border-color: var(--brown); background: var(--white); }
+    .stores-search span { font-size: 14px; color: var(--gray-l); }
+    .stores-search input {
+      border: none; outline: none; background: transparent;
+      padding: 9px 0; font-size: 13px; font-family: inherit; color: var(--brown); flex: 1;
+    }
+    .stores-search input::placeholder { color: #b0b0b0; }
+
+    .city-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .city-tab {
+      padding: 7px 14px; border-radius: 100px;
+      border: 1px solid #d0d0d0; background: var(--white);
+      font-size: 13px; font-weight: 500; color: var(--brown);
+      cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap;
+    }
+    .city-tab:hover { border-color: var(--brown); }
+    .city-tab.active { border-color: var(--brown); background: var(--brown); color: #fff; font-weight: 600; }
+
+    .stores-count {
+      margin-left: auto; font-size: 13px; font-weight: 600; color: var(--gray); white-space: nowrap;
+    }
+
+    /* ─── GRID DE TIENDAS ─── */
+    .stores-wrap { max-width: 1100px; margin: 0 auto; padding: 28px 24px; }
+    .stores-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+    }
+    @media (max-width: 860px) { .stores-grid { grid-template-columns: 1fr; } }
+
+    /* ─── TARJETA TIENDA ─── */
+    .store-card {
+      background: var(--white); border: 1px solid #ebebeb; border-radius: 16px;
+      overflow: hidden; display: flex; flex-direction: column;
+      transition: box-shadow 0.2s, transform 0.2s; position: relative;
+    }
+    .store-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.09); transform: translateY(-2px); }
+
+    .store-top {
+      display: flex; gap: 16px; padding: 20px 20px 0;
+    }
+    .store-avatar {
+      width: 64px; height: 64px; border-radius: 14px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+    }
+    .store-info { flex: 1; min-width: 0; }
+    .store-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+    .store-name { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; }
+    .store-verified {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--green); background: var(--green-l);
+      padding: 2px 8px; border-radius: 100px;
+    }
+    .store-badge-top {
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      color: #b85e30; background: rgba(201,106,56,0.1);
+      padding: 2px 8px; border-radius: 100px;
+    }
+    .store-meta-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .store-city-tag {
+      font-size: 12px; color: var(--gray); font-weight: 500;
+      display: flex; align-items: center; gap: 3px;
+    }
+    .store-rating-row { display: flex; align-items: center; gap: 5px; }
+    .stars { font-size: 12px; color: #f59e0b; letter-spacing: 1px; }
+    .rating-num { font-size: 13px; font-weight: 700; }
+    .rating-cnt { font-size: 12px; color: var(--gray-l); }
+
+    .store-desc {
+      font-size: 13px; color: #555; line-height: 1.65;
+      padding: 12px 20px 0; display: -webkit-box;
+      -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    .store-tags {
+      display: flex; gap: 6px; flex-wrap: wrap; padding: 10px 20px 0;
+    }
+    .store-tag {
+      font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 100px;
+      background: #f0f0f0; color: var(--gray);
+    }
+
+    .store-stats {
+      display: flex; gap: 0; padding: 14px 20px 0; flex-wrap: wrap;
+      border-top: 1px solid #f0f0f0; margin-top: 14px;
+    }
+    .store-stat {
+      flex: 1; min-width: 80px; text-align: center; padding: 0 4px 12px;
+    }
+    .store-stat-val { font-size: 16px; font-weight: 800; letter-spacing: -0.3px; }
+    .store-stat-lbl { font-size: 10px; color: var(--gray-l); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.4px; }
+
+    .store-footer {
+      padding: 0 20px 20px; margin-top: auto;
+    }
+    .btn-store {
+      display: block; width: 100%; padding: 12px;
+      background: var(--brown); color: #fff; border: none; border-radius: 10px;
+      font-size: 14px; font-weight: 700; font-family: inherit;
+      text-decoration: none; text-align: center; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-store:hover { background: #2e1a10; }
+
+    .response-row {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      font-size: 11px; color: var(--gray-l); margin-top: 8px;
+    }
+    .response-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+
+    /* tienda sin página propia */
+    .btn-store-soon {
+      display: block; width: 100%; padding: 12px;
+      background: #f5f5f5; color: var(--gray-l); border: none; border-radius: 10px;
+      font-size: 13px; font-weight: 600; font-family: inherit;
+      text-align: center; cursor: default;
+    }
+
+    /* estado vacío */
+    .empty-state {
+      grid-column: 1 / -1; text-align: center;
+      padding: 64px 24px; color: var(--gray);
+    }
+    .empty-state .empty-icon { font-size: 48px; margin-bottom: 14px; }
+    .empty-state h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; color: var(--brown); }
+    .empty-state p { font-size: 14px; }
+
+    /* ─── BANNER CTA ─── */
+    .cta-banner {
+      background: var(--brown); border-radius: 16px; padding: 32px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 32px; gap: 24px; flex-wrap: wrap;
+    }
+    .cta-banner h2 { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-bottom: 6px; }
+    .cta-banner p { font-size: 13px; color: rgba(255,255,255,0.45); max-width: 360px; }
+    .btn-cta-banner {
+      display: inline-block; font-size: 14px; font-weight: 700; color: #fff;
+      background: var(--terra); padding: 12px 24px; border-radius: 10px;
+      text-decoration: none; white-space: nowrap; transition: background 0.15s; flex-shrink: 0;
+    }
+    .btn-cta-banner:hover { background: #b85e30; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #fff; border-top: 1px solid #ebebeb;
+      padding: 24px; margin-top: 40px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-logo { font-size: 16px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .footer-logo em { font-style: normal; color: var(--terra); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: var(--gray); text-decoration: none; transition: color 0.15s; }
+    .footer-links a:hover { color: var(--brown); }
+    .footer-copy { font-size: 12px; color: #ccc; }
+
+    /* ─── REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s, transform 0.5s; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1{transition-delay:.04s} .d2{transition-delay:.08s} .d3{transition-delay:.12s}
+    .d4{transition-delay:.16s} .d5{transition-delay:.20s}
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 24px; }
+      .toolbar { padding: 10px 16px; }
+      .stores-wrap { padding: 20px 16px; }
+      .stores-count { display: none; }
+      footer { flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <div class="nav-right">
+    <a href="tiendas.html" class="nav-btn nav-btn-ghost active">Tiendas</a>
+    <a href="panel-login.html" class="nav-btn nav-btn-ghost">Para tiendas</a>
+    <a href="notificaciones.html" class="bell-btn" title="Notificaciones">🔔<span class="bell-badge">5</span></a>
+    <a href="favoritos.html" class="nav-btn nav-btn-ghost">♡ Favoritos</a>
+    <a href="login.html" class="nav-btn nav-btn-ghost">Iniciar sesión</a>
+    <a href="publicar.html" class="nav-btn nav-btn-sell">+ Vender</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">✓ Tiendas verificadas</div>
+    <h1>Compra a tiendas <em>de confianza</em></h1>
+    <p>Cada tienda ha pasado nuestra verificación de calidad. Valoraciones reales de compradores reales.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">38</div><div class="hero-stat-label">Tiendas activas</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">5</div><div class="hero-stat-label">Ciudades</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">+2.400</div><div class="hero-stat-label">Productos</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">4.8★</div><div class="hero-stat-label">Valoración media</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOOLBAR ─── -->
+<div class="toolbar">
+  <div class="stores-search">
+    <span>🔍</span>
+    <input id="storeSearchInput" type="text" placeholder="Busca una tienda..." autocomplete="off" />
+  </div>
+  <div class="city-tabs">
+    <button class="city-tab active" data-city="">Todas</button>
+    <button class="city-tab" data-city="madrid">Madrid</button>
+    <button class="city-tab" data-city="barcelona">Barcelona</button>
+    <button class="city-tab" data-city="valencia">Valencia</button>
+    <button class="city-tab" data-city="sevilla">Sevilla</button>
+  </div>
+  <div class="stores-count" id="storesCount">5 tiendas</div>
+</div>
+
+<!-- ─── CONTENIDO ─── -->
+<div class="stores-wrap">
+  <div class="stores-grid" id="storesGrid">
+
+    <!-- FERRO ANTIGUO -->
+    <div class="store-card reveal d1" data-city="madrid" data-name="ferro antiguo">
+      <div class="store-top">
+        <div class="store-avatar" style="background: linear-gradient(140deg,#3d2b1a,#6b4226)">🔩</div>
+        <div class="store-info">
+          <div class="store-name-row">
+            <span class="store-name">Ferro Antiguo</span>
+            <span class="store-verified">✓ Verificada</span>
+            <span class="store-badge-top">Top vendedor</span>
+          </div>
+          <div class="store-meta-row">
+            <span class="store-city-tag">📍 Madrid</span>
+            <div class="store-rating-row">
+              <span class="stars">★★★★★</span>
+              <span class="rating-num">4.9</span>
+              <span class="rating-cnt">(47 reseñas)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="store-desc">Especializados en muebles industriales y vintage de los años 50–70. Piezas únicas restauradas a mano en nuestro taller del Rastro, Madrid.</p>
+      <div class="store-tags">
+        <span class="store-tag">Industrial</span>
+        <span class="store-tag">Vintage</span>
+        <span class="store-tag">Restauración</span>
+      </div>
+      <div class="store-stats">
+        <div class="store-stat"><div class="store-stat-val">12</div><div class="store-stat-lbl">Productos</div></div>
+        <div class="store-stat"><div class="store-stat-val">38</div><div class="store-stat-lbl">Ventas</div></div>
+        <div class="store-stat"><div class="store-stat-val">4.9</div><div class="store-stat-lbl">Valoración</div></div>
+        <div class="store-stat"><div class="store-stat-val">2023</div><div class="store-stat-lbl">Desde</div></div>
+      </div>
+      <div class="store-footer">
+        <a href="tienda.html" class="btn-store">Ver tienda →</a>
+        <div class="response-row"><span class="response-dot"></span> Responde en menos de 1 hora</div>
+      </div>
+    </div>
+
+    <!-- VINTAGE HOME -->
+    <div class="store-card reveal d2" data-city="madrid" data-name="vintage home">
+      <div class="store-top">
+        <div class="store-avatar" style="background: linear-gradient(140deg,#5c3d2e,#9e6647)">🏠</div>
+        <div class="store-info">
+          <div class="store-name-row">
+            <span class="store-name">Vintage Home</span>
+            <span class="store-verified">✓ Verificada</span>
+          </div>
+          <div class="store-meta-row">
+            <span class="store-city-tag">📍 Madrid</span>
+            <div class="store-rating-row">
+              <span class="stars">★★★★☆</span>
+              <span class="rating-num">4.6</span>
+              <span class="rating-cnt">(31 reseñas)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="store-desc">Coleccionamos y vendemos piezas de los años 60 y 80. Sofás, lámparas y decoración con historia en el corazón de Malasaña, Madrid.</p>
+      <div class="store-tags">
+        <span class="store-tag">Retro</span>
+        <span class="store-tag">Años 60–80</span>
+        <span class="store-tag">Diseño</span>
+      </div>
+      <div class="store-stats">
+        <div class="store-stat"><div class="store-stat-val">8</div><div class="store-stat-lbl">Productos</div></div>
+        <div class="store-stat"><div class="store-stat-val">24</div><div class="store-stat-lbl">Ventas</div></div>
+        <div class="store-stat"><div class="store-stat-val">4.6</div><div class="store-stat-lbl">Valoración</div></div>
+        <div class="store-stat"><div class="store-stat-val">2024</div><div class="store-stat-lbl">Desde</div></div>
+      </div>
+      <div class="store-footer">
+        <a href="tienda.html" class="btn-store">Ver tienda →</a>
+        <div class="response-row"><span class="response-dot"></span> Responde en menos de 3 horas</div>
+      </div>
+    </div>
+
+    <!-- MUEBLES ROCA -->
+    <div class="store-card reveal d3" data-city="barcelona" data-name="muebles roca">
+      <div class="store-top">
+        <div class="store-avatar" style="background: linear-gradient(140deg,#1e3d2f,#2d7a4f)">🪑</div>
+        <div class="store-info">
+          <div class="store-name-row">
+            <span class="store-name">Muebles Roca</span>
+            <span class="store-verified">✓ Verificada</span>
+            <span class="store-badge-top">Top vendedor</span>
+          </div>
+          <div class="store-meta-row">
+            <span class="store-city-tag">📍 Barcelona</span>
+            <div class="store-rating-row">
+              <span class="stars">★★★★★</span>
+              <span class="rating-num">4.8</span>
+              <span class="rating-cnt">(52 reseñas)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="store-desc">Mobiliario nuevo y de diseño escandinavo. Fabricamos a medida y también ofrecemos piezas de stock. Entrega en toda Cataluña.</p>
+      <div class="store-tags">
+        <span class="store-tag">Nuevo</span>
+        <span class="store-tag">Escandinavo</span>
+        <span class="store-tag">A medida</span>
+      </div>
+      <div class="store-stats">
+        <div class="store-stat"><div class="store-stat-val">15</div><div class="store-stat-lbl">Productos</div></div>
+        <div class="store-stat"><div class="store-stat-val">52</div><div class="store-stat-lbl">Ventas</div></div>
+        <div class="store-stat"><div class="store-stat-val">4.8</div><div class="store-stat-lbl">Valoración</div></div>
+        <div class="store-stat"><div class="store-stat-val">2022</div><div class="store-stat-lbl">Desde</div></div>
+      </div>
+      <div class="store-footer">
+        <a href="tienda.html" class="btn-store">Ver tienda →</a>
+        <div class="response-row"><span class="response-dot"></span> Responde en menos de 2 horas</div>
+      </div>
+    </div>
+
+    <!-- EL BAÚL -->
+    <div class="store-card reveal d4" data-city="valencia" data-name="el baúl">
+      <div class="store-top">
+        <div class="store-avatar" style="background: linear-gradient(140deg,#7a3b1e,#c96a38)">🧺</div>
+        <div class="store-info">
+          <div class="store-name-row">
+            <span class="store-name">El Baúl</span>
+            <span class="store-verified">✓ Verificada</span>
+          </div>
+          <div class="store-meta-row">
+            <span class="store-city-tag">📍 Valencia</span>
+            <div class="store-rating-row">
+              <span class="stars">★★★★☆</span>
+              <span class="rating-num">4.5</span>
+              <span class="rating-cnt">(28 reseñas)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="store-desc">Decoración y muebles mediterráneos con alma. Encontramos piezas únicas en mercadillos y rastros del Levante y las restauramos.</p>
+      <div class="store-tags">
+        <span class="store-tag">Mediterráneo</span>
+        <span class="store-tag">Restaurado</span>
+        <span class="store-tag">Artesanal</span>
+      </div>
+      <div class="store-stats">
+        <div class="store-stat"><div class="store-stat-val">10</div><div class="store-stat-lbl">Productos</div></div>
+        <div class="store-stat"><div class="store-stat-val">31</div><div class="store-stat-lbl">Ventas</div></div>
+        <div class="store-stat"><div class="store-stat-val">4.5</div><div class="store-stat-lbl">Valoración</div></div>
+        <div class="store-stat"><div class="store-stat-val">2023</div><div class="store-stat-lbl">Desde</div></div>
+      </div>
+      <div class="store-footer">
+        <a href="tienda.html" class="btn-store">Ver tienda →</a>
+        <div class="response-row"><span class="response-dot"></span> Responde en menos de 4 horas</div>
+      </div>
+    </div>
+
+    <!-- LUZ & DECO -->
+    <div class="store-card reveal d5" data-city="sevilla" data-name="luz & deco">
+      <div class="store-top">
+        <div class="store-avatar" style="background: linear-gradient(140deg,#7a5a1a,#c4922a)">💡</div>
+        <div class="store-info">
+          <div class="store-name-row">
+            <span class="store-name">Luz & Deco</span>
+            <span class="store-verified">✓ Verificada</span>
+          </div>
+          <div class="store-meta-row">
+            <span class="store-city-tag">📍 Sevilla</span>
+            <div class="store-rating-row">
+              <span class="stars">★★★★★</span>
+              <span class="rating-num">4.7</span>
+              <span class="rating-cnt">(19 reseñas)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="store-desc">Lámparas artesanales y decoración única. Fabricamos en nuestro estudio de Triana y enviamos a toda España con embalaje seguro.</p>
+      <div class="store-tags">
+        <span class="store-tag">Lámparas</span>
+        <span class="store-tag">Artesanal</span>
+        <span class="store-tag">Hecho a mano</span>
+      </div>
+      <div class="store-stats">
+        <div class="store-stat"><div class="store-stat-val">6</div><div class="store-stat-lbl">Productos</div></div>
+        <div class="store-stat"><div class="store-stat-val">18</div><div class="store-stat-lbl">Ventas</div></div>
+        <div class="store-stat"><div class="store-stat-val">4.7</div><div class="store-stat-lbl">Valoración</div></div>
+        <div class="store-stat"><div class="store-stat-val">2024</div><div class="store-stat-lbl">Desde</div></div>
+      </div>
+      <div class="store-footer">
+        <a href="tienda.html" class="btn-store">Ver tienda →</a>
+        <div class="response-row"><span class="response-dot"></span> Responde en menos de 5 horas</div>
+      </div>
+    </div>
+
+    <!-- ESTADO VACÍO (oculto por defecto) -->
+    <div class="empty-state" id="emptyState" style="display:none">
+      <div class="empty-icon">🔍</div>
+      <h3>Sin resultados</h3>
+      <p>No hay tiendas que coincidan con tu búsqueda.</p>
+    </div>
+
+  </div>
+
+  <!-- BANNER CTA -->
+  <div class="cta-banner reveal">
+    <div>
+      <h2>¿Tienes una tienda de muebles?</h2>
+      <p>Únete a las tiendas verificadas de Mueblista. Consigue tu propio espacio y llega a miles de compradores.</p>
+    </div>
+    <a href="panel-login.html" class="btn-cta-banner">Solicitar acceso →</a>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+  <div class="footer-links">
+    <a href="tiendas.html">Tiendas</a>
+    <a href="como-funciona.html">Cómo funciona</a>
+    <a href="sostenibilidad.html">Sostenibilidad</a>
+    <a href="quienes-somos.html">Quiénes somos</a>
+    <a href="ayuda.html">Ayuda</a>
+    <a href="terminos.html">Aviso legal</a>
+    <a href="privacidad.html">Privacidad</a>
+    <a href="cookies.html">Cookies</a>
+  </div>
+  <div class="footer-copy">© 2026 Mueblista</div>
+</footer>
+
+<script>
+  /* ─── reveal ─── */
+  const obs = new IntersectionObserver(e => {
+    e.forEach(el => { if (el.isIntersecting) { el.target.classList.add('visible'); obs.unobserve(el.target); }});
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* ─── filtros ─── */
+  const allCards = Array.from(document.querySelectorAll('.store-card[data-city]'));
+  let activeCity = '';
+  let activeQuery = '';
+
+  function applyStoreFilters() {
+    const q = activeQuery.trim().toLowerCase();
+    let visible = 0;
+    allCards.forEach(card => {
+      const matchCity  = !activeCity || card.dataset.city === activeCity;
+      const matchQuery = !q || card.dataset.name.includes(q);
+      const show = matchCity && matchQuery;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('emptyState').style.display = visible ? 'none' : 'block';
+    document.getElementById('storesCount').textContent = `${visible} tienda${visible !== 1 ? 's' : ''}`;
+  }
+
+  document.querySelectorAll('.city-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.city-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      activeCity = tab.dataset.city;
+      applyStoreFilters();
+    });
+  });
+
+  document.getElementById('storeSearchInput').addEventListener('input', e => {
+    activeQuery = e.target.value;
+    applyStoreFilters();
+  });
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>
