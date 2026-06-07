@@ -587,7 +587,7 @@
       <span style="font-size:20px;flex-shrink:0">🚫</span>
       <div>
         <strong>Mensaje bloqueado</strong>
-        <p>No puedes compartir datos de contacto (teléfonos, emails, redes sociales) dentro del chat. Todas las transacciones deben realizarse a través de Mueblista para que estés protegido.</p>
+        <p>No puedes compartir datos de contacto ni direcciones físicas (teléfonos, emails, redes sociales, calles, avenidas…) en el chat. Todas las transacciones deben realizarse a través de Mueblista para tu protección.</p>
       </div>
     </div>
 
@@ -708,14 +708,29 @@
 
   /* ─── FILTRO ANTI-CONTACTO ─── */
   const blockedPatterns = [
+    // Teléfonos
     /(\+34|0034)?[\s.-]?[6789]\d{2}[\s.-]?\d{3}[\s.-]?\d{3}/,
     /\b\d{3}[\s.-]\d{3}[\s.-]\d{3}\b/,
+    // Emails y variantes
     /[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/,
     /\b(gmail|hotmail|outlook|yahoo|icloud|proton)\s*(punto|dot|\.)\s*(com|es|net|org)\b/i,
     /\barroba\b|\[at\]|\(at\)/i,
+    // Apps de mensajería y redes sociales
     /whatsapp|wasap|washap|whasap|wassap|guasap|wasa|wsp|telegram|signal/i,
     /@[a-z0-9_]{3,}/i,
     /wa\.me|t\.me|instagram\.com/i,
+    // Direcciones físicas
+    /\bcalle\b/i,
+    /\b(av|avd|avda|avenida)\.?\b/i,
+    /\b(carrer|call)\b/i,
+    /\bdirecci[oó]n\b/i,
+    /\bcarretera\b|\bctra\.?\b/i,
+    /\bpaseo\b/i,
+    /\btravesía\b|\bronda\b/i,
+    /\bc\s*[\/\.]\s*[a-záéíóúñ]/i,
+    /\bc[oó]digo\s*postal\b|\bcp\s+\d{5}\b/i,
+    /\bnº\s*\d|\bn[uú]mero\s+\d/i,
+    /\bescalera\b/i,
   ];
 
   function containsContact(text) {
