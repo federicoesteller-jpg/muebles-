@@ -828,6 +828,70 @@
       font-family: inherit; color: var(--gray); transition: all 0.1s;
     }
     .demo-btn:hover { background: var(--sand); color: var(--brown); }
+
+    /* ─── SELECTOR DE ENTREGA ─── */
+    .delivery-section { margin-bottom: 16px; }
+
+    .delivery-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.6px; color: var(--gray-l); margin-bottom: 8px;
+    }
+
+    .delivery-options { display: flex; flex-direction: column; gap: 8px; }
+
+    .delivery-opt {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 13px 14px; border-radius: 12px;
+      border: 1.5px solid var(--sand); cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      background: var(--white);
+    }
+    .delivery-opt:hover { border-color: #c0b0a0; }
+    .delivery-opt.selected { border-color: var(--terra); background: #fef8f4; }
+
+    .d-radio {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 2px solid var(--sand); flex-shrink: 0; margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .delivery-opt.selected .d-radio { border-color: var(--terra); background: var(--terra); }
+    .delivery-opt.selected .d-radio::after { content: ''; width: 6px; height: 6px; background: #fff; border-radius: 50%; }
+
+    .d-body { flex: 1; min-width: 0; }
+    .d-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .d-detail { font-size: 12px; color: var(--gray); margin-bottom: 1px; }
+    .d-time { font-size: 11px; color: var(--gray-l); }
+
+    .d-price { font-size: 14px; font-weight: 800; flex-shrink: 0; color: var(--green); }
+    .d-price.paid { color: var(--brown); }
+
+    /* Aviso envío gratis */
+    .shipping-notice {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 13px; border-radius: 10px;
+      font-size: 12px; font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .shipping-notice.free { background: var(--green-l); color: var(--green); border: 1px solid #c3e0cf; }
+    .shipping-notice.promo { background: #fff8ec; color: #9a5010; border: 1px solid #f5d098; }
+
+    /* Desglose de precio */
+    .price-breakdown {
+      display: none; background: var(--cream);
+      border: 1px solid var(--sand); border-radius: 10px;
+      padding: 12px 14px; margin-bottom: 14px;
+    }
+    .price-breakdown.show { display: block; }
+    .pb-row {
+      display: flex; justify-content: space-between;
+      font-size: 13px; color: var(--gray); margin-bottom: 5px;
+    }
+    .pb-row:last-child {
+      margin-bottom: 0; border-top: 1px solid var(--sand);
+      padding-top: 8px; margin-top: 4px;
+      font-size: 15px; font-weight: 800; color: var(--brown);
+    }
   </style>
 </head>
 <body>
@@ -1002,7 +1066,43 @@
         <div class="meta-item">🕐 Hace <strong>2 días</strong></div>
       </div>
 
-      <button class="btn-primary">💳 Comprar ahora — 380 €</button>
+      <!-- SELECTOR DE ENTREGA -->
+      <div class="delivery-section">
+        <div class="delivery-label">Método de entrega</div>
+        <div id="shippingNotice" class="shipping-notice" style="display:none"></div>
+        <div class="delivery-options">
+
+          <div class="delivery-opt selected" id="optPickup" onclick="selectDelivery('pickup')">
+            <div class="d-radio"></div>
+            <div class="d-body">
+              <div class="d-name">🏪 Recogida en tienda</div>
+              <div class="d-detail">Malasaña, Madrid · Lun–Sáb 10:00–19:00</div>
+              <div class="d-time">Disponible hoy</div>
+            </div>
+            <div class="d-price">Gratis</div>
+          </div>
+
+          <div class="delivery-opt" id="optShipping" onclick="selectDelivery('shipping')">
+            <div class="d-radio"></div>
+            <div class="d-body">
+              <div class="d-name">📦 Envío a domicilio</div>
+              <div class="d-detail">Transporte especializado — artículo grande</div>
+              <div class="d-time">3–5 días laborables</div>
+            </div>
+            <div class="d-price paid">+45 €</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DESGLOSE DE PRECIO -->
+      <div class="price-breakdown" id="priceBreakdown">
+        <div class="pb-row"><span>Artículo</span><span>380 €</span></div>
+        <div class="pb-row"><span>Envío</span><span id="pbShipping">45 €</span></div>
+        <div class="pb-row"><span>Total</span><span id="pbTotal">425 €</span></div>
+      </div>
+
+      <button class="btn-primary" id="buyBtn">💳 Comprar ahora — 380 €</button>
       <a href="chat.html" class="btn-secondary" style="text-decoration:none">💬 Contactar con la tienda</a>
 
       <!-- BOTÓN OFERTA (solo visible si ADMITE_OFERTAS = true) -->
@@ -1264,9 +1364,11 @@
 
 <script>
   /* ─── SISTEMA DE OFERTAS ─── */
-  // Cambiar a false para productos que no admiten ofertas
-  const ADMITE_OFERTAS = true;
-  const PRECIO_VENTA = 380;
+  const ADMITE_OFERTAS       = true;   // false = oculta el panel de oferta
+  const ADMITE_ENVIO         = true;   // false = solo recogida en tienda
+  const PRECIO_VENTA         = 380;
+  const SHIPPING_COST        = 45;     // coste de envío cuando aplica
+  const SHIPPING_FREE_THRESHOLD = 100; // 0 = sin umbral de envío gratis
 
   if (ADMITE_OFERTAS) {
     document.getElementById('offersTag').classList.add('show');
@@ -1344,6 +1446,56 @@
   function rejectCounter() {
     showOfferState('Idle');
   }
+
+  /* ─── ENTREGA ─── */
+  function _shippingIsFree() {
+    return SHIPPING_FREE_THRESHOLD > 0 && PRECIO_VENTA >= SHIPPING_FREE_THRESHOLD;
+  }
+
+  function initDelivery() {
+    const envioOpt  = document.getElementById('optShipping');
+    const notice    = document.getElementById('shippingNotice');
+
+    if (!ADMITE_ENVIO) {
+      envioOpt.style.display = 'none';
+      return;
+    }
+
+    if (_shippingIsFree()) {
+      // Envío gratis automático: mostrar "Gratis" en la opción y aviso verde
+      envioOpt.querySelector('.d-price').textContent = 'Gratis';
+      envioOpt.querySelector('.d-price').className = 'd-price';
+      notice.className = 'shipping-notice free';
+      notice.innerHTML = '✓ Este artículo tiene <strong>envío gratuito</strong> incluido';
+      notice.style.display = 'flex';
+    } else if (SHIPPING_FREE_THRESHOLD > 0) {
+      // Aviso promocional: el artículo no llega al umbral
+      notice.className = 'shipping-notice promo';
+      notice.innerHTML = `🎁 Envío gratis en pedidos superiores a <strong>${SHIPPING_FREE_THRESHOLD} €</strong>`;
+      notice.style.display = 'flex';
+    }
+  }
+
+  function selectDelivery(type) {
+    document.getElementById('optPickup').classList.toggle('selected', type === 'pickup');
+    document.getElementById('optShipping').classList.toggle('selected', type === 'shipping');
+    const breakdown = document.getElementById('priceBreakdown');
+    const btn       = document.getElementById('buyBtn');
+    const cost      = _shippingIsFree() ? 0 : SHIPPING_COST;
+
+    if (type === 'shipping' && cost > 0) {
+      const total = PRECIO_VENTA + cost;
+      document.getElementById('pbShipping').textContent = cost + ' €';
+      document.getElementById('pbTotal').textContent = total + ' €';
+      breakdown.classList.add('show');
+      btn.textContent = '💳 Comprar ahora — ' + total + ' €';
+    } else {
+      breakdown.classList.remove('show');
+      btn.textContent = '💳 Comprar ahora — ' + PRECIO_VENTA + ' €';
+    }
+  }
+
+  initDelivery();
 
   const MAIN_FAV_ID = 'sofa-chester';
   const MAIN_FAV_DATA = {
