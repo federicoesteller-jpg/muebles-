@@ -1025,20 +1025,12 @@
       <div id="ship" class="tab-content">
         <div class="specs-grid">
           <div class="spec-item">
-            <div class="spec-label">Recogida en tienda</div>
-            <div class="spec-value">Gratis — Madrid Centro</div>
-          </div>
-          <div class="spec-item">
             <div class="spec-label">Envío a domicilio</div>
-            <div class="spec-value">Consultar con la tienda</div>
+            <div class="spec-value">Transporte especializado</div>
           </div>
           <div class="spec-item">
-            <div class="spec-label">Horario recogida</div>
-            <div class="spec-value">Lun–Sáb 10:00–19:00</div>
-          </div>
-          <div class="spec-item">
-            <div class="spec-label">Reserva previa</div>
-            <div class="spec-value">Recomendada</div>
+            <div class="spec-label">Plazo estimado</div>
+            <div class="spec-value">3–5 días laborables</div>
           </div>
         </div>
       </div>
@@ -1086,17 +1078,7 @@
         <div id="shippingNotice" class="shipping-notice" style="display:none"></div>
         <div class="delivery-options">
 
-          <div class="delivery-opt selected" id="optPickup" onclick="selectDelivery('pickup')">
-            <div class="d-radio"></div>
-            <div class="d-body">
-              <div class="d-name">🏪 Recogida en tienda</div>
-              <div class="d-detail">Malasaña, Madrid · Lun–Sáb 10:00–19:00</div>
-              <div class="d-time">Disponible hoy</div>
-            </div>
-            <div class="d-price">Gratis</div>
-          </div>
-
-          <div class="delivery-opt" id="optShipping" onclick="selectDelivery('shipping')">
+          <div class="delivery-opt selected" id="optShipping">
             <div class="d-radio"></div>
             <div class="d-body">
               <div class="d-name">📦 Envío a domicilio</div>
@@ -1529,13 +1511,11 @@
   }
 
   function selectDelivery(type) {
-    document.getElementById('optPickup').classList.toggle('selected', type === 'pickup');
-    document.getElementById('optShipping').classList.toggle('selected', type === 'shipping');
     const breakdown = document.getElementById('priceBreakdown');
     const btn       = document.getElementById('buyBtn');
     const cost      = _shippingIsFree() ? 0 : SHIPPING_COST;
 
-    if (type === 'shipping' && cost > 0) {
+    if (cost > 0) {
       const total = PRECIO_VENTA + cost;
       document.getElementById('pbShipping').textContent = cost + ' €';
       document.getElementById('pbTotal').textContent = total + ' €';

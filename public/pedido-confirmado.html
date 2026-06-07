@@ -220,10 +220,6 @@
       <span>Envío</span>
       <span>+ 24 €</span>
     </div>
-    <div class="price-row free" id="rowPickupWrap">
-      <span>Recogida en tienda</span>
-      <span>Gratis</span>
-    </div>
     <div class="price-row">
       <span>Protección Mueblista</span>
       <span id="rowProt">—</span>
@@ -286,7 +282,7 @@
       document.getElementById('prodTitle').textContent  = order.title;
       document.getElementById('prodStore').textContent  = order.store + ' · ' + order.city;
       document.getElementById('prodPrice').textContent  = order.total + ' €';
-      document.getElementById('prodDelivery').textContent = order.delivery === 'shipping' ? '🚚 Envío a domicilio' : '🏪 Recogida en tienda';
+      document.getElementById('prodDelivery').textContent = '🚚 Envío a domicilio';
 
       document.getElementById('rowPrice').textContent = order.price + ' €';
       document.getElementById('rowProt').textContent  = order.prot  + ' €';
@@ -294,7 +290,6 @@
 
       if (order.delivery === 'shipping') {
         document.getElementById('rowShipWrap').style.display  = '';
-        document.getElementById('rowPickupWrap').style.display = 'none';
         document.getElementById('tlDeliveryIcon').textContent  = '🚚';
         document.getElementById('tlDeliveryTitle').textContent = 'Preparación del envío';
         document.getElementById('tlDeliveryDesc').textContent  = 'El vendedor preparará el paquete y lo entregará a la mensajería en 1–2 días laborables. Recibirás el número de seguimiento por email.';
