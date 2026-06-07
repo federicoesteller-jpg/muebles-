@@ -316,7 +316,7 @@
   <div class="stores-grid" id="storesGrid">
 
     <!-- FERRO ANTIGUO -->
-    <div class="store-card reveal d1" data-city="madrid" data-name="ferro antiguo">
+    <div class="store-card reveal d1" data-city="madrid" data-name="ferro antiguo" data-href="tienda.html?id=ferro-antiguo">
       <div class="store-top">
         <div class="store-avatar" style="background: linear-gradient(140deg,#3d2b1a,#6b4226)">🔩</div>
         <div class="store-info">
@@ -354,7 +354,7 @@
     </div>
 
     <!-- VINTAGE HOME -->
-    <div class="store-card reveal d2" data-city="madrid" data-name="vintage home">
+    <div class="store-card reveal d2" data-city="madrid" data-name="vintage home" data-href="tienda.html?id=vintage-home">
       <div class="store-top">
         <div class="store-avatar" style="background: linear-gradient(140deg,#5c3d2e,#9e6647)">🏠</div>
         <div class="store-info">
@@ -391,7 +391,7 @@
     </div>
 
     <!-- MUEBLES ROCA -->
-    <div class="store-card reveal d3" data-city="barcelona" data-name="muebles roca">
+    <div class="store-card reveal d3" data-city="barcelona" data-name="muebles roca" data-href="tienda.html?id=muebles-roca">
       <div class="store-top">
         <div class="store-avatar" style="background: linear-gradient(140deg,#1e3d2f,#2d7a4f)">🪑</div>
         <div class="store-info">
@@ -429,7 +429,7 @@
     </div>
 
     <!-- EL BAÚL -->
-    <div class="store-card reveal d4" data-city="valencia" data-name="el baúl">
+    <div class="store-card reveal d4" data-city="valencia" data-name="el baúl" data-href="tienda.html?id=el-baul">
       <div class="store-top">
         <div class="store-avatar" style="background: linear-gradient(140deg,#7a3b1e,#c96a38)">🧺</div>
         <div class="store-info">
@@ -466,7 +466,7 @@
     </div>
 
     <!-- LUZ & DECO -->
-    <div class="store-card reveal d5" data-city="sevilla" data-name="luz & deco">
+    <div class="store-card reveal d5" data-city="sevilla" data-name="luz & deco" data-href="tienda.html?id=luz-deco">
       <div class="store-top">
         <div class="store-avatar" style="background: linear-gradient(140deg,#7a5a1a,#c4922a)">💡</div>
         <div class="store-info">
@@ -575,6 +575,17 @@
   document.getElementById('storeSearchInput').addEventListener('input', e => {
     activeQuery = e.target.value;
     applyStoreFilters();
+  });
+
+  /* conectar botones "Ver tienda →" con el id correcto */
+  document.querySelectorAll('.store-card[data-href]').forEach(card => {
+    const href = card.dataset.href;
+    const btn  = card.querySelector('.btn-store');
+    if (btn) btn.href = href;
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', e => {
+      if (!e.target.closest('.btn-store')) window.location.href = href;
+    });
   });
 </script>
 <script src="cookie-banner.js"></script>

@@ -262,9 +262,10 @@
       font-size: 10px; font-weight: 700; text-transform: uppercase;
       padding: 3px 9px; border-radius: 100px; backdrop-filter: blur(8px);
     }
-    .cond-new      { background: rgba(30,80,30,0.7); color: #b0f0c0; }
-    .cond-verygood { background: rgba(100,60,10,0.7); color: #f8d890; }
-    .cond-good     { background: rgba(30,60,100,0.7); color: #b0d0f8; }
+    .cond-new      { background: rgba(30,80,30,0.7);   color: #b0f0c0; }
+    .cond-likenew  { background: rgba(20,70,70,0.7);   color: #a0e8e0; }
+    .cond-verygood { background: rgba(100,60,10,0.7);  color: #f8d890; }
+    .cond-good     { background: rgba(30,60,100,0.7);  color: #b0d0f8; }
 
     .card-body { padding: 12px 14px 14px; }
     .card-price { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 3px; }
@@ -988,7 +989,6 @@
   const obs = new IntersectionObserver(e => {
     e.forEach(el => { if (el.isIntersecting) { el.target.classList.add('visible'); obs.unobserve(el.target); } });
   }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
   // Tabs
   function switchTab(name, el) {
@@ -1193,16 +1193,202 @@
     });
   }
 
-  // Restaurar corazones al cargar
+  /* ═���════════════════════════════════════════
+     BASE DE DATOS DE TIENDAS
+  ══════════════════════════════════════════ */
+  const COND_MAP = {
+    'nuevo':      { label: 'Nuevo',      cls: 'cond-new' },
+    'como-nuevo': { label: 'Como nuevo', cls: 'cond-likenew' },
+    'muy-bueno':  { label: 'Muy bueno',  cls: 'cond-verygood' },
+    'bueno':      { label: 'Bueno',      cls: 'cond-good' },
+    'aceptable':  { label: 'Aceptable',  cls: 'cond-good' },
+  };
+
+  const STORES = {
+    'ferro-antiguo': {
+      name: 'Ferro Antiguo', emoji: '🔩',
+      avatarBg: 'linear-gradient(140deg,#3d2b1a,#6b4226)',
+      city: 'Madrid', location: 'Lavapiés, Madrid',
+      address: 'Calle Embajadores 18, Lavapiés, Madrid',
+      phone: '+34 600 111 222', email: 'hola@ferroantiguomadrid.es', web: 'ferroantiguomadrid.es',
+      rating: 4.9, reviews: 47, sales: 38, since: '2023', response: '< 1 h',
+      about: [
+        'Ferro Antiguo es una tienda especializada en mobiliario industrial y vintage de los años 50 al 70. Llevamos más de 5 años rescatando piezas únicas de talleres y fábricas de toda España.',
+        'Cada mueble es restaurado en nuestro taller del Rastro por artesanos especializados. Trabajamos el hierro, la madera de pino y el cuero para devolver a cada pieza su esplendor original.'
+      ],
+      products: [
+        { id:'cabecero-madera-madrid',     title:'Cabecero madera maciza 150cm',         price:140, category:'cama',     condition:'muy-bueno', img:'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=400&q=80', favs:7,  views:49,  city:'Madrid' },
+        { id:'aparador-industrial-madrid', title:'Aparador industrial acero negro 160cm', price:290, category:'armario',  condition:'bueno',     img:'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=400&q=80', favs:31, views:155, city:'Madrid' },
+        { id:'comoda-vintage-madrid',      title:'Cómoda vintage 4 cajones madera',       price:160, category:'armario',  condition:'bueno',     img:'https://images.unsplash.com/photo-1538688525198-d56c8a066311?auto=format&fit=crop&w=400&q=80', favs:18, views:87,  city:'Madrid' },
+      ]
+    },
+    'vintage-home': {
+      name: 'Vintage Home', emoji: '🏠',
+      avatarBg: 'linear-gradient(140deg,#5c3d2e,#9e6647)',
+      city: 'Madrid', location: 'Malasaña, Madrid',
+      address: 'Calle Manuela Malasaña 22, Madrid',
+      phone: '+34 600 222 333', email: 'hola@vintagehomemadrid.es', web: 'vintagehomemadrid.es',
+      rating: 4.6, reviews: 31, sales: 24, since: '2024', response: '< 3 h',
+      about: [
+        'Vintage Home Madrid es una tienda especializada en muebles y decoración de estilo vintage y mid-century. Llevamos más de 10 años buscando piezas únicas por toda Europa para traerlas a Madrid.',
+        'Cada pieza es seleccionada a mano, restaurada si es necesario, y fotografiada con detalle para que sepas exactamente lo que compras. Nos enorgullecemos de la honestidad en la descripción de nuestros productos.'
+      ],
+      products: [
+        { id:'sofa-chester-madrid',  title:'Sofá Chester 3 plazas cuero marrón',       price:380, category:'sofa',  condition:'muy-bueno', img:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80', favs:24, views:180, city:'Madrid' },
+        { id:'silla-cuero-madrid',   title:'Silla vintage cuero negro patas doradas',   price:45,  category:'silla', condition:'bueno',     img:'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=400&q=80', favs:9,  views:63,  city:'Madrid' },
+      ]
+    },
+    'muebles-roca': {
+      name: 'Muebles Roca', emoji: '🪑',
+      avatarBg: 'linear-gradient(140deg,#1e3d2f,#2d7a4f)',
+      city: 'Barcelona', location: 'Eixample, Barcelona',
+      address: 'Carrer del Consell de Cent 145, Barcelona',
+      phone: '+34 600 333 444', email: 'hola@mueblesroca.es', web: 'mueblesroca.es',
+      rating: 4.8, reviews: 52, sales: 52, since: '2022', response: '< 2 h',
+      about: [
+        'Muebles Roca nació en 2022 con una misión clara: ofrecer mobiliario de diseño escandinavo a precios justos. Cada pieza está fabricada con madera de roble y pino certificados FSC.',
+        'Entregamos en toda Cataluña y también enviamos a toda España. Puedes visitar nuestra exposición en el Eixample de Barcelona de lunes a sábado.'
+      ],
+      products: [
+        { id:'silla-escandinava-barcelona',    title:'Silla escandinava roble macizo',          price:95,  category:'silla', condition:'nuevo', img:'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=400&q=80', favs:12, views:74,  city:'Barcelona' },
+        { id:'mesa-comedor-roble-barcelona',   title:'Mesa comedor extensible 140–180cm roble', price:320, category:'mesa',  condition:'nuevo', img:'https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=400&q=80', favs:28, views:142, city:'Barcelona' },
+        { id:'mesa-escritorio-barcelona',      title:'Mesa escritorio industrial 140cm',         price:180, category:'mesa',  condition:'nuevo', img:'https://images.unsplash.com/photo-1595526051466-1d34a44b0a7a?auto=format&fit=crop&w=400&q=80', favs:15, views:96,  city:'Barcelona' },
+      ]
+    },
+    'el-baul': {
+      name: 'El Baúl', emoji: '���',
+      avatarBg: 'linear-gradient(140deg,#7a3b1e,#c96a38)',
+      city: 'Valencia', location: 'Ruzafa, Valencia',
+      address: 'Carrer de la Llibertat 8, Ruzafa, Valencia',
+      phone: '+34 600 444 555', email: 'hola@elbaul.es', web: 'elbaul.es',
+      rating: 4.5, reviews: 28, sales: 31, since: '2023', response: '< 4 h',
+      about: [
+        'El Baúl es un proyecto valenciano de amor por los muebles con historia. Recorremos mercadillos y rastros del Levante en busca de piezas únicas que merezcan una segunda vida.',
+        'Cada mueble es restaurado en nuestro pequeño taller de Ruzafa, manteniendo la esencia original pero con los acabados necesarios para que duren muchos años más.'
+      ],
+      products: [
+        { id:'espejo-vintage-valencia',      title:'Espejo vintage redondo 80cm dorado', price:60,  category:'espejo',      condition:'bueno',     img:'https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80', favs:38, views:210, city:'Valencia' },
+        { id:'estanteria-pino-valencia',     title:'Estantería madera pino 5 niveles',   price:75,  category:'estanteria',  condition:'muy-bueno', img:'https://images.unsplash.com/photo-1524758631624-e2822b8eb346?auto=format&fit=crop&w=400&q=80', favs:11, views:58,  city:'Valencia' },
+        { id:'sofa-azul-petroleo-valencia',  title:'Sofá 2 plazas azul petróleo',        price:220, category:'sofa',        condition:'muy-bueno', img:'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80', favs:20, views:115, city:'Valencia' },
+        { id:'macetero-ceramica-valencia',   title:'Macetero cerámica artesanal grande',  price:28,  category:'decoracion',  condition:'como-nuevo', img:'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=400&q=80', favs:6,  views:41,  city:'Valencia' },
+      ]
+    },
+    'luz-deco': {
+      name: 'Luz & Deco', emoji: '💡',
+      avatarBg: 'linear-gradient(140deg,#7a5a1a,#c4922a)',
+      city: 'Sevilla', location: 'Triana, Sevilla',
+      address: 'Calle Castilla 48, Triana, Sevilla',
+      phone: '+34 600 555 666', email: 'hola@luzdeco.es', web: 'luzdeco.es',
+      rating: 4.7, reviews: 19, sales: 18, since: '2024', response: '< 5 h',
+      about: [
+        'Luz & Deco nació en Triana, Sevilla, de la pasión de dos artesanos por la luz y la decoración de interiores. Fabricamos lámparas a mano usando cerámica, mimbre y metales nobles.',
+        'Cada pieza es única, con su propia personalidad. Enviamos a toda España con embalaje reforzado diseñado especialmente para piezas delicadas.'
+      ],
+      products: [
+        { id:'lampara-arco-sevilla',       title:'Lámpara de pie arco dorado 180cm',  price:189, category:'lampara', condition:'nuevo',      img:'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=400&q=80', favs:15, views:92, city:'Sevilla' },
+        { id:'espejo-ovalado-sevilla',     title:'Espejo ovalado marco dorado baño',  price:35,  category:'espejo',  condition:'como-nuevo', img:'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80', favs:8,  views:53, city:'Sevilla' },
+        { id:'lampara-sobremesa-sevilla',  title:'Lámpara sobremesa cerámica azul',   price:55,  category:'lampara', condition:'como-nuevo', img:'https://images.unsplash.com/photo-1513506003901-1e6a35294bf6?auto=format&fit=crop&w=400&q=80', favs:10, views:67, city:'Sevilla' },
+      ]
+    },
+  };
+
+  function buildProductCard(p, delay) {
+    const cond = COND_MAP[p.condition] || COND_MAP['bueno'];
+    return `<a href="producto.html?id=${p.id}" class="card reveal d${delay}"
+       data-fav-id="${p.id}" data-fav-title="${p.title}" data-fav-price="${p.price}"
+       data-fav-img="${p.img}" data-fav-city="${p.city}"
+       data-price="${p.price}" data-category="${p.category}" data-condition="${p.condition}">
+      <div class="card-img">
+        <img src="${p.img}" alt="${p.title}" loading="lazy" />
+        <button class="card-fav" onclick="event.preventDefault();toggleFav(this)">���</button>
+        <span class="card-condition ${cond.cls}">${cond.label}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-price">${p.price} €</div>
+        <div class="card-title">${p.title}</div>
+        <div class="card-meta"><div class="card-stats"><span class="card-stat">♡ ${p.favs}</span><span class="card-stat">👁 ${p.views}</span></div></div>
+      </div>
+    </a>`;
+  }
+
+  function initStore() {
+    const id    = new URLSearchParams(window.location.search).get('id') || 'ferro-antiguo';
+    const store = STORES[id];
+    if (!store) { window.location.href = 'tiendas.html'; return; }
+
+    const n = store.products.length;
+
+    /* título y breadcrumb */
+    document.title = store.name + ' — ' + store.city + ' — Mueblista';
+    const bcSpan = document.querySelector('.breadcrumb span:last-child');
+    if (bcSpan) bcSpan.textContent = store.name;
+    const bcTiendas = document.querySelector('.breadcrumb a:nth-child(3)');
+    if (bcTiendas) { bcTiendas.textContent = 'Tiendas'; bcTiendas.href = 'tiendas.html'; }
+
+    /* avatar */
+    const avatar = document.querySelector('.store-avatar');
+    if (avatar) { avatar.textContent = store.emoji; avatar.style.background = store.avatarBg; }
+
+    /* hero */
+    const heroName = document.querySelector('.store-hero-name');
+    if (heroName) heroName.textContent = store.name;
+    const meta = document.querySelectorAll('.store-meta-item');
+    if (meta[0]) meta[0].innerHTML = '📍 <strong>' + store.location + '</strong>';
+    if (meta[1]) meta[1].innerHTML = '⭐ <strong>' + store.rating + '</strong> · ' + store.reviews + ' valoraciones';
+    if (meta[2]) meta[2].innerHTML = '🕐 En Mueblista desde <strong>' + store.since + '</strong>';
+    if (meta[3]) meta[3].innerHTML = '📦 <strong>' + n + '</strong> artículos activos';
+
+    /* tabs */
+    const tabs = document.querySelectorAll('.store-tab');
+    if (tabs[0]) tabs[0].textContent = 'Catálogo (' + n + ')';
+    if (tabs[1]) tabs[1].textContent = 'Valoraciones (' + store.reviews + ')';
+
+    /* stats bar */
+    const statNums = document.querySelectorAll('.stat-item .stat-num');
+    if (statNums[0]) statNums[0].textContent = n;
+    if (statNums[2]) statNums[2].textContent = store.rating;
+    if (statNums[3]) statNums[3].textContent = store.response;
+
+    /* grid de productos */
+    const grid = document.querySelector('.product-grid');
+    if (grid) grid.innerHTML = store.products.map((p, i) => buildProductCard(p, (i % 6) + 1)).join('');
+
+    /* contador de filtros */
+    const cnt = document.getElementById('resultsCount');
+    if (cnt) cnt.textContent = n + ' artículo' + (n !== 1 ? 's' : '');
+
+    /* valoraciones */
+    const rNum = document.querySelector('.rating-big .rating-num');
+    const rCnt = document.querySelector('.rating-count');
+    if (rNum) rNum.textContent = store.rating;
+    if (rCnt) rCnt.textContent = store.reviews + ' valoraciones';
+
+    /* info / about */
+    const paras = document.querySelectorAll('#tab-info p');
+    if (store.about[0] && paras[0]) paras[0].textContent = store.about[0];
+    if (store.about[1] && paras[1]) paras[1].textContent = store.about[1];
+
+    /* contacto */
+    const rows = document.querySelectorAll('.info-row .info-text');
+    if (rows[0]) rows[0].innerHTML = '<strong>Dirección</strong>' + store.address;
+    if (rows[1]) rows[1].innerHTML = '<strong>Teléfono</strong><a href="tel:' + store.phone.replace(/\s/g,'') + '">' + store.phone + '</a>';
+    if (rows[2]) rows[2].innerHTML = '<strong>Email</strong><a href="mailto:' + store.email + '">' + store.email + '</a>';
+    if (rows[3]) rows[3].innerHTML = '<strong>Web propia</strong><a href="#">' + store.web + '</a>';
+
+    /* mapa */
+    const mapLabel = document.querySelector('.map-label');
+    if (mapLabel) mapLabel.textContent = store.location;
+  }
+
+  /* DOMContentLoaded */
   document.addEventListener('DOMContentLoaded', () => {
+    initStore();
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     mFavUpdateBadges();
     initOpenStatus();
     document.querySelectorAll('[data-fav-id]').forEach(card => {
-      const btn = card.querySelector('.card-fav, .card-fav-sm');
-      if (btn && mFavIs(card.dataset.favId)) {
-        btn.textContent = '♥';
-        btn.style.color = '#e05050';
-      }
+      const btn = card.querySelector('.card-fav');
+      if (btn && mFavIs(card.dataset.favId)) { btn.textContent = '♥'; btn.style.color = '#e05050'; }
     });
   });
 </script>
