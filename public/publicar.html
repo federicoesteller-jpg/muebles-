@@ -482,11 +482,95 @@
     }
     input.error, select.error, textarea.error { border-color: var(--red); }
 
+    /* ─── BORRADOR ─── */
+    .draft-banner {
+      display: none;
+      background: #fef5ec; border: 1px solid #f5d5b0;
+      border-radius: 12px; padding: 14px 16px;
+      margin-bottom: 20px;
+      align-items: center; gap: 12px;
+    }
+    .draft-banner.show { display: flex; }
+    .draft-banner-text strong { display: block; font-size: 13px; color: var(--brown); }
+    .draft-banner-text span { font-size: 12px; color: var(--gray); }
+    .draft-banner-btns { display: flex; gap: 8px; flex-shrink: 0; }
+    .btn-draft-restore {
+      padding: 7px 14px; border-radius: 8px;
+      background: var(--terra); color: #fff;
+      border: none; font-size: 12px; font-weight: 700;
+      font-family: inherit; cursor: pointer; transition: background .15s;
+    }
+    .btn-draft-restore:hover { background: #b85e30; }
+    .btn-draft-discard {
+      padding: 7px 14px; border-radius: 8px;
+      background: transparent; color: var(--gray);
+      border: 1.5px solid var(--sand);
+      font-size: 12px; font-weight: 600;
+      font-family: inherit; cursor: pointer; transition: all .15s;
+    }
+    .btn-draft-discard:hover { border-color: var(--gray); color: var(--brown); }
+    .draft-saved-tag {
+      font-size: 11px; font-weight: 600; color: var(--gray-l);
+      display: none; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: 6px;
+      background: var(--sand-l);
+    }
+    .draft-saved-tag.show { display: flex; }
+
+    /* ─── PREVIEW DEL ANUNCIO ─── */
+    .preview-wrap { margin-bottom: 16px; }
+    .preview-wrap-label {
+      font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      color: var(--gray-l); margin-bottom: 10px;
+    }
+    .preview-card-outer {
+      background: var(--white);
+      border: 1.5px solid var(--sand);
+      border-radius: 14px; overflow: hidden;
+      display: flex;
+    }
+    .preview-img {
+      width: 130px; height: 130px; flex-shrink: 0;
+      background: var(--sand-l);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px; overflow: hidden;
+    }
+    .preview-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .preview-body { padding: 14px 16px; flex: 1; min-width: 0; }
+    .preview-price-big {
+      font-size: 22px; font-weight: 800;
+      color: var(--terra); letter-spacing: -0.5px;
+    }
+    .preview-price-big.empty { color: var(--sand); }
+    .preview-title-text {
+      font-size: 14px; font-weight: 700;
+      color: var(--brown); margin: 4px 0 2px;
+      line-height: 1.3;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .preview-title-text.empty { color: var(--sand); font-weight: 400; font-style: italic; }
+    .preview-meta-row {
+      font-size: 11px; color: var(--gray);
+      display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px;
+    }
+    .preview-meta-row span::before { content: '· '; }
+    .preview-meta-row span:first-child::before { content: ''; }
+    .preview-badges-row { display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap; }
+    .preview-badge {
+      font-size: 10px; font-weight: 700;
+      padding: 3px 7px; border-radius: 5px;
+      background: var(--sand-l); color: var(--gray);
+    }
+    .preview-badge.verde { background: #e8f5ee; color: var(--green); }
+    .preview-badge.naranja { background: #fef5ec; color: var(--terra); }
+
     @media (max-width: 600px) {
       .fields-row, .fields-row-3 { grid-template-columns: 1fr; }
       .photo-tips { grid-template-columns: 1fr; }
       .photo-previews { grid-template-columns: repeat(3, 1fr); }
       .step-label { display: none; }
+      .preview-img { width: 100px; height: 100px; font-size: 30px; }
     }
   </style>
 </head>
@@ -496,12 +580,26 @@
 <nav>
   <a href="index.html" class="logo">Mueble<em>ista</em></a>
   <div class="nav-right">
+    <span class="draft-saved-tag" id="draftTag">💾 Borrador guardado</span>
     <a href="index.html" class="nav-btn nav-btn-ghost">← Volver al catálogo</a>
   </div>
 </nav>
 
 <!-- ─── CONTENIDO ─── -->
 <div class="page" id="mainContent">
+
+  <!-- BANNER BORRADOR -->
+  <div class="draft-banner" id="draftBanner">
+    <span style="font-size:22px; flex-shrink:0;">📋</span>
+    <div class="draft-banner-text" style="flex:1">
+      <strong>Tienes un borrador guardado</strong>
+      <span id="draftBannerTime">Guardado anteriormente</span>
+    </div>
+    <div class="draft-banner-btns">
+      <button class="btn-draft-restore" onclick="restoreDraft()">Recuperar</button>
+      <button class="btn-draft-discard" onclick="discardDraft()">Descartar</button>
+    </div>
+  </div>
 
   <div class="page-header">
     <h1 id="pageTitle">Publicar artículo</h1>
@@ -787,32 +885,39 @@
 
     <div class="divider"></div>
 
-    <div class="field">
-      <label>Ciudad <span class="req">*</span></label>
-      <div class="select-wrap">
-        <select id="ciudad">
-          <option value="">Selecciona tu ciudad</option>
-          <option>Madrid</option>
-          <option>Barcelona</option>
-          <option>Valencia</option>
-          <option>Sevilla</option>
-          <option>Bilbao</option>
-          <option>Málaga</option>
-          <option>Zaragoza</option>
-          <option>Murcia</option>
-          <option>Palma de Mallorca</option>
-          <option>Las Palmas de Gran Canaria</option>
-          <option>Alicante</option>
-          <option>Córdoba</option>
-          <option>Valladolid</option>
-          <option>Vigo</option>
-          <option>Gijón</option>
-          <option>Granada</option>
-          <option>A Coruña</option>
-          <option>Otra ciudad</option>
-        </select>
+    <div class="fields-row">
+      <div class="field">
+        <label>Ciudad <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="ciudad">
+            <option value="">Selecciona tu ciudad</option>
+            <option>Madrid</option>
+            <option>Barcelona</option>
+            <option>Valencia</option>
+            <option>Sevilla</option>
+            <option>Bilbao</option>
+            <option>Málaga</option>
+            <option>Zaragoza</option>
+            <option>Murcia</option>
+            <option>Palma de Mallorca</option>
+            <option>Las Palmas de Gran Canaria</option>
+            <option>Alicante</option>
+            <option>Córdoba</option>
+            <option>Valladolid</option>
+            <option>Vigo</option>
+            <option>Gijón</option>
+            <option>Granada</option>
+            <option>A Coruña</option>
+            <option>Otra ciudad</option>
+          </select>
+        </div>
+        <div class="field-error" id="ciudadError">Selecciona tu ciudad</div>
       </div>
-      <div class="field-error" id="ciudadError">Selecciona tu ciudad</div>
+      <div class="field">
+        <label for="cp">Código postal <span class="hint">(opcional)</span></label>
+        <input type="text" id="cp" placeholder="28001" maxlength="5" inputmode="numeric" pattern="[0-9]{5}" />
+        <div class="field-error" id="cpError">El código postal debe tener 5 dígitos</div>
+      </div>
     </div>
 
     <div class="field">
@@ -879,6 +984,24 @@
     </div>
 
     <div class="divider"></div>
+
+    <!-- PREVIEW DEL ANUNCIO -->
+    <div class="preview-wrap">
+      <div class="preview-wrap-label">Así verán tu anuncio los compradores</div>
+      <div class="preview-card-outer">
+        <div class="preview-img" id="prevImg">🪑</div>
+        <div class="preview-body">
+          <div class="preview-price-big empty" id="prevPrecio">— €</div>
+          <div class="preview-title-text empty" id="prevTitulo">Sin título aún</div>
+          <div class="preview-meta-row">
+            <span id="prevCiudad">—</span>
+            <span id="prevEstado">—</span>
+            <span id="prevCategoria">—</span>
+          </div>
+          <div class="preview-badges-row" id="prevBadges"></div>
+        </div>
+      </div>
+    </div>
 
     <!-- RESUMEN -->
     <div class="summary-card" id="summaryCard">
@@ -982,6 +1105,12 @@
       const ciudadErr = document.getElementById('ciudadError');
       if (!ciudadEl.value) { ciudadEl.classList.add('error'); ciudadErr.style.display = 'block'; ok = false; }
       else { ciudadEl.classList.remove('error'); ciudadErr.style.display = 'none'; }
+
+      const cpEl = document.getElementById('cp');
+      const cpErr = document.getElementById('cpError');
+      if (cpEl.value && !/^\d{5}$/.test(cpEl.value)) {
+        cpEl.classList.add('error'); cpErr.style.display = 'block'; ok = false;
+      } else { cpEl.classList.remove('error'); cpErr.style.display = 'none'; }
     }
 
     return ok;
@@ -991,7 +1120,8 @@
   function selectChip(el, groupId) {
     document.querySelectorAll('#' + groupId + ' .chip').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
-    if (groupId === 'estadoError') document.getElementById('estadoError').style.display = 'none';
+    if (groupId === 'estadoGroup') document.getElementById('estadoError').style.display = 'none';
+    saveDraft();
   }
 
   /* ─── ENTREGA ─── */
@@ -1010,6 +1140,7 @@
       document.getElementById('dOpt3').classList.add('selected');
       shipDetails.classList.remove('show');
     }
+    saveDraft();
   }
 
   /* ─── FOTOS ─── */
@@ -1081,6 +1212,13 @@
     document.getElementById('descCount').textContent = this.value.length;
   });
 
+  /* ─── LIVE PREVIEW en paso 3 ─── */
+  ['precio','ciudad','cp'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => { if (currentStep === 3) updateSummary(); });
+    if (el && el.tagName === 'SELECT') el.addEventListener('change', () => { if (currentStep === 3) updateSummary(); });
+  });
+
   /* ─── SUGERENCIA DE PRECIO ─── */
   const priceRanges = {
     'Sofás y sillones': '150 – 600 €',
@@ -1103,28 +1241,178 @@
     }
   });
 
-  /* ─── RESUMEN ─── */
+  /* ─── RESUMEN + PREVIEW ─── */
   function updateSummary() {
-    const titulo = document.getElementById('titulo').value || '—';
+    const titulo = document.getElementById('titulo').value || '';
     const categoria = document.getElementById('categoria').value || '—';
     const estado = document.querySelector('#estadoGroup .chip.selected')?.textContent || '—';
     const ciudad = document.getElementById('ciudad').value || '—';
+    const cp = document.getElementById('cp').value;
     const precio = document.getElementById('precio').value;
+    const oferta = document.querySelector('#ofertaGroup .chip.selected')?.dataset.val;
 
-    document.getElementById('sumTitulo').textContent = titulo.length > 36 ? titulo.slice(0,36)+'…' : titulo;
+    // Resumen compacto
+    document.getElementById('sumTitulo').textContent = titulo ? (titulo.length > 36 ? titulo.slice(0,36)+'…' : titulo) : '—';
     document.getElementById('sumCategoria').textContent = categoria;
     document.getElementById('sumEstado').textContent = estado;
-    document.getElementById('sumCiudad').textContent = ciudad;
+    document.getElementById('sumCiudad').textContent = ciudad + (cp ? ' · ' + cp : '');
     document.getElementById('sumPrecio').textContent = precio ? precio + ' €' : '— €';
+
+    // Preview card
+    const prevPrecio = document.getElementById('prevPrecio');
+    prevPrecio.textContent = precio ? precio + ' €' : '— €';
+    prevPrecio.className = 'preview-price-big' + (precio ? '' : ' empty');
+
+    const prevTitulo = document.getElementById('prevTitulo');
+    prevTitulo.textContent = titulo || 'Sin título aún';
+    prevTitulo.className = 'preview-title-text' + (titulo ? '' : ' empty');
+
+    document.getElementById('prevCiudad').textContent = ciudad + (cp ? ' · ' + cp : '');
+    document.getElementById('prevEstado').textContent = estado;
+    document.getElementById('prevCategoria').textContent = categoria;
+
+    // Foto de portada en preview
+    const prevImg = document.getElementById('prevImg');
+    if (photos.length > 0) {
+      prevImg.innerHTML = `<img src="${photos[0].src}" alt="Portada" />`;
+    } else {
+      prevImg.textContent = '🪑';
+    }
+
+    // Badges
+    const badgesEl = document.getElementById('prevBadges');
+    badgesEl.innerHTML = '';
+    if (deliveryMode === 'envio' || deliveryMode === 'ambos') {
+      badgesEl.innerHTML += '<span class="preview-badge verde">📦 Envío disponible</span>';
+    }
+    if (deliveryMode === 'recogida' || deliveryMode === 'ambos') {
+      badgesEl.innerHTML += '<span class="preview-badge">🤝 Recogida en mano</span>';
+    }
+    if (oferta === 'si') {
+      badgesEl.innerHTML += '<span class="preview-badge naranja">💬 Admite ofertas</span>';
+    }
   }
 
   /* ─── PUBLICAR ─── */
   function publish() {
     if (!validate(3)) return;
+    localStorage.removeItem('mueblista_draft');
     document.getElementById('mainContent').style.display = 'none';
     document.getElementById('successScreen').classList.add('show');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+  /* ─── BORRADOR ─── */
+  const DRAFT_KEY = 'mueblista_draft';
+  let draftTimer = null;
+
+  function getDraftData() {
+    return {
+      titulo: document.getElementById('titulo').value,
+      categoria: document.getElementById('categoria').value,
+      estado: document.querySelector('#estadoGroup .chip.selected')?.dataset.val || '',
+      material: document.getElementById('material').value,
+      color: document.getElementById('color').value,
+      dimAncho: document.getElementById('dimAncho').value,
+      dimFondo: document.getElementById('dimFondo').value,
+      dimAlto: document.getElementById('dimAlto').value,
+      descripcion: document.getElementById('descripcion').value,
+      precio: document.getElementById('precio').value,
+      oferta: document.querySelector('#ofertaGroup .chip.selected')?.dataset.val || 'si',
+      ciudad: document.getElementById('ciudad').value,
+      cp: document.getElementById('cp').value,
+      entrega: deliveryMode,
+      costoEnvio: document.getElementById('costoEnvio').value,
+      tamPaquete: document.getElementById('tamPaquete').value,
+      mode: currentMode,
+      savedAt: new Date().toISOString(),
+    };
+  }
+
+  function saveDraft() {
+    clearTimeout(draftTimer);
+    draftTimer = setTimeout(() => {
+      const data = getDraftData();
+      const hasContent = data.titulo || data.descripcion || data.precio;
+      if (!hasContent) return;
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+      const tag = document.getElementById('draftTag');
+      const now = new Date();
+      tag.textContent = '💾 ' + now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+      tag.classList.add('show');
+    }, 1500);
+  }
+
+  function restoreDraft() {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    document.getElementById('titulo').value = d.titulo || '';
+    document.getElementById('tituloCount').textContent = (d.titulo || '').length;
+    document.getElementById('categoria').value = d.categoria || '';
+    document.getElementById('material').value = d.material || '';
+    document.getElementById('color').value = d.color || '';
+    document.getElementById('dimAncho').value = d.dimAncho || '';
+    document.getElementById('dimFondo').value = d.dimFondo || '';
+    document.getElementById('dimAlto').value = d.dimAlto || '';
+    document.getElementById('descripcion').value = d.descripcion || '';
+    document.getElementById('descCount').textContent = (d.descripcion || '').length;
+    document.getElementById('precio').value = d.precio || '';
+    document.getElementById('ciudad').value = d.ciudad || '';
+    document.getElementById('cp').value = d.cp || '';
+    document.getElementById('costoEnvio').value = d.costoEnvio || '';
+    document.getElementById('tamPaquete').value = d.tamPaquete || '';
+
+    if (d.estado) {
+      document.querySelectorAll('#estadoGroup .chip').forEach(c => {
+        c.classList.toggle('selected', c.dataset.val === d.estado);
+      });
+    }
+    if (d.oferta) {
+      document.querySelectorAll('#ofertaGroup .chip').forEach(c => {
+        c.classList.toggle('selected', c.dataset.val === d.oferta);
+      });
+    }
+    if (d.entrega) selectDelivery(d.entrega);
+    if (d.mode) setMode(d.mode);
+
+    document.getElementById('draftBanner').classList.remove('show');
+    const tag = document.getElementById('draftTag');
+    tag.textContent = '💾 Borrador recuperado';
+    tag.classList.add('show');
+    setTimeout(() => { tag.textContent = '💾 Guardado'; }, 2000);
+  }
+
+  function discardDraft() {
+    localStorage.removeItem(DRAFT_KEY);
+    document.getElementById('draftBanner').classList.remove('show');
+  }
+
+  function loadDraftOnStart() {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return;
+    try {
+      const d = JSON.parse(raw);
+      const hasContent = d.titulo || d.descripcion || d.precio;
+      if (!hasContent) return;
+      const banner = document.getElementById('draftBanner');
+      const timeEl = document.getElementById('draftBannerTime');
+      if (d.savedAt) {
+        const dt = new Date(d.savedAt);
+        timeEl.textContent = 'Guardado el ' + dt.toLocaleDateString('es-ES', { day:'numeric', month:'long' }) + ' a las ' + dt.getHours().toString().padStart(2,'0') + ':' + dt.getMinutes().toString().padStart(2,'0');
+      }
+      banner.classList.add('show');
+    } catch(e) { localStorage.removeItem(DRAFT_KEY); }
+  }
+
+  // Auto-guardar en cada cambio
+  ['titulo','categoria','material','color','dimAncho','dimFondo','dimAlto','descripcion','precio','ciudad','cp','costoEnvio','tamPaquete'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', saveDraft);
+    if (el && el.tagName === 'SELECT') el.addEventListener('change', saveDraft);
+  });
+
+  loadDraftOnStart();
 
   /* ─── MODO LOTE ─── */
   let currentMode = 'individual';
