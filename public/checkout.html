@@ -291,12 +291,20 @@
           <span id="sumPrice">—</span>
         </div>
         <div class="price-row">
-          <span>Envío a domicilio</span>
-          <span>+ 24 €</span>
+          <span>Gastos de envío</span>
+          <span id="sumShipping">—</span>
+        </div>
+        <div class="price-row" style="font-size:11px; color:var(--gray-l); margin-top:-4px; margin-bottom:6px;">
+          <span>Calculado según destino y peso</span>
+          <span></span>
         </div>
         <div class="price-row">
-          <span>Protección Mueblista</span>
+          <span>Protección de compra <span style="font-size:10px; background:#f0f0f0; padding:1px 5px; border-radius:4px; margin-left:3px;">¿Qué es?</span></span>
           <span id="sumProtection">—</span>
+        </div>
+        <div class="price-row" style="font-size:11px; color:var(--gray-l); margin-top:-4px;">
+          <span>3% del precio · Devolución garantizada</span>
+          <span></span>
         </div>
         <div class="price-row total">
           <span>Total</span>
@@ -306,8 +314,8 @@
 
       <!-- Protección -->
       <div class="protection-box">
-        <div class="protection-title">✓ Protección de compra incluida</div>
-        <div class="protection-desc">Si el artículo no coincide con la descripción, te devolvemos el dinero. Sin preguntas.</div>
+        <div class="protection-title">✓ Compra protegida por Mueblista</div>
+        <div class="protection-desc">Si el artículo no llega, no coincide con la descripción o tiene daños ocultos, te devolvemos el dinero íntegro. El vendedor no cobra hasta que confirmas la recepción.</div>
       </div>
 
       <!-- Botón pagar -->
@@ -362,21 +370,37 @@
   /* ─── ESTADO ─── */
   let productId = '';
   let currentProduct = null;
-  const SHIPPING_COST = 24;
+
+  const SHIPPING_BY_PRICE = [
+    { max: 60,   cost: 6,  label: '6,00 €' },
+    { max: 180,  cost: 12, label: '12,00 €' },
+    { max: 400,  cost: 28, label: '28,00 €' },
+    { max: Infinity, cost: 49, label: '49,00 €' },
+  ];
+
+  function shippingCost(price) {
+    return SHIPPING_BY_PRICE.find(s => price <= s.max);
+  }
 
   function protectionFee(price) {
-    return Math.min(Math.max(Math.round(price * 0.03), 3), 12);
+    return Math.min(Math.max(Math.round(price * 0.03 * 100) / 100, 2), 15);
+  }
+
+  function fmt(n) {
+    return n.toFixed(2).replace('.', ',') + ' €';
   }
 
   function updatePrices() {
     if (!currentProduct) return;
-    const price = currentProduct.price;
-    const prot  = protectionFee(price);
-    const total = price + prot + SHIPPING_COST;
-    document.getElementById('sumPrice').textContent      = price + ' €';
-    document.getElementById('sumProtection').textContent = prot  + ' €';
-    document.getElementById('sumTotal').textContent      = total + ' €';
-    document.getElementById('btnTotal').textContent      = total + ' €';
+    const price  = currentProduct.price;
+    const ship   = shippingCost(price);
+    const prot   = protectionFee(price);
+    const total  = price + ship.cost + prot;
+    document.getElementById('sumPrice').textContent      = fmt(price);
+    document.getElementById('sumShipping').textContent   = '+ ' + ship.label;
+    document.getElementById('sumProtection').textContent = '+ ' + fmt(prot);
+    document.getElementById('sumTotal').textContent      = fmt(total);
+    document.getElementById('btnTotal').textContent      = fmt(total);
   }
 
   /* ─── FORMATEO TARJETA ─── */
@@ -404,7 +428,7 @@
     setTimeout(() => {
       const price   = currentProduct?.price || 0;
       const prot    = protectionFee(price);
-      const ship    = SHIPPING_COST;
+      const ship    = shippingCost(price).cost;
       const total   = price + prot + ship;
       const orderNum = 'MBL-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
       localStorage.setItem('lastOrder', JSON.stringify({

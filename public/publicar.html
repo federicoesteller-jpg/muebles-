@@ -488,6 +488,36 @@
     }
     input.error, select.error, textarea.error { border-color: var(--red); }
 
+    /* ─── DESGLOSE INGRESOS VENDEDOR ─── */
+    .earnings-box {
+      margin-top: 12px;
+      background: var(--green-l);
+      border: 1px solid #b8dfc8;
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .earnings-header {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--green); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .earnings-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; padding: 4px 0;
+    }
+    .earnings-row span:first-child { color: #4a8060; }
+    .earnings-row span:last-child { font-weight: 600; color: #2d6040; }
+    .earnings-row.red span:first-child { color: #c04040; }
+    .earnings-row.red span:last-child { color: #c04040; }
+    .earnings-row.total {
+      font-size: 16px; font-weight: 800;
+      border-top: 1px solid #b8dfc8;
+      margin-top: 8px; padding-top: 10px;
+    }
+    .earnings-row.total span:first-child { color: var(--green); }
+    .earnings-row.total span:last-child { color: var(--green); font-size: 20px; }
+
     /* ─── BORRADOR ─── */
     .draft-banner {
       display: none;
@@ -878,6 +908,24 @@
       <div class="price-suggestion" id="priceSuggestion" style="display:none">
         💡 Artículos similares en Mueblista se venden entre <strong id="priceRange">—</strong>. Un precio competitivo vende hasta 3× más rápido.
       </div>
+
+      <!-- DESGLOSE INGRESOS -->
+      <div class="earnings-box" id="earningsBox" style="display:none">
+        <div class="earnings-header">💰 Lo que recibirás tú como vendedor</div>
+        <div class="earnings-row">
+          <span>Precio de venta</span>
+          <span id="earnPrice">—</span>
+        </div>
+        <div class="earnings-row red">
+          <span>Comisión Mueblista (<span id="earnRate">—</span>)</span>
+          <span id="earnCommission">—</span>
+        </div>
+        <div class="earnings-row total">
+          <span>Recibes tú</span>
+          <span id="earnNet">—</span>
+        </div>
+      </div>
+
       <div class="field-error" id="precioError">Introduce un precio válido</div>
     </div>
 
@@ -1016,7 +1064,9 @@
       <div class="summary-row"><span class="key">Categoría</span><span class="val" id="sumCategoria">—</span></div>
       <div class="summary-row"><span class="key">Estado</span><span class="val" id="sumEstado">—</span></div>
       <div class="summary-row"><span class="key">Ciudad</span><span class="val" id="sumCiudad">—</span></div>
-      <div class="summary-row"><span class="key">Precio</span><span class="val price" id="sumPrecio">— €</span></div>
+      <div class="summary-row"><span class="key">Precio de venta</span><span class="val price" id="sumPrecio">— €</span></div>
+      <div class="summary-row" id="sumCommissionRow" style="display:none"><span class="key">Comisión Mueblista</span><span class="val" id="sumCommission" style="color:#c04040">—</span></div>
+      <div class="summary-row" id="sumNetRow" style="display:none"><span class="key">Recibes tú</span><span class="val" id="sumNet" style="color:var(--green)">—</span></div>
     </div>
 
     <div class="nav-buttons">
@@ -1227,6 +1277,30 @@
     if (el && el.tagName === 'SELECT') el.addEventListener('change', () => { if (currentStep === 3) updateSummary(); });
   });
 
+  /* ─── COMISIÓN ESCALONADA ─── */
+  function commissionRate(price) {
+    if (price <= 50)  return 0.15;
+    if (price <= 200) return 0.12;
+    if (price <= 500) return 0.10;
+    return 0.08;
+  }
+
+  function updateEarnings() {
+    const price = parseFloat(document.getElementById('precio').value) || 0;
+    const box = document.getElementById('earningsBox');
+    if (price < 1) { box.style.display = 'none'; return; }
+    box.style.display = 'block';
+    const rate = commissionRate(price);
+    const commission = Math.round(price * rate * 100) / 100;
+    const net = Math.round((price - commission) * 100) / 100;
+    document.getElementById('earnPrice').textContent = price.toFixed(2).replace('.', ',') + ' €';
+    document.getElementById('earnRate').textContent = Math.round(rate * 100) + '%';
+    document.getElementById('earnCommission').textContent = '−' + commission.toFixed(2).replace('.', ',') + ' €';
+    document.getElementById('earnNet').textContent = net.toFixed(2).replace('.', ',') + ' €';
+  }
+
+  document.getElementById('precio').addEventListener('input', updateEarnings);
+
   /* ─── SUGERENCIA DE PRECIO ─── */
   const priceRanges = {
     'Sofás y sillones': '150 – 600 €',
@@ -1265,6 +1339,19 @@
     document.getElementById('sumEstado').textContent = estado;
     document.getElementById('sumCiudad').textContent = ciudad + (cp ? ' · ' + cp : '');
     document.getElementById('sumPrecio').textContent = precio ? precio + ' €' : '— €';
+    if (precio) {
+      const p = parseFloat(precio);
+      const rate = commissionRate(p);
+      const comm = Math.round(p * rate * 100) / 100;
+      const net = Math.round((p - comm) * 100) / 100;
+      document.getElementById('sumCommission').textContent = '−' + comm.toFixed(2).replace('.', ',') + ' € (' + Math.round(rate * 100) + '%)';
+      document.getElementById('sumNet').textContent = net.toFixed(2).replace('.', ',') + ' €';
+      document.getElementById('sumCommissionRow').style.display = '';
+      document.getElementById('sumNetRow').style.display = '';
+    } else {
+      document.getElementById('sumCommissionRow').style.display = 'none';
+      document.getElementById('sumNetRow').style.display = 'none';
+    }
 
     // Preview card
     const prevPrecio = document.getElementById('prevPrecio');
