@@ -1202,6 +1202,24 @@
                 <input type="tel" value="+34 612 345 678" />
               </div>
             </div>
+            <div class="fields-row">
+              <div class="field">
+                <label class="field-label">Fecha de nacimiento <span class="hint">No visible para otros</span></label>
+                <input type="date" value="1990-03-15" />
+              </div>
+              <div class="field">
+                <label class="field-label">Género <span class="hint">Opcional</span></label>
+                <div class="select-wrap">
+                  <select>
+                    <option value="">Prefiero no decirlo</option>
+                    <option value="mujer" selected>Mujer</option>
+                    <option value="hombre">Hombre</option>
+                    <option value="no_binario">No binario</option>
+                    <option value="otro">Otro</option>
+                  </select>
+                </div>
+              </div>
+            </div>
             <div class="field">
               <label class="field-label">Descripción pública <span class="hint">Cuéntale a los compradores quién eres</span></label>
               <textarea id="bioInput" style="width:100%; padding:11px 14px; border:1.5px solid var(--sand); border-radius:10px; font-size:14px; font-family:inherit; color:var(--brown); outline:none; resize:vertical; min-height:80px; transition:border-color 0.2s; background:var(--white);" placeholder="Ej: Vendo muebles de calidad que ya no necesito. Respondo rápido y cuido mucho los artículos." onfocus="this.style.borderColor='var(--terra)'" onblur="this.style.borderColor='var(--sand)'">Vendo muebles vintage y de diseño que ya no necesito en casa. Todo en perfecto estado o con detalles mínimos. Envío a toda España 📦</textarea>
