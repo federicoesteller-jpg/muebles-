@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Programa de referidos — Mueblista</title>
+  <title>Programa de referidos — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -30,6 +30,10 @@
       display: flex; align-items: center; gap: 16px;
     }
     .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; white-space: nowrap; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
     .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
     .nav-btn {
@@ -285,7 +289,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
   <div class="nav-right">
     <a href="panel-login.html" class="nav-btn nav-btn-ghost">Para tiendas</a>
     <a href="login.html" class="nav-btn nav-btn-ghost">Iniciar sesión</a>
@@ -299,12 +303,12 @@
   <div class="hero-inner">
     <span class="hero-badge">Programa de referidos</span>
     <h1>Invita a tus amigos<br>y <em>gana créditos</em></h1>
-    <p>Comparte Mueblista con quien conozcas. Cada vez que alguien se registre con tu enlace y complete su primera compra, los dos ganáis crédito para usar en la plataforma.</p>
+    <p>Comparte Muebla con quien conozcas. Cada vez que alguien se registre con tu enlace y complete su primera compra, los dos ganáis crédito para usar en la plataforma.</p>
 
     <div class="ref-link-box">
       <div class="ref-link-label">Tu enlace personal de referido</div>
       <div class="ref-link-row">
-        <input class="ref-link-input" id="refLink" type="text" value="mueblista.es/r/federico2026" readonly onclick="this.select()" />
+        <input class="ref-link-input" id="refLink" type="text" value="muebla.es/r/federico2026" readonly onclick="this.select()" />
         <button class="btn-copy" id="copyBtn" onclick="copyLink()">Copiar enlace</button>
       </div>
       <div class="ref-share-row">
@@ -355,7 +359,7 @@
       <div class="step-card reveal">
         <div class="step-num">2</div>
         <h3>Tu amigo se registra</h3>
-        <p>Se crea una cuenta en Mueblista usando tu enlace. Ya aparece en tu historial como invitado.</p>
+        <p>Se crea una cuenta en Muebla usando tu enlace. Ya aparece en tu historial como invitado.</p>
       </div>
       <div class="step-card reveal">
         <div class="step-num">3</div>
@@ -377,7 +381,7 @@
       <div class="reward-card reveal">
         <div class="reward-icon">🎁</div>
         <div class="reward-title">Por cada amigo que compra</div>
-        <div class="reward-desc">Cuando alguien invitado por ti completa su primera compra, tú recibes crédito Mueblista aplicable a tu próxima compra.</div>
+        <div class="reward-desc">Cuando alguien invitado por ti completa su primera compra, tú recibes crédito Muebla aplicable a tu próxima compra.</div>
         <span class="reward-badge">Tú ganas</span>
       </div>
       <div class="reward-card reveal">
@@ -399,7 +403,7 @@
         <span class="reward-badge">Sin prisa</span>
       </div>
     </div>
-    <p style="color:rgba(255,255,255,.35); font-size:.78rem; margin-top:24px; text-align:center">* Sujeto a las condiciones del programa. Mueblista se reserva el derecho a modificar las recompensas con previo aviso.</p>
+    <p style="color:rgba(255,255,255,.35); font-size:.78rem; margin-top:24px; text-align:center">* Sujeto a las condiciones del programa. Muebla se reserva el derecho a modificar las recompensas con previo aviso.</p>
   </div>
 </section>
 
@@ -525,7 +529,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="footer-logo">Muebl<em>a</em></a>
     <div class="footer-links">
     <a href="terminos.html">Términos</a>
     <a href="privacidad.html">Privacidad</a>
@@ -539,7 +543,7 @@
     <a href="lotes.html">Venta en conjunto</a>
     <a href="recordatorios.html">Recordatorios</a>
   </div>
-  <div class="footer-copy">© 2026 Mueblista</div>
+  <div class="footer-copy">© 2026 Muebla</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -564,20 +568,20 @@
 
   /* ─── COMPARTIR ─── */
   const REF_LINK = document.getElementById('refLink').value;
-  const MSG = 'Te invito a Mueblista, el marketplace de muebles de segunda mano. Usa mi enlace y los dos ganamos crédito: ';
+  const MSG = 'Te invito a Muebla, el marketplace de muebles de segunda mano. Usa mi enlace y los dos ganamos crédito: ';
 
   function shareWhatsapp() {
     window.open('https://wa.me/?text=' + encodeURIComponent(MSG + REF_LINK));
   }
   function shareEmail() {
-    window.location.href = 'mailto:?subject=Te invito a Mueblista&body=' + encodeURIComponent(MSG + REF_LINK);
+    window.location.href = 'mailto:?subject=Te invito a Muebla&body=' + encodeURIComponent(MSG + REF_LINK);
   }
   function shareTelegram() {
     window.open('https://t.me/share/url?url=' + encodeURIComponent(REF_LINK) + '&text=' + encodeURIComponent(MSG));
   }
   function shareNative() {
     if (navigator.share) {
-      navigator.share({ title: 'Mueblista', text: MSG, url: REF_LINK }).catch(() => {});
+      navigator.share({ title: 'Muebla', text: MSG, url: REF_LINK }).catch(() => {});
     } else {
       copyLink();
     }
@@ -608,3 +612,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

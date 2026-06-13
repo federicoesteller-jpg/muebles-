@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Recordatorios de venta — Mueblista</title>
+  <title>Recordatorios de venta — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -30,6 +30,10 @@
       background: var(--white); border-bottom: 1px solid #ebebeb;
     }
     .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
     .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
     .nav-btn { font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-family: inherit; transition: all 0.15s; }
@@ -182,7 +186,7 @@
 <body>
 
 <nav>
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
   <div class="nav-right">
     <a href="perfil.html" class="nav-btn nav-btn-ghost">Mi perfil</a>
     <a href="publicar.html" class="nav-btn nav-btn-sell">Vender ahora</a>
@@ -193,7 +197,7 @@
   <div class="hero-inner">
     <div class="hero-tag">📬 Recordatorios de venta</div>
     <h1>Tu artículo lleva tiempo<br/>sin venderse. <em>Te ayudamos.</em></h1>
-    <p>Mueblista te avisa cuando un artículo lleva demasiado tiempo publicado y te sugiere qué cambiar: precio, fotos, descripción. Sin spam, sin presión.</p>
+    <p>Muebla te avisa cuando un artículo lleva demasiado tiempo publicado y te sugiere qué cambiar: precio, fotos, descripción. Sin spam, sin presión.</p>
   </div>
 </div>
 
@@ -206,7 +210,7 @@
     <div class="sec reveal">
       <div class="sec-label">Cómo funciona</div>
       <div class="sec-title">Un recordatorio en el momento justo</div>
-      <div class="sec-intro">Cuando un artículo lleva días publicado sin recibir interés, Mueblista te manda un email con datos reales y sugerencias concretas. No es un aviso genérico: es un análisis específico de ese artículo.</div>
+      <div class="sec-intro">Cuando un artículo lleva días publicado sin recibir interés, Muebla te manda un email con datos reales y sugerencias concretas. No es un aviso genérico: es un análisis específico de ese artículo.</div>
 
       <div class="timeline">
         <div class="tl-item day7">
@@ -269,7 +273,7 @@
     <!-- QUÉ SUGIEREN -->
     <div class="sec reveal">
       <div class="sec-label">Sugerencias</div>
-      <div class="sec-title">Qué te puede sugerir Mueblista</div>
+      <div class="sec-title">Qué te puede sugerir Muebla</div>
       <div class="sec-intro">Las sugerencias se calculan automáticamente comparando tu anuncio con artículos similares que sí se vendieron recientemente.</div>
 
       <div class="sugs-grid">
@@ -320,10 +324,10 @@
           <div class="ep-dot r"></div>
           <div class="ep-dot y"></div>
           <div class="ep-dot g"></div>
-          <div class="ep-subject">Tu sofá lleva 14 días publicado — Mueblista</div>
+          <div class="ep-subject">Tu sofá lleva 14 días publicado — Muebla</div>
         </div>
         <div class="ep-body">
-          <div class="ep-logo">Mueble<em>ista</em></div>
+          <div class="ep-logo">Muebl<em>a</em></div>
           <div class="ep-greeting">Hola, Carlos 👋</div>
           <div class="ep-text">Tu artículo lleva 14 días publicado y todavía no se ha vendido. Hemos analizado artículos similares que sí se vendieron esta semana:</div>
           <div class="ep-listing">
@@ -431,7 +435,7 @@
 <div id="toast" class="toast">✓ Preferencias guardadas</div>
 
 <footer>
-  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="footer-logo">Muebl<em>a</em></a>
     <div class="footer-links">
     <a href="terminos.html">Términos</a>
     <a href="privacidad.html">Privacidad</a>
@@ -445,7 +449,7 @@
     <a href="lotes.html">Venta en conjunto</a>
     <a href="recordatorios.html">Recordatorios</a>
   </div>
-  <div class="footer-copy">© 2026 Mueblista</div>
+  <div class="footer-copy">© 2026 Muebla</div>
 </footer>
 
 <script>
@@ -467,3 +471,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

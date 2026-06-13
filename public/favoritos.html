@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mis favoritos — Mueblista</title>
+  <title>Mis favoritos — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -24,6 +24,10 @@
     /* ─── NAV ─── */
     nav { position: sticky; top: 0; z-index: 1000; height: 62px; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; background: rgba(253,246,238,0.95); backdrop-filter: blur(18px); border-bottom: 1px solid rgba(0,0,0,0.06); }
     .logo { font-size: 19px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
     .nav-search { display: flex; align-items: center; background: var(--white); border: 1.5px solid var(--sand); border-radius: 100px; width: 340px; overflow: hidden; transition: border-color 0.2s; }
     .nav-search:focus-within { border-color: var(--terra); }
@@ -87,7 +91,7 @@
 <body>
 
 <nav>
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
   <div class="nav-search">
     <input type="text" placeholder="Busca sofás, mesas, sillas..." />
     <button>🔍</button>
@@ -179,7 +183,7 @@
 
   function clearAll() {
     if (!confirm('¿Vaciar toda la lista de favoritos?')) return;
-    localStorage.removeItem('mueblista_favorites');
+    localStorage.removeItem('Muebla_favorites');
     mFavUpdateBadges();
     renderFavorites();
   }
@@ -189,3 +193,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

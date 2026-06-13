@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Qué se puede vender — Mueblista</title>
+  <title>Qué se puede vender — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -32,6 +32,10 @@
       background: var(--white); border-bottom: 1px solid #ebebeb;
     }
     .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
     .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
     .nav-btn { font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-family: inherit; transition: all 0.15s; }
@@ -164,7 +168,7 @@
 <body>
 
 <nav>
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
   <div class="nav-right">
     <a href="ayuda.html" class="nav-btn nav-btn-ghost">Ayuda</a>
     <a href="publicar.html" class="nav-btn nav-btn-sell">Vender ahora</a>
@@ -174,8 +178,8 @@
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-tag">📋 Guía de vendedor</div>
-    <h1>Qué se puede<br/><em>vender en Mueblista</em></h1>
-    <p>Mueblista es un marketplace especializado en muebles y decoración. Esta guía explica qué está permitido, qué no, y en qué condiciones.</p>
+    <h1>Qué se puede<br/><em>vender en Muebla</em></h1>
+    <p>Muebla es un marketplace especializado en muebles y decoración. Esta guía explica qué está permitido, qué no, y en qué condiciones.</p>
   </div>
 </div>
 
@@ -193,7 +197,7 @@
   <div class="sec reveal" id="permitido">
     <div class="sec-label">Lo que sí puedes vender</div>
     <div class="sec-title">Categorías permitidas</div>
-    <div class="sec-intro">Mueblista está especializado en muebles, decoración y artículos para el hogar. Todo lo que encaje en estas categorías es bienvenido, nuevo o de segunda mano.</div>
+    <div class="sec-intro">Muebla está especializado en muebles, decoración y artículos para el hogar. Todo lo que encaje en estas categorías es bienvenido, nuevo o de segunda mano.</div>
 
     <div class="cats-grid">
       <div class="cat-card">
@@ -259,7 +263,7 @@
     </div>
 
     <div class="info-box green" style="margin-top:20px;">
-      ✅ <span><strong>¿Tienes dudas sobre una categoría?</strong> Si el artículo es para el hogar y encaja en el espíritu de Mueblista, probablemente está permitido. Ante la duda, escríbenos desde el <a href="ayuda.html" style="color:var(--green); font-weight:600;">centro de ayuda</a> antes de publicar.</span>
+      ✅ <span><strong>¿Tienes dudas sobre una categoría?</strong> Si el artículo es para el hogar y encaja en el espíritu de Muebla, probablemente está permitido. Ante la duda, escríbenos desde el <a href="ayuda.html" style="color:var(--green); font-weight:600;">centro de ayuda</a> antes de publicar.</span>
     </div>
   </div>
 
@@ -267,7 +271,7 @@
   <div class="sec reveal" id="prohibido">
     <div class="sec-label">Lo que no puedes vender</div>
     <div class="sec-title">Artículos prohibidos</div>
-    <div class="sec-intro">Estos artículos no están permitidos en Mueblista, independientemente de su estado o precio. Los anuncios que los incumplan serán eliminados.</div>
+    <div class="sec-intro">Estos artículos no están permitidos en Muebla, independientemente de su estado o precio. Los anuncios que los incumplan serán eliminados.</div>
 
     <div class="banned-grid">
       <div class="banned-item">
@@ -337,7 +341,7 @@
         <div class="banned-icon">🗝️</div>
         <div>
           <div class="banned-name">Artículos robados o de origen dudoso</div>
-          <div class="banned-desc">Mueblista colabora con las autoridades ante cualquier indicio de artículos de procedencia ilícita.</div>
+          <div class="banned-desc">Muebla colabora con las autoridades ante cualquier indicio de artículos de procedencia ilícita.</div>
         </div>
       </div>
     </div>
@@ -406,7 +410,7 @@
         <div class="special-icon">🏺</div>
         <div>
           <div class="special-title">Artículos de alto valor o antigüedades</div>
-          <div class="special-desc">Piezas de colección, antigüedades o artículos con valor especial pueden publicarse normalmente. Si el precio supera cierto umbral, Mueblista puede solicitar documentación adicional (facturas, certificados de autenticidad) antes de activar el anuncio.</div>
+          <div class="special-desc">Piezas de colección, antigüedades o artículos con valor especial pueden publicarse normalmente. Si el precio supera cierto umbral, Muebla puede solicitar documentación adicional (facturas, certificados de autenticidad) antes de activar el anuncio.</div>
         </div>
       </div>
       <div class="special-item">
@@ -427,7 +431,7 @@
         <div class="special-icon">🌿</div>
         <div>
           <div class="special-title">Plantas naturales</div>
-          <div class="special-desc">Las plantas naturales en macetas decorativas están permitidas si van acompañadas de un mueble o elemento decorativo. La venta de plantas solas no es la finalidad principal de Mueblista, aunque puede tolerarse en la categoría de decoración.</div>
+          <div class="special-desc">Las plantas naturales en macetas decorativas están permitidas si van acompañadas de un mueble o elemento decorativo. La venta de plantas solas no es la finalidad principal de Muebla, aunque puede tolerarse en la categoría de decoración.</div>
         </div>
       </div>
     </div>
@@ -437,7 +441,7 @@
   <div class="sec reveal" id="consecuencias">
     <div class="sec-label">Si no se respetan las normas</div>
     <div class="sec-title">Qué ocurre con los anuncios que incumplen</div>
-    <div class="sec-intro">Mueblista revisa los anuncios publicados. Los que no cumplan las normas pasan por un proceso escalonado según la gravedad.</div>
+    <div class="sec-intro">Muebla revisa los anuncios publicados. Los que no cumplan las normas pasan por un proceso escalonado según la gravedad.</div>
 
     <div class="cons-grid">
       <div class="cons-card">
@@ -474,7 +478,7 @@
 </div>
 
 <footer>
-  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="footer-logo">Muebl<em>a</em></a>
     <div class="footer-links">
     <a href="terminos.html">Términos</a>
     <a href="privacidad.html">Privacidad</a>
@@ -488,7 +492,7 @@
     <a href="lotes.html">Venta en conjunto</a>
     <a href="recordatorios.html">Recordatorios</a>
   </div>
-  <div class="footer-copy">© 2026 Mueblista</div>
+  <div class="footer-copy">© 2026 Muebla</div>
 </footer>
 
 <script>
@@ -513,3 +517,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

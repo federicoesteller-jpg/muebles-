@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi perfil — Mueblista</title>
+  <title>Mi perfil — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -36,6 +36,10 @@
       background: var(--white); border-bottom: 1px solid #ebebeb;
     }
     .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; white-space: nowrap; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
     .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
     .nav-btn {
@@ -697,7 +701,7 @@
 
 <!-- ─── NAV ─── -->
 <nav>
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
   <div class="nav-right">
     <a href="chat.html" class="nav-btn nav-btn-ghost">💬 Mensajes</a>
     <a href="notificaciones.html" class="bell-btn" title="Notificaciones">🔔<span class="bell-badge">5</span></a>
@@ -1284,7 +1288,7 @@
               <div class="toggle-row">
                 <div class="toggle-info">
                   <strong>Novedades y promociones</strong>
-                  <p>Descuentos, nuevas funciones y noticias de Mueblista</p>
+                  <p>Descuentos, nuevas funciones y noticias de Muebla</p>
                 </div>
                 <label class="toggle"><input type="checkbox" /><span class="toggle-slider"></span></label>
               </div>
@@ -1326,7 +1330,7 @@
               <input
                 id="profileRefLink"
                 type="text"
-                value="mueblista.es/r/federico2026"
+                value="muebla.es/r/federico2026"
                 readonly
                 onclick="this.select()"
                 style="flex:1; border:1.5px solid var(--sand); border-radius:10px; padding:10px 12px; font-size:13px; font-weight:600; color:var(--brown); font-family:inherit; outline:none; background:var(--cream);"
@@ -1665,3 +1669,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

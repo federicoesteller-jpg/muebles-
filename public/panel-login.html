@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Acceso para tiendas — Mueblista</title>
+  <title>Acceso para tiendas — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -56,6 +56,10 @@
     .left-content { position: relative; }
 
     .logo { font-size: 20px; font-weight: 800; color: #fff; text-decoration: none; letter-spacing: -0.5px; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra-l); }
 
     .left-hero { margin-top: 80px; }
@@ -233,7 +237,7 @@
 <div class="left">
   <div class="left-grid"></div>
   <div class="left-content">
-    <a href="index.html" class="logo">Mueble<em>ista</em></a>
+    <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
     <div class="left-hero">
       <div class="left-badge">Panel de tiendas</div>
       <h1 class="left-title">Gestiona tu<br/>catálogo <em>online</em></h1>
@@ -260,7 +264,7 @@
   </div>
   <div class="left-footer">
     <div class="testimonial">
-      <p class="testimonial-text">"Desde que entramos en Mueblista, vendemos entre 8 y 12 piezas al mes sin esfuerzo extra. El panel es muy fácil de usar."</p>
+      <p class="testimonial-text">"Desde que entramos en Muebla, vendemos entre 8 y 12 piezas al mes sin esfuerzo extra. El panel es muy fácil de usar."</p>
       <div class="testimonial-author">
         <div class="testimonial-avatar">🏡</div>
         <div>
@@ -300,7 +304,7 @@
         <label class="remember">
           <input type="checkbox" /> Recuérdame
         </label>
-        <a href="#" class="forgot">¿Olvidaste la contraseña?</a>
+        <a href="ayuda.html" class="forgot">¿Olvidaste la contraseña?</a>
       </div>
 
       <button type="submit" class="btn-login">Entrar al panel →</button>
@@ -313,7 +317,7 @@
     </button>
 
     <p class="login-signup">
-      ¿Tu tienda aún no está en Mueblista?
+      ¿Tu tienda aún no está en Muebla?
       <a href="onboarding.html">Registrar mi tienda →</a>
     </p>
   </div>
@@ -341,3 +345,10 @@
 </script>
 </body>
 </html>
+
+
+
+
+
+
+

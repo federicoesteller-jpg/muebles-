@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Publicar artículo — Mueblista</title>
+  <title>Publicar artículo — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -33,6 +33,10 @@
       background: var(--white); border-bottom: 1px solid #ebebeb;
     }
     .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
     .nav-right { display: flex; gap: 8px; align-items: center; }
     .nav-btn {
@@ -614,7 +618,7 @@
 
 <!-- ─── NAV ─── -->
 <nav>
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
   <div class="nav-right">
     <span class="draft-saved-tag" id="draftTag">💾 Borrador guardado</span>
     <a href="index.html" class="nav-btn nav-btn-ghost">← Volver al catálogo</a>
@@ -906,7 +910,7 @@
         <input type="number" id="precio" placeholder="0" min="1" max="99999" />
       </div>
       <div class="price-suggestion" id="priceSuggestion" style="display:none">
-        💡 Artículos similares en Mueblista se venden entre <strong id="priceRange">—</strong>. Un precio competitivo vende hasta 3× más rápido.
+        💡 Artículos similares en Muebla se venden entre <strong id="priceRange">—</strong>. Un precio competitivo vende hasta 3× más rápido.
       </div>
 
       <!-- DESGLOSE INGRESOS -->
@@ -917,7 +921,7 @@
           <span id="earnPrice">—</span>
         </div>
         <div class="earnings-row red">
-          <span>Comisión Mueblista (<span id="earnRate">—</span>)</span>
+          <span>Comisión Muebla (<span id="earnRate">—</span>)</span>
           <span id="earnCommission">—</span>
         </div>
         <div class="earnings-row total">
@@ -1065,7 +1069,7 @@
       <div class="summary-row"><span class="key">Estado</span><span class="val" id="sumEstado">—</span></div>
       <div class="summary-row"><span class="key">Ciudad</span><span class="val" id="sumCiudad">—</span></div>
       <div class="summary-row"><span class="key">Precio de venta</span><span class="val price" id="sumPrecio">— €</span></div>
-      <div class="summary-row" id="sumCommissionRow" style="display:none"><span class="key">Comisión Mueblista</span><span class="val" id="sumCommission" style="color:#c04040">—</span></div>
+      <div class="summary-row" id="sumCommissionRow" style="display:none"><span class="key">Comisión Muebla</span><span class="val" id="sumCommission" style="color:#c04040">—</span></div>
       <div class="summary-row" id="sumNetRow" style="display:none"><span class="key">Recibes tú</span><span class="val" id="sumNet" style="color:var(--green)">—</span></div>
     </div>
 
@@ -1081,7 +1085,7 @@
 <div class="page success-screen" id="successScreen">
   <div class="success-icon">🎉</div>
   <h2>¡Artículo publicado!</h2>
-  <p>Tu anuncio ya está visible en Mueblista.<br>Te notificaremos cuando alguien se interese.</p>
+  <p>Tu anuncio ya está visible en Muebla.<br>Te notificaremos cuando alguien se interese.</p>
   <div class="success-actions">
     <a href="panel.html" class="btn-success btn-success-primary">Ver mis anuncios</a>
     <a href="publicar.html" class="btn-success btn-success-ghost">Publicar otro artículo</a>
@@ -1391,14 +1395,14 @@
   /* ─── PUBLICAR ─── */
   function publish() {
     if (!validate(3)) return;
-    localStorage.removeItem('mueblista_draft');
+    localStorage.removeItem('Muebla_draft');
     document.getElementById('mainContent').style.display = 'none';
     document.getElementById('successScreen').classList.add('show');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   /* ─── BORRADOR ─── */
-  const DRAFT_KEY = 'mueblista_draft';
+  const DRAFT_KEY = 'Muebla_draft';
   let draftTimer = null;
 
   function getDraftData() {
@@ -1601,3 +1605,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

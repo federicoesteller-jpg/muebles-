@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vintage Home Madrid — Mueblista</title>
+  <title>Vintage Home Madrid — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -34,6 +34,10 @@
       border-bottom: 1px solid rgba(0,0,0,0.06);
     }
     .logo { font-size: 19px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
     .nav-search {
       display: flex; align-items: center; background: var(--white);
@@ -487,7 +491,7 @@
 
 <!-- ─── NAV ─── -->
 <nav>
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
   <div class="nav-search">
     <input type="text" placeholder="Busca sofás, mesas, sillas..." />
     <button>🔍</button>
@@ -503,7 +507,7 @@
 <div class="breadcrumb">
   <a href="index.html">Inicio</a>
   <span style="color:var(--gray-l)">›</span>
-  <a href="#">Tiendas</a>
+  <a href="tiendas.html">Tiendas</a>
   <span style="color:var(--gray-l)">›</span>
   <span>Vintage Home Madrid</span>
 </div>
@@ -518,7 +522,7 @@
       <div class="store-hero-meta">
         <div class="store-meta-item">📍 <strong>Malasaña, Madrid</strong></div>
         <div class="store-meta-item">⭐ <strong>4.9</strong> · 87 valoraciones</div>
-        <div class="store-meta-item">🕐 En Mueblista desde <strong>2021</strong></div>
+        <div class="store-meta-item">🕐 En Muebla desde <strong>2021</strong></div>
         <div class="store-meta-item">📦 <strong>14</strong> artículos activos</div>
       </div>
     </div>
@@ -877,7 +881,7 @@
 
 <!-- ─── FOOTER ─── -->
 <footer>
-  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="footer-logo">Muebl<em>a</em></a>
     <div class="footer-links">
     <a href="terminos.html">Términos</a>
     <a href="privacidad.html">Privacidad</a>
@@ -891,7 +895,7 @@
     <a href="lotes.html">Venta en conjunto</a>
     <a href="recordatorios.html">Recordatorios</a>
   </div>
-  <div class="footer-copy">© 2026 Mueblista</div>
+  <div class="footer-copy">© 2026 Muebla</div>
 </footer>
 
 <script src="favoritos.js"></script>
@@ -1220,7 +1224,7 @@
     const n = store.products.length;
 
     /* título y breadcrumb */
-    document.title = store.name + ' — ' + store.city + ' — Mueblista';
+    document.title = store.name + ' — ' + store.city + ' — Muebla';
     const bcSpan = document.querySelector('.breadcrumb span:last-child');
     if (bcSpan) bcSpan.textContent = store.name;
     const bcTiendas = document.querySelector('.breadcrumb a:nth-child(3)');
@@ -1236,7 +1240,7 @@
     const meta = document.querySelectorAll('.store-meta-item');
     if (meta[0]) meta[0].innerHTML = '📍 <strong>' + store.location + '</strong>';
     if (meta[1]) meta[1].innerHTML = '⭐ <strong>' + store.rating + '</strong> · ' + store.reviews + ' valoraciones';
-    if (meta[2]) meta[2].innerHTML = '🕐 En Mueblista desde <strong>' + store.since + '</strong>';
+    if (meta[2]) meta[2].innerHTML = '🕐 En Muebla desde <strong>' + store.since + '</strong>';
     if (meta[3]) meta[3].innerHTML = '📦 <strong>' + n + '</strong> artículos activos';
 
     /* tabs */
@@ -1287,3 +1291,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

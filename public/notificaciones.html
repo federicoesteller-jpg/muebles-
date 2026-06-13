@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Notificaciones — Mueblista</title>
+  <title>Notificaciones — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -33,6 +33,10 @@
       display: flex; align-items: center; gap: 16px;
     }
     .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
     .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
     .nav-btn {
@@ -204,7 +208,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
   <div class="nav-right">
     <a href="favoritos.html" class="nav-btn nav-btn-ghost nav-fav-link">♡ Favoritos<span class="nav-fav-badge" id="navFavBadge">0</span></a>
     <a href="notificaciones.html" class="bell-btn active" title="Notificaciones" id="navBell">
@@ -279,7 +283,7 @@
       <div class="notif-icon icon-ref">🎁</div>
       <div class="notif-body">
         <div class="notif-title">¡María ha completado su primera compra!</div>
-        <div class="notif-text">Tu amiga <strong>María G.</strong> ha hecho su primera compra en Mueblista. Has ganado crédito en tu cuenta.</div>
+        <div class="notif-text">Tu amiga <strong>María G.</strong> ha hecho su primera compra en Muebla. Has ganado crédito en tu cuenta.</div>
         <div class="notif-footer">
           <span class="notif-time">Hace 3 horas</span>
           <a href="referidos.html" class="notif-action" onclick="event.stopPropagation()">Ver mis referidos →</a>
@@ -375,7 +379,7 @@
       <div class="notif-icon icon-system">📣</div>
       <div class="notif-body">
         <div class="notif-title">Nueva función: programa de referidos</div>
-        <div class="notif-text">Ya puedes invitar a amigos a Mueblista y ganar crédito cuando realicen su primera compra. Sin límite de invitaciones.</div>
+        <div class="notif-text">Ya puedes invitar a amigos a Muebla y ganar crédito cuando realicen su primera compra. Sin límite de invitaciones.</div>
         <div class="notif-footer">
           <span class="notif-time">Hace 1 semana</span>
           <a href="referidos.html" class="notif-action" onclick="event.stopPropagation()">Saber más →</a>
@@ -408,7 +412,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="footer-logo">Muebl<em>a</em></a>
   <div class="footer-links">
     <a href="index.html">Catálogo</a>
     <a href="como-funciona.html">Cómo funciona</a>
@@ -420,7 +424,7 @@
     <a href="cookies.html">Cookies</a>
     <a href="devoluciones.html">Devoluciones</a>
   </div>
-  <div class="footer-copy">© 2026 Mueblista</div>
+  <div class="footer-copy">© 2026 Muebla</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -504,3 +508,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

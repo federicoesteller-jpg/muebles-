@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel de tienda — Mueblista</title>
+  <title>Panel de tienda — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -39,6 +39,10 @@
     }
 
     .logo { font-size: 18px; font-weight: 800; color: #fff; text-decoration: none; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra-l); }
     .logo-sub { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.8px; }
 
@@ -460,7 +464,7 @@
 <!-- ─── SIDEBAR ─── -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <a href="index.html" class="logo">Mueble<em>ista</em></a>
+    <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
     <div class="logo-sub">Panel de tienda</div>
   </div>
 
@@ -1149,7 +1153,7 @@
           </div>
           <div style="background:var(--white);border-radius:10px;padding:20px;border:1px dashed #999;font-family:monospace;font-size:13px;line-height:1.8;">
             <div style="text-align:center;margin-bottom:12px;">
-              <strong style="font-size:16px;font-family:'Plus Jakarta Sans',sans-serif">MUEBLISTA · ENVÍO</strong>
+              <strong style="font-size:16px;font-family:'Plus Jakarta Sans',sans-serif">Muebla · ENVÍO</strong>
             </div>
             <div>DE: Vintage Home Madrid, Calle Mayor 12, 28013 Madrid</div>
             <div>PARA: Comprador verificado — Dirección protegida</div>
@@ -1483,3 +1487,10 @@
 
 </body>
 </html>
+
+
+
+
+
+
+

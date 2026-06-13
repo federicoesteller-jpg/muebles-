@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guía de envíos — Mueblista</title>
+  <title>Guía de envíos — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -30,6 +30,10 @@
       background: var(--white); border-bottom: 1px solid #ebebeb;
     }
     .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
     .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
     .nav-btn { font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-family: inherit; transition: all 0.15s; }
@@ -178,7 +182,7 @@
 <body>
 
 <nav>
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
   <div class="nav-right">
     <a href="ayuda.html" class="nav-btn nav-btn-ghost">Ayuda</a>
     <a href="publicar.html" class="nav-btn nav-btn-sell">Vender ahora</a>
@@ -308,7 +312,7 @@
   <div class="sec reveal" id="etiqueta">
     <div class="sec-label">Paso 2 — Enviar</div>
     <div class="sec-title">Cómo obtener y usar la etiqueta de envío</div>
-    <div class="sec-intro">La etiqueta de envío se genera automáticamente en Mueblista cuando vendes un artículo. Incluye la dirección del comprador, el número de seguimiento y el código de barras del transportista.</div>
+    <div class="sec-intro">La etiqueta de envío se genera automáticamente en Muebla cuando vendes un artículo. Incluye la dirección del comprador, el número de seguimiento y el código de barras del transportista.</div>
 
     <div class="steps-list">
       <div class="step-row">
@@ -322,7 +326,7 @@
         <div class="step-num">2</div>
         <div class="step-body">
           <h4>Selecciona el transportista y el tamaño</h4>
-          <p>Elige el transportista según el tamaño y peso del paquete. Mueblista te muestra las opciones disponibles con sus precios y plazos de entrega.</p>
+          <p>Elige el transportista según el tamaño y peso del paquete. Muebla te muestra las opciones disponibles con sus precios y plazos de entrega.</p>
           <div class="step-tip">Para paquetes pequeños (menos de 30 kg, menos de 150 cm de lado mayor) tendrás más opciones. Para muebles grandes, los servicios de carga son la única opción.</div>
         </div>
       </div>
@@ -352,7 +356,7 @@
   <div class="sec reveal" id="transportistas">
     <div class="sec-label">Comparativa</div>
     <div class="sec-title">Transportistas disponibles</div>
-    <div class="sec-intro">Mueblista integra varios transportistas según el tamaño del envío. Aquí tienes una comparativa orientativa para que sepas qué esperar de cada uno.</div>
+    <div class="sec-intro">Muebla integra varios transportistas según el tamaño del envío. Aquí tienes una comparativa orientativa para que sepas qué esperar de cada uno.</div>
 
     <table class="carriers-table">
       <thead>
@@ -418,7 +422,7 @@
     </table>
 
     <div class="info-box yellow">
-      ℹ️ <span>Los transportistas y precios disponibles en tu pedido dependen del tamaño y peso del paquete, y del código postal de origen y destino. Mueblista te mostrará las opciones reales en el momento de generar la etiqueta.</span>
+      ℹ️ <span>Los transportistas y precios disponibles en tu pedido dependen del tamaño y peso del paquete, y del código postal de origen y destino. Muebla te mostrará las opciones reales en el momento de generar la etiqueta.</span>
     </div>
 
     <div class="two-col" style="margin-top:16px;">
@@ -454,7 +458,7 @@
   <div class="sec reveal" id="seguro">
     <div class="sec-label">Protección</div>
     <div class="sec-title">Seguro de envío</div>
-    <div class="sec-intro">Todos los envíos realizados a través de Mueblista incluyen cobertura básica. Para artículos de mayor valor, puedes ampliarla al generar la etiqueta.</div>
+    <div class="sec-intro">Todos los envíos realizados a través de Muebla incluyen cobertura básica. Para artículos de mayor valor, puedes ampliarla al generar la etiqueta.</div>
 
     <div class="seguro-grid" style="margin-bottom:20px;">
       <div class="seguro-card basic">
@@ -484,7 +488,7 @@
       🛡️ <span><strong>Requisito para activar el seguro:</strong> el embalaje debe ser adecuado al artículo enviado. Si el transportista detecta embalaje insuficiente en la recogida, puede rechazar el paquete o la cobertura quedará anulada en caso de daño.</span>
     </div>
     <div class="info-box yellow">
-      ⚠️ <span>El valor declarado en el seguro debe coincidir con el precio de venta del artículo en Mueblista. No se puede asegurar por encima del valor de la transacción.</span>
+      ⚠️ <span>El valor declarado en el seguro debe coincidir con el precio de venta del artículo en Muebla. No se puede asegurar por encima del valor de la transacción.</span>
     </div>
   </div>
 
@@ -535,7 +539,7 @@
     <div class="sec-intro">La entrega en persona es una buena opción para muebles grandes, frágiles o cuando comprador y vendedor están en la misma ciudad. Pero tiene sus propias reglas.</div>
 
     <div class="info-box green" style="margin-bottom:20px;">
-      💳 <span><strong>El pago siempre a través de Mueblista, incluso en recogida en mano.</strong> El sistema retiene el importe hasta que el comprador confirma la entrega. Nunca aceptes efectivo ni transferencia directa: perderías la protección de la plataforma.</span>
+      💳 <span><strong>El pago siempre a través de Muebla, incluso en recogida en mano.</strong> El sistema retiene el importe hasta que el comprador confirma la entrega. Nunca aceptes efectivo ni transferencia directa: perderías la protección de la plataforma.</span>
     </div>
 
     <div class="pickup-grid" style="margin-bottom:20px;">
@@ -543,7 +547,7 @@
         <div class="pickup-card-title">✓ Buenas prácticas</div>
         <ul class="pickup-list">
           <li>Queda en un lugar público y accesible</li>
-          <li>Comunica el punto de encuentro por el chat de Mueblista</li>
+          <li>Comunica el punto de encuentro por el chat de Muebla</li>
           <li>Lleva el artículo limpio y listo para ser revisado</li>
           <li>Permite al comprador revisarlo antes de confirmar</li>
           <li>Confirma en la app cuando la entrega se realiza</li>
@@ -555,7 +559,7 @@
         <ul class="pickup-list">
           <li>No aceptes pagos en efectivo ni Bizum directo</li>
           <li>No des tu dirección de casa a compradores desconocidos</li>
-          <li>No acuerdes la entrega fuera del chat de Mueblista</li>
+          <li>No acuerdes la entrega fuera del chat de Muebla</li>
           <li>No entregues el artículo antes de que el pago esté confirmado en la app</li>
           <li>No cedas ante presión para saltarte los pasos de la plataforma</li>
         </ul>
@@ -574,14 +578,14 @@
         <div class="step-num">2</div>
         <div class="step-body">
           <h4>El comprador elige recogida al pagar</h4>
-          <p>Durante el proceso de pago, el comprador selecciona "Recogida en mano". El importe queda retenido en Mueblista igual que en un envío normal.</p>
+          <p>Durante el proceso de pago, el comprador selecciona "Recogida en mano". El importe queda retenido en Muebla igual que en un envío normal.</p>
         </div>
       </div>
       <div class="step-row">
         <div class="step-num">3</div>
         <div class="step-body">
           <h4>Coordina por el chat</h4>
-          <p>Usa el chat de Mueblista para acordar día, hora y punto de encuentro. Toda la comunicación queda registrada.</p>
+          <p>Usa el chat de Muebla para acordar día, hora y punto de encuentro. Toda la comunicación queda registrada.</p>
           <div class="step-tip">Lugares recomendados: aparcamiento de un centro comercial, entrada de un edificio público, gasolinera. Evita tu domicilio particular salvo que lo conozcas.</div>
         </div>
       </div>
@@ -619,7 +623,7 @@
         <div class="step-num">🟠</div>
         <div class="step-body">
           <h4>El paquete consta como entregado pero no ha llegado</h4>
-          <p>Comprueba si lo dejaron en un vecino o en conserjería. Si no aparece, abre incidencia desde "Mis compras" con el número de seguimiento. Mueblista gestiona la reclamación al transportista.</p>
+          <p>Comprueba si lo dejaron en un vecino o en conserjería. Si no aparece, abre incidencia desde "Mis compras" con el número de seguimiento. Muebla gestiona la reclamación al transportista.</p>
         </div>
       </div>
       <div class="step-row">
@@ -646,7 +650,7 @@
 </div>
 
 <footer>
-  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="footer-logo">Muebl<em>a</em></a>
     <div class="footer-links">
     <a href="terminos.html">Términos</a>
     <a href="privacidad.html">Privacidad</a>
@@ -660,7 +664,7 @@
     <a href="lotes.html">Venta en conjunto</a>
     <a href="recordatorios.html">Recordatorios</a>
   </div>
-  <div class="footer-copy">© 2026 Mueblista</div>
+  <div class="footer-copy">© 2026 Muebla</div>
 </footer>
 
 <script>
@@ -685,3 +689,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

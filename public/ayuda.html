@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Centro de ayuda — Mueblista</title>
+  <title>Centro de ayuda — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -29,6 +29,10 @@
       background: var(--white); border-bottom: 1px solid #ebebeb;
     }
     .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
     .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
     .nav-btn { font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-family: inherit; transition: all 0.15s; }
@@ -238,7 +242,7 @@
 <body>
 
 <nav>
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
   <div class="nav-right">
     <a href="index.html" class="nav-btn nav-btn-ghost">Explorar</a>
     <a href="publicar.html" class="nav-btn nav-btn-sell">Vender</a>
@@ -334,11 +338,11 @@
     <div class="faq-group visible" data-cat="compras">
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
-          ¿Cómo funciona el pago en Mueblista?
+          ¿Cómo funciona el pago en Muebla?
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-a">
-          Cuando compras un artículo, el importe se retiene de forma segura en Mueblista. El vendedor no recibe el dinero hasta que tú confirmas que el artículo ha llegado en las condiciones descritas. Tienes <strong>48 horas</strong> desde la entrega para confirmar o abrir una reclamación.
+          Cuando compras un artículo, el importe se retiene de forma segura en Muebla. El vendedor no recibe el dinero hasta que tú confirmas que el artículo ha llegado en las condiciones descritas. Tienes <strong>48 horas</strong> desde la entrega para confirmar o abrir una reclamación.
         </div>
       </div>
       <div class="faq-item">
@@ -356,7 +360,7 @@
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-a">
-          Todos los vendedores son verificados antes de poder publicar artículos. Además, el sistema de valoraciones permite ver el historial de ventas previas. Para artículos de alto valor, Mueblista ofrece verificación adicional.
+          Todos los vendedores son verificados antes de poder publicar artículos. Además, el sistema de valoraciones permite ver el historial de ventas previas. Para artículos de alto valor, Muebla ofrece verificación adicional.
         </div>
       </div>
       <div class="faq-item">
@@ -383,11 +387,11 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
-          ¿Cuánto cobra Mueblista por cada venta?
+          ¿Cuánto cobra Muebla por cada venta?
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-a">
-          Mueblista aplica una pequeña comisión sobre el precio de venta. Esta comisión cubre la protección de pagos, el soporte ante incidencias y el mantenimiento de la plataforma. Consulta las condiciones actualizadas en tu panel de vendedor.
+          Muebla aplica una pequeña comisión sobre el precio de venta. Esta comisión cubre la protección de pagos, el soporte ante incidencias y el mantenimiento de la plataforma. Consulta las condiciones actualizadas en tu panel de vendedor.
         </div>
       </div>
       <div class="faq-item">
@@ -396,7 +400,7 @@
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-a">
-          El importe se libera en tu saldo de Mueblista una vez que el comprador confirma la recepción (o transcurridas 48 horas sin reclamación). Desde tu panel puedes solicitar el ingreso en tu cuenta bancaria.
+          El importe se libera en tu saldo de Muebla una vez que el comprador confirma la recepción (o transcurridas 48 horas sin reclamación). Desde tu panel puedes solicitar el ingreso en tu cuenta bancaria.
         </div>
       </div>
       <div class="faq-item">
@@ -405,7 +409,7 @@
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-a">
-          Mueblista está especializado en muebles y decoración para el hogar: sofás, mesas, sillas, armarios, camas, lámparas, estanterías, alfombras, cuadros y similares. No se permite vender artículos falsificados, peligrosos o en mal estado sin declararlo. Consulta la guía completa: <a href="que-vender.html">Qué se puede vender en Mueblista →</a>
+          Muebla está especializado en muebles y decoración para el hogar: sofás, mesas, sillas, armarios, camas, lámparas, estanterías, alfombras, cuadros y similares. No se permite vender artículos falsificados, peligrosos o en mal estado sin declararlo. Consulta la guía completa: <a href="que-vender.html">Qué se puede vender en Muebla →</a>
         </div>
       </div>
     </div>
@@ -427,7 +431,7 @@
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-a">
-          Mueblista trabaja con varios transportistas especializados en muebles y artículos voluminosos. Al crear el envío podrás ver las opciones disponibles para el tamaño de tu artículo y elegir la que mejor se adapte.
+          Muebla trabaja con varios transportistas especializados en muebles y artículos voluminosos. Al crear el envío podrás ver las opciones disponibles para el tamaño de tu artículo y elegir la que mejor se adapte.
         </div>
       </div>
       <div class="faq-item">
@@ -454,7 +458,7 @@
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-a">
-          Sí. Mueblista incluye cobertura básica en todos los envíos. Para artículos de mayor valor, puedes contratar un seguro ampliado al generar la etiqueta. Consulta las condiciones actualizadas en el momento del envío.
+          Sí. Muebla incluye cobertura básica en todos los envíos. Para artículos de mayor valor, puedes contratar un seguro ampliado al generar la etiqueta. Consulta las condiciones actualizadas en el momento del envío.
         </div>
       </div>
     </div>
@@ -488,7 +492,7 @@
           1. Fotografía el embalaje y el artículo antes de firmar el albarán o indica los daños en él.<br/>
           2. Ve a tu perfil → Mis compras → abre el pedido → "Problema con mi pedido".<br/>
           3. Selecciona "Artículo dañado en el transporte" y adjunta las fotos.<br/>
-          Mueblista mediará con el transportista y tramitará el seguro si corresponde.
+          Muebla mediará con el transportista y tramitará el seguro si corresponde.
         </div>
       </div>
       <div class="faq-item">
@@ -553,7 +557,7 @@
     <div class="articles-grid">
       <a href="devoluciones.html" class="article-card">
         <div class="article-tag">Compras</div>
-        <div class="article-title">Garantía de compra Mueblista: cómo funciona el pago retenido</div>
+        <div class="article-title">Garantía de compra Muebla: cómo funciona el pago retenido</div>
         <div class="article-time">2 min de lectura</div>
       </a>
       <a href="como-funciona.html" class="article-card">
@@ -605,7 +609,7 @@
           <div class="channel-icon">📧</div>
           <div class="channel-body">
             <div class="channel-name">Correo electrónico</div>
-            <div class="channel-detail">hola@mueblista.es · Respuesta en 24–48 h</div>
+            <div class="channel-detail">hola@muebla.es · Respuesta en 24–48 h</div>
           </div>
         </div>
         <div class="contact-channel">
@@ -667,7 +671,7 @@
 <div class="toast" id="toast">✓ Mensaje enviado. Te respondemos en 24–48 h.</div>
 
 <footer>
-  <a href="index.html" class="footer-logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="footer-logo">Muebl<em>a</em></a>
     <div class="footer-links">
     <a href="terminos.html">Términos</a>
     <a href="privacidad.html">Privacidad</a>
@@ -681,7 +685,7 @@
     <a href="lotes.html">Venta en conjunto</a>
     <a href="recordatorios.html">Recordatorios</a>
   </div>
-  <div class="footer-copy">© 2026 Mueblista</div>
+  <div class="footer-copy">© 2026 Muebla</div>
 </footer>
 
 <script>
@@ -756,3 +760,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mensajes — Mueblista</title>
+  <title>Mensajes — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -34,6 +34,10 @@
       flex-shrink: 0; z-index: 10;
     }
     .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
     .nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
     .nav-btn {
@@ -424,7 +428,7 @@
 
 <!-- ─── NAV ─── -->
 <nav>
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
   <div class="nav-right">
     <a href="favoritos.html" class="nav-btn nav-btn-ghost nav-fav-link">♡ Favoritos<span class="nav-fav-badge" id="navFavBadge">0</span></a>
     <a href="perfil.html" class="nav-btn nav-btn-ghost">Mi perfil</a>
@@ -536,8 +540,8 @@
       <div class="date-sep">Hoy</div>
 
       <div class="msg-system">
-        🛡️ <strong>Conversación protegida por Mueblista</strong><br>
-        Por seguridad, no compartas datos de contacto (teléfono, email, WhatsApp). Mueblista gestiona el pago y el envío.
+        🛡️ <strong>Conversación protegida por Muebla</strong><br>
+        Por seguridad, no compartas datos de contacto (teléfono, email, WhatsApp). Muebla gestiona el pago y el envío.
       </div>
 
       <div class="msg theirs">
@@ -587,7 +591,7 @@
       <span style="font-size:20px;flex-shrink:0">🚫</span>
       <div>
         <strong>Mensaje bloqueado</strong>
-        <p>No puedes compartir datos de contacto ni direcciones físicas (teléfonos, emails, redes sociales, calles, avenidas…) en el chat. Todas las transacciones deben realizarse a través de Mueblista para tu protección.</p>
+        <p>No puedes compartir datos de contacto ni direcciones físicas (teléfonos, emails, redes sociales, calles, avenidas…) en el chat. Todas las transacciones deben realizarse a través de Muebla para tu protección.</p>
       </div>
     </div>
 
@@ -612,7 +616,7 @@
         <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>➤</button>
       </div>
       <div class="input-hint">
-        Las transacciones fuera de Mueblista no están protegidas.
+        Las transacciones fuera de Muebla no están protegidas.
         <a href="como-funciona.html">Saber más</a>
       </div>
     </div>
@@ -931,3 +935,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

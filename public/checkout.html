@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Checkout — Mueblista</title>
+  <title>Checkout — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -30,6 +30,10 @@
       position: sticky; top: 0; z-index: 100;
     }
     .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
 
     .checkout-steps { display: flex; align-items: center; gap: 8px; font-size: 13px; }
@@ -182,7 +186,7 @@
 
 <!-- ─── NAV ─── -->
 <nav class="checkout-nav">
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
   <div class="checkout-steps">
     <span class="step active">Entrega</span>
     <span class="step-sep">›</span>
@@ -314,7 +318,7 @@
 
       <!-- Protección -->
       <div class="protection-box">
-        <div class="protection-title">✓ Compra protegida por Mueblista</div>
+        <div class="protection-title">✓ Compra protegida por Muebla</div>
         <div class="protection-desc">Si el artículo no llega, no coincide con la descripción o tiene daños ocultos, te devolvemos el dinero íntegro. El vendedor no cobra hasta que confirmas la recepción.</div>
       </div>
 
@@ -458,7 +462,7 @@
       return;
     }
 
-    document.title = 'Comprar · ' + currentProduct.title + ' — Mueblista';
+    document.title = 'Comprar · ' + currentProduct.title + ' — Muebla';
     document.getElementById('sumImg').src              = IMGS[productId] || '';
     document.getElementById('sumImg').alt              = currentProduct.title;
     document.getElementById('sumTitle').textContent    = currentProduct.title;
@@ -470,3 +474,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

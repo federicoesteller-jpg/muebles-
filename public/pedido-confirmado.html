@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pedido confirmado — Mueblista</title>
+  <title>Pedido confirmado — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -27,6 +27,10 @@
       display: flex; align-items: center; justify-content: center;
     }
     .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
 
     /* ─── WRAP ─── */
@@ -178,7 +182,7 @@
 <body>
 
 <nav class="nav">
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
 </nav>
 
 <div class="page">
@@ -221,7 +225,7 @@
       <span>+ 24 €</span>
     </div>
     <div class="price-row">
-      <span>Protección Mueblista</span>
+      <span>Protección Muebla</span>
       <span id="rowProt">—</span>
     </div>
     <div class="price-row total">
@@ -252,7 +256,7 @@
         <div class="tl-icon">✅</div>
         <div class="tl-content">
           <div class="tl-title">Confirma la recepción</div>
-          <div class="tl-desc">Cuando tengas el artículo, confirma la entrega en tu panel. Hasta ese momento tu dinero está retenido y protegido por Mueblista.</div>
+          <div class="tl-desc">Cuando tengas el artículo, confirma la entrega en tu panel. Hasta ese momento tu dinero está retenido y protegido por Muebla.</div>
         </div>
       </div>
     </div>
@@ -275,7 +279,7 @@
     try { order = JSON.parse(localStorage.getItem('lastOrder') || 'null'); } catch(e) {}
 
     if (order) {
-      document.title = 'Pedido ' + order.orderNum + ' confirmado — Mueblista';
+      document.title = 'Pedido ' + order.orderNum + ' confirmado — Muebla';
       document.getElementById('orderRef').textContent   = order.orderNum;
       document.getElementById('prodImg').src            = order.img || '';
       document.getElementById('prodImg').alt            = order.title;
@@ -298,7 +302,7 @@
       const ref = 'MBL-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
       document.getElementById('orderRef').textContent = ref;
       document.getElementById('prodTitle').textContent = 'Artículo comprado';
-      document.getElementById('prodStore').textContent = 'Mueblista';
+      document.getElementById('prodStore').textContent = 'Muebla';
       document.getElementById('prodPrice').textContent = '—';
       document.getElementById('prodDelivery').textContent = '—';
     }
@@ -307,3 +311,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

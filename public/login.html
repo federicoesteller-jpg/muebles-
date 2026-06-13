@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Entrar — Mueblista</title>
+  <title>Entrar — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -37,6 +37,10 @@
       flex-shrink: 0;
     }
     .logo { font-size: 18px; font-weight: 800; color: var(--brown); text-decoration: none; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
 
     /* ─── LAYOUT ─── */
@@ -275,7 +279,7 @@
 <body>
 
 <nav>
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
 </nav>
 
 <div class="auth-layout">
@@ -283,7 +287,7 @@
   <!-- PANEL IZQUIERDO -->
   <div class="auth-left">
     <div class="left-top">
-      <div class="left-tag">Bienvenido a Mueblista</div>
+      <div class="left-tag">Bienvenido a Muebla</div>
       <div class="left-title">El marketplace de muebles <em>más sencillo</em> de España</div>
       <div class="left-sub">Compra y vende muebles cerca de ti de forma segura. Pago protegido, envío gestionado.</div>
     </div>
@@ -350,7 +354,7 @@
           <div class="field-error" id="loginPwdErr">Introduce tu contraseña</div>
         </div>
 
-        <a href="#" class="forgot">¿Olvidaste tu contraseña?</a>
+        <a href="ayuda.html" class="forgot">¿Olvidaste tu contraseña?</a>
 
         <button class="btn-submit" onclick="submitLogin()">Entrar</button>
 
@@ -462,7 +466,7 @@
       <!-- ── ÉXITO ── -->
       <div class="success-panel" id="successPanel">
         <div class="success-icon">🎉</div>
-        <h3 id="successTitle">¡Bienvenido a Mueblista!</h3>
+        <h3 id="successTitle">¡Bienvenido a Muebla!</h3>
         <p id="successMsg">Tu cuenta ha sido creada correctamente. Ya puedes comprar y vender muebles.</p>
         <a href="index.html" class="btn-go">Explorar muebles →</a>
       </div>
@@ -484,9 +488,9 @@
     document.getElementById('form-register').classList.toggle('active', mode === 'register');
 
     if (mode === 'login') {
-      document.title = 'Iniciar sesión — Mueblista';
+      document.title = 'Iniciar sesión — Muebla';
     } else {
-      document.title = 'Crear cuenta — Mueblista';
+      document.title = 'Crear cuenta — Muebla';
     }
   }
 
@@ -575,7 +579,7 @@
 
     if (!ok) return;
 
-    showSuccess('¡Bienvenido a Mueblista!', 'Tu cuenta ha sido creada. Ya puedes comprar y vender muebles.');
+    showSuccess('¡Bienvenido a Muebla!', 'Tu cuenta ha sido creada. Ya puedes comprar y vender muebles.');
   }
 
   /* ─── SOCIAL LOGIN ─── */
@@ -602,3 +606,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+

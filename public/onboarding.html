@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registra tu tienda — Mueblista</title>
+  <title>Registra tu tienda — Muebla</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -34,6 +34,10 @@
         radial-gradient(ellipse 50% 40% at 80% 20%, rgba(201,106,56,0.08) 0%, transparent 60%);
     }
     .logo { font-size: 22px; font-weight: 800; color: #fff; text-decoration: none; position: relative; z-index: 1; }
+    .logo-wrap { text-decoration: none; display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+    .logo em { font-style: normal; color: var(--terra); }
+    .logo-slogan { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.2px; white-space: nowrap; margin-top: 2px; }
     .logo em { font-style: normal; color: var(--terra); }
 
     .left-headline { position: relative; z-index: 1; }
@@ -193,7 +197,7 @@
 
 <!-- ─── IZQUIERDA ─── -->
 <div class="left">
-  <a href="index.html" class="logo">Mueble<em>ista</em></a>
+  <a href="index.html" class="logo-wrap"><span class="logo">Muebl<em>a</em></span><span class="logo-slogan">Compra, vende y amuebla</span></a>
 
   <div class="left-headline">
     <h1>Tu tienda,<br/><em>tu escaparate</em><br/>en toda España.</h1>
@@ -248,7 +252,7 @@
     <!-- ── PASO 1: DATOS DE TIENDA ── -->
     <div class="step active" id="step1">
       <div class="step-title">Cuéntanos tu tienda</div>
-      <div class="step-sub">Esta información aparecerá en tu perfil público dentro de Mueblista.</div>
+      <div class="step-sub">Esta información aparecerá en tu perfil público dentro de Muebla.</div>
 
       <div class="form-error" id="err1">Completa todos los campos obligatorios.</div>
 
@@ -332,7 +336,7 @@
 
       <div class="terms-check">
         <input type="checkbox" id="termsCheck" />
-        <label for="termsCheck">Acepto los <a href="terminos.html" target="_blank">Términos y condiciones</a> y la <a href="privacidad.html" target="_blank">Política de privacidad</a> de Mueblista.</label>
+        <label for="termsCheck">Acepto los <a href="terminos.html" target="_blank">Términos y condiciones</a> y la <a href="privacidad.html" target="_blank">Política de privacidad</a> de Muebla.</label>
       </div>
 
       <button class="btn-next" onclick="goStep(3)">Enviar solicitud →</button>
@@ -352,7 +356,7 @@
       <div class="info-box">
         <div class="info-box-row">📧 <span>Recibirás un <strong>email de confirmación</strong> en la dirección que has indicado.</span></div>
         <div class="info-box-row">✅ <span>Una vez aprobada, podrás <strong>publicar tus primeros artículos</strong> desde el panel.</span></div>
-        <div class="info-box-row">💬 <span>Si tienes dudas, escríbenos a <strong>hola@mueblista.es</strong>.</span></div>
+        <div class="info-box-row">💬 <span>Si tienes dudas, escríbenos a <strong>hola@muebla.es</strong>.</span></div>
       </div>
 
       <a href="panel.html" class="btn-primary-full">Ver el panel (demo) →</a>
@@ -455,3 +459,10 @@
 <script src="cookie-banner.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
