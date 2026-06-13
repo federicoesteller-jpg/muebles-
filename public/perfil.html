@@ -1195,12 +1195,29 @@
             <div class="fields-row">
               <div class="field">
                 <label class="field-label">Correo electrónico <span class="hint">No visible para otros</span></label>
-                <input type="email" value="maria@email.com" />
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <input type="email" value="maria@email.com" style="flex:1;" />
+                  <span id="emailVerified" style="font-size:11px; font-weight:700; color:var(--green); background:var(--green-l); padding:4px 10px; border-radius:100px; white-space:nowrap; flex-shrink:0;">✓ Verificado</span>
+                </div>
               </div>
               <div class="field">
                 <label class="field-label">Teléfono <span class="hint">Solo para gestión de envíos</span></label>
-                <input type="tel" value="+34 612 345 678" />
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <input type="tel" value="+34 612 345 678" style="flex:1;" />
+                  <button id="phoneVerifyBtn" onclick="sendPhoneSMS()" style="font-size:11px; font-weight:700; color:var(--white); background:var(--terra); border:none; padding:4px 10px; border-radius:100px; cursor:pointer; white-space:nowrap; flex-shrink:0;">Verificar</button>
+                </div>
               </div>
+            </div>
+
+            <!-- Modal verificación SMS -->
+            <div id="smsModal" style="display:none; background:var(--sand-l); border:1.5px solid var(--sand); border-radius:12px; padding:16px; margin-top:-8px; margin-bottom:4px;">
+              <div style="font-size:13px; font-weight:600; margin-bottom:10px;">Hemos enviado un código de 6 dígitos a tu teléfono</div>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <input id="smsCode" type="text" maxlength="6" placeholder="Código de 6 dígitos" style="width:180px; letter-spacing:4px; font-size:16px; font-weight:700; text-align:center;" />
+                <button onclick="verifyPhoneCode()" style="padding:9px 18px; border-radius:10px; background:var(--green); color:#fff; border:none; font-size:13px; font-weight:700; font-family:inherit; cursor:pointer;">Confirmar</button>
+                <button onclick="document.getElementById('smsModal').style.display='none'" style="padding:9px 14px; border-radius:10px; background:transparent; color:var(--gray); border:1.5px solid var(--sand); font-size:13px; font-weight:700; font-family:inherit; cursor:pointer;">Cancelar</button>
+              </div>
+              <div style="font-size:11px; color:var(--gray); margin-top:8px;">¿No te ha llegado? <a href="#" onclick="sendPhoneSMS(); return false;" style="color:var(--terra); font-weight:600;">Reenviar código</a></div>
             </div>
             <div class="fields-row">
               <div class="field">
@@ -1537,6 +1554,24 @@
           <div class="fav-title">${f.title || 'Sin título'}</div>
         </div>
       </a>`).join('');
+  }
+
+  /* ─── VERIFICACIÓN TELÉFONO ─── */
+  function sendPhoneSMS() {
+    document.getElementById('smsModal').style.display = 'block';
+    showToast('Código enviado por SMS');
+  }
+
+  function verifyPhoneCode() {
+    const code = document.getElementById('smsCode').value.trim();
+    if (code.length !== 6) { alert('Introduce los 6 dígitos del código'); return; }
+    document.getElementById('smsModal').style.display = 'none';
+    const btn = document.getElementById('phoneVerifyBtn');
+    btn.textContent = '✓ Verificado';
+    btn.style.background = 'var(--green)';
+    btn.style.cursor = 'default';
+    btn.onclick = null;
+    showToast('Teléfono verificado correctamente');
   }
 
   /* ─── BIO ─── */
