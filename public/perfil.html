@@ -1200,6 +1200,57 @@
 
       <div class="settings-sections">
 
+        <!-- Tipo de cuenta -->
+        <div class="settings-section open">
+          <div class="section-head" onclick="toggleSection(this)">
+            <div class="section-head-left">
+              <div class="section-icon">🪪</div>
+              <div>
+                <h3>Tipo de cuenta</h3>
+                <p>Personal o de negocio según la normativa europea</p>
+              </div>
+            </div>
+            <div class="section-head-right">
+              <span id="accountTypeBadge" style="font-size:11px; font-weight:700; color:var(--green);">✓ Personal</span>
+              <span class="section-chevron">▾</span>
+            </div>
+          </div>
+          <div class="section-body">
+            <div style="font-size:13px; color:var(--gray); line-height:1.6; margin-bottom:16px;">
+              Según la legislación europea vigente, las plataformas de comercio online deben identificar si los usuarios son particulares o profesionales.
+              <a href="ayuda.html" style="color:var(--terra); font-weight:600; text-decoration:none;"> ¿Tienes preguntas? Visita nuestro Centro de Ayuda →</a>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:10px;">
+
+              <label id="optPersonal" onclick="selectAccountType('personal')" style="display:flex; align-items:flex-start; gap:14px; padding:16px; border-radius:12px; border:2px solid var(--terra); background:#fdf6f2; cursor:pointer; transition:all .2s;">
+                <div style="margin-top:2px; width:18px; height:18px; border-radius:50%; border:2px solid var(--terra); background:var(--terra); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <div style="width:8px; height:8px; border-radius:50%; background:#fff;"></div>
+                </div>
+                <div>
+                  <div style="font-size:14px; font-weight:700; margin-bottom:3px;">Cuenta personal</div>
+                  <div style="font-size:13px; color:var(--gray); line-height:1.5;">La utilizarás para compras y ventas personales.</div>
+                  <a href="terminos.html" style="font-size:12px; color:var(--terra); font-weight:600; text-decoration:none; margin-top:4px; display:inline-block;">Términos y Condiciones para cuentas particulares →</a>
+                </div>
+              </label>
+
+              <label id="optNegocio" onclick="selectAccountType('negocio')" style="display:flex; align-items:flex-start; gap:14px; padding:16px; border-radius:12px; border:2px solid var(--sand); background:var(--white); cursor:pointer; transition:all .2s;">
+                <div id="radioNegocio" style="margin-top:2px; width:18px; height:18px; border-radius:50%; border:2px solid var(--sand); background:transparent; flex-shrink:0;"></div>
+                <div>
+                  <div style="font-size:14px; font-weight:700; margin-bottom:3px;">Cuenta de negocio</div>
+                  <div style="font-size:13px; color:var(--gray); line-height:1.5;">La utilizarás para trabajar: como autónomo, empresa registrada u organización sin ánimo de lucro.</div>
+                  <a href="terminos.html" style="font-size:12px; color:var(--terra); font-weight:600; text-decoration:none; margin-top:4px; display:inline-block;">Términos y Condiciones para cuentas de negocio →</a>
+                </div>
+              </label>
+
+            </div>
+
+            <div class="save-row">
+              <button class="btn-save" onclick="showToast('Tipo de cuenta guardado')">Guardar</button>
+            </div>
+          </div>
+        </div>
+
         <!-- Datos personales -->
         <div class="settings-section open">
           <div class="section-head" onclick="toggleSection(this)">
@@ -1656,6 +1707,40 @@
           <div class="fav-title">${f.title || 'Sin título'}</div>
         </div>
       </a>`).join('');
+  }
+
+  /* ─── TIPO DE CUENTA ─── */
+  function selectAccountType(type) {
+    const personal = document.getElementById('optPersonal');
+    const negocio  = document.getElementById('optNegocio');
+    const radioN   = document.getElementById('radioNegocio');
+    const badge    = document.getElementById('accountTypeBadge');
+
+    if (type === 'personal') {
+      personal.style.border = '2px solid var(--terra)';
+      personal.style.background = '#fdf6f2';
+      personal.querySelector('div').style.background = 'var(--terra)';
+      personal.querySelector('div').style.border = '2px solid var(--terra)';
+      personal.querySelector('div').innerHTML = '<div style="width:8px;height:8px;border-radius:50%;background:#fff;"></div>';
+      negocio.style.border = '2px solid var(--sand)';
+      negocio.style.background = 'var(--white)';
+      radioN.style.background = 'transparent';
+      radioN.style.border = '2px solid var(--sand)';
+      radioN.innerHTML = '';
+      badge.textContent = '✓ Personal';
+    } else {
+      negocio.style.border = '2px solid var(--terra)';
+      negocio.style.background = '#fdf6f2';
+      radioN.style.background = 'var(--terra)';
+      radioN.style.border = '2px solid var(--terra)';
+      radioN.innerHTML = '<div style="width:8px;height:8px;border-radius:50%;background:#fff;margin:auto;margin-top:3px;"></div>';
+      personal.style.border = '2px solid var(--sand)';
+      personal.style.background = 'var(--white)';
+      personal.querySelector('div').style.background = 'transparent';
+      personal.querySelector('div').style.border = '2px solid var(--sand)';
+      personal.querySelector('div').innerHTML = '';
+      badge.textContent = '✓ Negocio';
+    }
   }
 
   /* ─── ACORDEÓN SECCIONES ─── */
