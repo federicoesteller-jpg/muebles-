@@ -491,25 +491,44 @@
     .fav-price { font-size: 15px; font-weight: 800; margin-bottom: 2px; }
     .fav-title { font-size: 12px; color: var(--gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
+    /* ─── PROGRESO PERFIL ─── */
+    .profile-progress {
+      background: var(--white); border: 1px solid var(--sand);
+      border-radius: 14px; padding: 16px 20px; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .progress-label { font-size: 13px; font-weight: 700; white-space: nowrap; }
+    .progress-track { flex: 1; height: 8px; background: var(--sand); border-radius: 100px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--terra), #e07a44); border-radius: 100px; transition: width .6s; }
+    .progress-pct { font-size: 13px; font-weight: 800; color: var(--terra); white-space: nowrap; }
+
     /* ─── AJUSTES ─── */
-    .settings-sections { display: flex; flex-direction: column; gap: 24px; }
+    .settings-sections { display: flex; flex-direction: column; gap: 10px; }
 
     .settings-section {
       border: 1px solid var(--sand);
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
       background: var(--white);
     }
 
     .section-head {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--sand);
+      padding: 14px 20px;
       display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; user-select: none;
+      transition: background .15s;
     }
-    .section-head h3 { font-size: 15px; font-weight: 700; }
-    .section-head p { font-size: 12px; color: var(--gray); margin-top: 1px; }
+    .section-head:hover { background: #fafafa; }
+    .section-head-left { display: flex; align-items: center; gap: 12px; }
+    .section-icon { font-size: 20px; width: 36px; height: 36px; background: var(--cream); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .section-head h3 { font-size: 14px; font-weight: 700; margin-bottom: 1px; }
+    .section-head p { font-size: 12px; color: var(--gray); }
+    .section-head-right { display: flex; align-items: center; gap: 10px; }
+    .section-chevron { font-size: 12px; color: var(--gray-l); transition: transform .2s; }
+    .settings-section.open .section-chevron { transform: rotate(180deg); }
 
-    .section-body { padding: 20px; }
+    .section-body { padding: 20px; border-top: 1px solid var(--sand); display: none; }
+    .settings-section.open .section-body { display: block; }
 
     /* form fields reutilizando estilos de publicar */
     .field { margin-bottom: 18px; }
@@ -1171,14 +1190,29 @@
 
     <!-- ══════════ AJUSTES ══════════ -->
     <div class="tab-panel" id="panel-ajustes">
+
+      <!-- Progreso del perfil -->
+      <div class="profile-progress">
+        <span class="progress-label">Perfil completo</span>
+        <div class="progress-track"><div class="progress-fill" style="width:60%"></div></div>
+        <span class="progress-pct">60%</span>
+      </div>
+
       <div class="settings-sections">
 
         <!-- Datos personales -->
-        <div class="settings-section">
-          <div class="section-head">
-            <div>
-              <h3>Datos personales</h3>
-              <p>Tu nombre e información de contacto</p>
+        <div class="settings-section open">
+          <div class="section-head" onclick="toggleSection(this)">
+            <div class="section-head-left">
+              <div class="section-icon">👤</div>
+              <div>
+                <h3>Datos personales</h3>
+                <p>Nombre, contacto y descripción</p>
+              </div>
+            </div>
+            <div class="section-head-right">
+              <span style="font-size:11px; font-weight:700; color:var(--green);">✓ Completado</span>
+              <span class="section-chevron">▾</span>
             </div>
           </div>
           <div class="section-body">
@@ -1247,10 +1281,17 @@
 
         <!-- Dirección de envío -->
         <div class="settings-section">
-          <div class="section-head">
-            <div>
-              <h3>Dirección de envío</h3>
-              <p>Se usa para recibir tus compras</p>
+          <div class="section-head" onclick="toggleSection(this)">
+            <div class="section-head-left">
+              <div class="section-icon">📦</div>
+              <div>
+                <h3>Dirección de envío</h3>
+                <p>Dónde recibes tus compras</p>
+              </div>
+            </div>
+            <div class="section-head-right">
+              <span style="font-size:11px; font-weight:700; color:var(--green);">✓ Completado</span>
+              <span class="section-chevron">▾</span>
             </div>
           </div>
           <div class="section-body">
@@ -1294,12 +1335,18 @@
 
         <!-- Datos de cobro -->
         <div class="settings-section">
-          <div class="section-head">
-            <div>
-              <h3>Datos de cobro</h3>
-              <p>Cuenta bancaria donde recibirás el dinero de tus ventas</p>
+          <div class="section-head" onclick="toggleSection(this)">
+            <div class="section-head-left">
+              <div class="section-icon">🏦</div>
+              <div>
+                <h3>Datos de cobro</h3>
+                <p>IBAN para recibir el dinero de tus ventas</p>
+              </div>
             </div>
-            <span style="font-size:11px; font-weight:700; color:var(--green); background:var(--green-l); padding:4px 10px; border-radius:100px;">🔒 Cifrado</span>
+            <div class="section-head-right">
+              <span style="font-size:11px; font-weight:700; color:var(--gray);">Pendiente</span>
+              <span class="section-chevron">▾</span>
+            </div>
           </div>
           <div class="section-body">
             <div class="field">
@@ -1321,12 +1368,18 @@
 
         <!-- Métodos de pago -->
         <div class="settings-section">
-          <div class="section-head">
-            <div>
-              <h3>Métodos de pago</h3>
-              <p>Para realizar tus compras en Muebla</p>
+          <div class="section-head" onclick="toggleSection(this)">
+            <div class="section-head-left">
+              <div class="section-icon">💳</div>
+              <div>
+                <h3>Métodos de pago</h3>
+                <p>Tarjeta o Bizum para tus compras</p>
+              </div>
             </div>
-            <span style="font-size:11px; font-weight:700; color:var(--green); background:var(--green-l); padding:4px 10px; border-radius:100px;">🔒 Cifrado</span>
+            <div class="section-head-right">
+              <span style="font-size:11px; font-weight:700; color:var(--green);">✓ Visa ••4532</span>
+              <span class="section-chevron">▾</span>
+            </div>
           </div>
           <div class="section-body">
 
@@ -1409,10 +1462,16 @@
 
         <!-- Seguridad -->
         <div class="settings-section">
-          <div class="section-head">
-            <div>
-              <h3>Seguridad</h3>
-              <p>Contraseña y acceso a tu cuenta</p>
+          <div class="section-head" onclick="toggleSection(this)">
+            <div class="section-head-left">
+              <div class="section-icon">🔒</div>
+              <div>
+                <h3>Seguridad</h3>
+                <p>Contraseña y acceso a tu cuenta</p>
+              </div>
+            </div>
+            <div class="section-head-right">
+              <span class="section-chevron">▾</span>
             </div>
           </div>
           <div class="section-body">
@@ -1438,10 +1497,16 @@
 
         <!-- Notificaciones -->
         <div class="settings-section">
-          <div class="section-head">
-            <div>
-              <h3>Notificaciones</h3>
-              <p>Elige qué correos quieres recibir</p>
+          <div class="section-head" onclick="toggleSection(this)">
+            <div class="section-head-left">
+              <div class="section-icon">🔔</div>
+              <div>
+                <h3>Notificaciones</h3>
+                <p>Elige qué avisos quieres recibir</p>
+              </div>
+            </div>
+            <div class="section-head-right">
+              <span class="section-chevron">▾</span>
             </div>
           </div>
           <div class="section-body">
@@ -1591,6 +1656,11 @@
           <div class="fav-title">${f.title || 'Sin título'}</div>
         </div>
       </a>`).join('');
+  }
+
+  /* ─── ACORDEÓN SECCIONES ─── */
+  function toggleSection(head) {
+    head.closest('.settings-section').classList.toggle('open');
   }
 
   /* ─── MÉTODOS DE PAGO ─── */
